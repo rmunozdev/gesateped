@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <definition name="baseDefinition" template="/jsp/layout/defaultLayout.jsp">
+		<put-attribute name="title" value="Sistema de Atención de Pedidos" />
+		<put-attribute name="header" value="/jsp/template/defaultHeader.jsp" />
+		<put-attribute name="menu" value="/jsp/template/defaultMenu.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+	
+    <!-- Pagina Principal -->
+	<definition name="homepage" extends="baseDefinition">
+	    <put-attribute name="body" value="/jsp/homepage.jsp" /> 
+	</definition>
+	
+	<!-- Administracion (control) -->
+	<definition name="admin" extends="baseDefinition">  
+		<put-attribute name="body" value="/jsp/admin/control.jsp" />  
+	</definition>
+    
+</tiles-definitions>

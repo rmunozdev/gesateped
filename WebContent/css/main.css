@@ -1,0 +1,229 @@
+body {
+	font-family: verdana;
+	font-size: 11px;
+	margin: 0 0 0 0
+}
+
+input {
+	font-family: verdana;
+	font-size: 11px;
+	height: 20px
+}
+
+select {
+	font-family: verdana;
+	font-size: 11px;
+	height: 25px;
+	line-height: 25px
+}
+
+textarea {
+	font-family: verdana;
+	font-size: 11px
+}
+
+.textoAzulClass {
+	color: #568FD1
+}
+
+.textoMensajeAzulClass {
+	color: #0000FF;
+	font-weight: bold
+}
+
+.textoMensajeRojoClass {
+	color: #FF0000;
+	font-weight: bold
+}
+
+.grillaClass {
+	border: 1px solid;
+	border-color: #E6E6E6;
+	line-height: 25px;
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+.cabeceraGrillaClass {
+	background-color: #B9DCF7;
+	font-weight: bold;
+	text-align: center;
+	line-height: 25px;
+	font-size: 11px
+}
+
+.cabeceraGrillaClass td {
+	padding: 2px;
+	border: 1px solid
+}
+
+.filaGrillaParClass {
+	background-color: #FFFFFF;
+	line-height: 25px;
+	font-size: 11px
+}
+
+.filaGrillaParClass td {
+	padding: 2px;
+	border: 1px solid
+}
+
+.filaGrillaImparClass {
+	background-color: #EFF3F6;
+	line-height: 25px;
+	font-size: 11px;
+	padding: 5px
+}
+
+.filaGrillaImparClass td {
+	padding: 2px;
+	border: 1px solid
+}
+
+.grillaIcon {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle	
+}
+
+.grillaIcon1 {
+	width: 30px;
+	height: 30px;
+	vertical-align: middle	
+}
+
+.grillaIcon2 {
+	width: 27px;
+	height: 27px;
+	vertical-align: middle	
+}
+
+.tituloClass {
+	font-size: 25px;
+	border-spacing: 5px
+}
+
+.subTituloClass {
+	font-size: 20px;
+	border-spacing: 5px
+}
+
+.tablaSinBordeClass {
+	border: 0;
+	border-collapse: separate;
+	border-spacing: 5px
+}
+
+.tablaSinBordeCentradoClass {
+	border: 0;
+	background-color: white;
+	border-collapse: separate;
+	border-spacing: 5px
+}
+
+.panelBorder {
+	border: 1px solid;
+	background-color: white;
+	border-collapse: separate;
+	border-spacing: 5px;
+	width: 98%;
+}
+
+.colorBlueButton {
+	background-color: #4AB5D5;
+	border-color: #4AB5D5;
+	color: white;
+	height: 30px;
+	width: 120px;
+	border-radius: 8px
+}
+
+.colorGreenButton {
+	background-color: #7FBD02;
+	border-color: #7FBD02;
+	color: white;
+	height: 30px;
+	width: 120px;
+	border-radius: 8px
+}
+
+.colorGrayButton {
+	background-color: #2B353E;
+	border-color: #2B353E;
+	color: white;
+	height: 30px;
+	width: 120px;
+	border-radius: 8px
+}
+
+.inputDisabled {
+	background-color: #C4C4C4
+}
+
+.tableHeader {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+.tableMenu {
+	border-spacing: 0;
+    border-collapse: collapse;
+    width: 210px
+}
+
+.tableMenu tr {
+	height: 30px
+}
+
+.optionMenuExpand {
+	background-color: #81BB04;
+	font-weight: bold
+}
+
+.optionMenuItemExpand {
+	background-color: #005588
+}
+
+.tabOptionMenuItemExpand {
+	width: 10px;
+	height: 10px
+}
+
+.tableMenu td {
+	padding: 5px
+}
+
+.iconMenu {
+	width: 25px;
+	height: 25px
+}
+
+.linkMenu {
+	text-decoration: none
+}
+
+.linkMenu span {
+	color: white
+}
+
+.fondoMenu {
+	width: 210px;
+	height: 625px;
+	color: white;
+	background-color: #0086D7
+}
+
+.fondoBody {
+	background-color: #D9E0E8
+}
+
+.tableLayout {
+	border-spacing: 0;
+    border-collapse: collapse
+}
+
+.subTituloUnderlineClass {
+	font-size: 15px;
+	text-decoration: underline;
+	font-weight: bold
+}
