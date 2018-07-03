@@ -1,49 +1,49 @@
 package pe.com.gesateped.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class Unidad {
 
+	private String codigoHojaRuta;
 	private String numeroPlaca;
-	private String modelo;
-	private String marca;
-	private String numeroSoat;
-	private String codigoTipo;
-	private String codigoProveedor;
+	private String nombreChofer;
+	private String apellidoChofer;
+	private String telefonoChofer;
 	
+	public String getCodigoHojaRuta() {
+		return codigoHojaRuta;
+	}
+	public void setCodigoHojaRuta(String codigoHojaRuta) {
+		this.codigoHojaRuta = codigoHojaRuta;
+	}
 	public String getNumeroPlaca() {
 		return numeroPlaca;
 	}
 	public void setNumeroPlaca(String numeroPlaca) {
 		this.numeroPlaca = numeroPlaca;
 	}
-	public String getModelo() {
-		return modelo;
+	public String getNombreChofer() {
+		return nombreChofer;
 	}
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
+	public void setNombreChofer(String nombreChofer) {
+		this.nombreChofer = nombreChofer;
 	}
-	public String getMarca() {
-		return marca;
+	public String getApellidoChofer() {
+		return apellidoChofer;
 	}
-	public void setMarca(String marca) {
-		this.marca = marca;
+	public void setApellidoChofer(String apellidoChofer) {
+		this.apellidoChofer = apellidoChofer;
 	}
-	public String getNumeroSoat() {
-		return numeroSoat;
+	public String getTelefonoChofer() {
+		return telefonoChofer;
 	}
-	public void setNumeroSoat(String numeroSoat) {
-		this.numeroSoat = numeroSoat;
+	public void setTelefonoChofer(String telefonoChofer) {
+		this.telefonoChofer = telefonoChofer;
 	}
-	public String getCodigoTipo() {
-		return codigoTipo;
-	}
-	public void setCodigoTipo(String codigoTipo) {
-		this.codigoTipo = codigoTipo;
-	}
-	public String getCodigoProveedor() {
-		return codigoProveedor;
-	}
-	public void setCodigoProveedor(String codigoProveedor) {
-		this.codigoProveedor = codigoProveedor;
-	}
+	
+	
+	
 	
 }

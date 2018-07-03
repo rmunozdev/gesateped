@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="monitoreoDao">
+    <resultMap id="bodegaResult" type="bodega">
+		<result property="codigo" column="cod_bod" />
+		<result property="nombre" column="nom_bod" />
+	</resultMap>
+
+	<select id="getBodegas" resultMap="bodegaResult" statementType="CALLABLE">
+		call sp_get_bodegas()
+	</select>
+	
+    <resultMap id="unidadResult" type="unidad">
+		<result property="codigoHojaRuta" column="cod_hoj_rut" />
+		<result property="numeroPlaca" column="num_plac_unid" />
+		<result property="nombreChofer" column="nom_chof" />
+		<result property="apellidoChofer" column="ape_chof" />
+		<result property="telefonoChofer" column="telf_chof" />
+	</resultMap>
+
+	<select id="getUnidades" parameterType="java.util.Map" resultMap="unidadResult" statementType="CALLABLE">
+		call sp_get_unidades(
+			#{pi_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
+	</select>
+</mapper>

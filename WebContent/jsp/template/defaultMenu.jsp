@@ -23,7 +23,7 @@
 			</td>
 			<td>
 				<div>
-					<a href="${pageContext.request.contextPath}/convocatoria/iniciarConvocatoria" class="linkMenu">
+					<a href="${pageContext.request.contextPath}/monitoreo" class="linkMenu">
 						<span>Monitoreo de Despacho de Pedidos</span>
 					</a>
 				</div>

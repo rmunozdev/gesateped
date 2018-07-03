@@ -5,8 +5,11 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="pedido" type="pe.com.gesateped.model.Pedido" />
+        <typeAlias alias="bodega" type="pe.com.gesateped.model.Bodega" />
+        <typeAlias alias="unidad" type="pe.com.gesateped.model.Unidad" />
     </typeAliases>
     <mappers>
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />
+        <mapper resource="pe/com/gesateped/dao/mapper/MonitoreoDao.xml" />
     </mappers>
 </configuration>

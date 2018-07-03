@@ -19,5 +19,11 @@
 	<definition name="admin" extends="baseDefinition">  
 		<put-attribute name="body" value="/jsp/admin/control.jsp" />  
 	</definition>
+	
+	<!-- Monitoreo -->
+	<definition name="monitoreo" extends="baseDefinition">  
+		<put-attribute name="body" value="/jsp/monitoreo/dashboard.jsp" />  
+	</definition>
+	
     
 </tiles-definitions>
