@@ -7,6 +7,8 @@
         <typeAlias alias="pedido" type="pe.com.gesateped.model.Pedido" />
         <typeAlias alias="bodega" type="pe.com.gesateped.model.Bodega" />
         <typeAlias alias="unidad" type="pe.com.gesateped.model.Unidad" />
+        <typeAlias alias="estadoPedido" type="pe.com.gesateped.model.EstadoPedido" />
+        <typeAlias alias="detallePedidoRuta" type="pe.com.gesateped.model.extend.DetallePedidoRuta" />
     </typeAliases>
     <mappers>
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />

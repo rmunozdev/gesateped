@@ -14,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.gesateped.businesslogic.MonitoreoBL;
 import pe.com.gesateped.model.Bodega;
+import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
+import pe.com.gesateped.model.extend.DetallePedidoRuta;
 
 @SessionAttributes({ "bodega" })
 @Controller
@@ -29,7 +31,6 @@ public class MonitoreoController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView iniciar(ModelMap modelMap) {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
-		
 		Bodega bodega = new Bodega();
 		bodega.setCodigo("x");
 		modelMap.addAttribute("bodega", bodega);
@@ -44,5 +45,46 @@ public class MonitoreoController {
 	}
 	
 	
+	@RequestMapping(path="verEstadoPedidos",method = RequestMethod.POST)
+	@ResponseBody
+	public List<EstadoPedido> verEstadosPedidos(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getEstadoPedidos(codigoHojaRuta);
+	}
+	
+	@RequestMapping(path="verDetallePedidosAtendidos",method = RequestMethod.POST)
+	@ResponseBody
+	public List<DetallePedidoRuta> verDetallePedidosAtendidos(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "ATEN");
+	}
+	
+	@RequestMapping(path="verDetallePedidosNoAtendidos",method = RequestMethod.POST)
+	@ResponseBody
+	public List<DetallePedidoRuta> verDetallePedidosNoAtendidos(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "NATE");
+	}
+	
+	@RequestMapping(path="verDetallePedidosPendientes",method = RequestMethod.POST)
+	@ResponseBody
+	public List<DetallePedidoRuta> verDetallePedidosPendientes(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "PEND");
+	}
+	
+	@RequestMapping(path="verDetallePedidosReprogramados",method = RequestMethod.POST)
+	@ResponseBody
+	public List<DetallePedidoRuta> verDetallePedidosReprogramados(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "REPR");
+	}
+	
+	@RequestMapping(path="verDetallePedidosCancelados",method = RequestMethod.POST)
+	@ResponseBody
+	public List<DetallePedidoRuta> verDetallePedidosCancelados(String codigoHojaRuta) {
+		logger.info("codigoHojaRuta:" + codigoHojaRuta);
+		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "CANC");
+	}
 	
 }

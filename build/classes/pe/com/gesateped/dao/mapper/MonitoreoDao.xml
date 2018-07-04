@@ -25,4 +25,37 @@
 			#{pi_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN}
 		)
 	</select>
+	
+    <resultMap id="estadoPedidoResult" type="estadoPedido">
+		<result property="nombre" column="est_ped" />
+		<result property="porcentaje" column="porc_est_ped" />
+	</resultMap>
+
+	<select id="getEstadoPedidos" parameterType="java.util.Map" resultMap="estadoPedidoResult" statementType="CALLABLE">
+		call sp_get_desp_pedidos(
+			#{pi_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
+	</select>
+	
+    <resultMap id="detallePedidoRutaResult" type="detallePedidoRuta">
+		<result property="codigoPedido" column="cod_ped" />
+		<result property="horaInicioVentana" column="hor_ini_vent_hor" />
+		<result property="horaFinVentana" column="hor_fin_vent_hor" />
+		<result property="fechaPactadaDespacho" column="fec_pact_desp" />
+		<result property="fechaNoCumplimientoDespacho" column="fec_no_cump_desp" />
+		<result property="descripcionMotivoPedido" column="desc_mot_ped_hr" />
+		<result property="direccionCliente" column="dir_cli" />
+		<result property="distritoCliente" column="nom_dist_cli" />
+		<result property="direccionTienda" column="dir_tiend" />
+		<result property="distritoTienda" column="nom_dist_tiend" />
+		<result property="latitudGpsDespacho" column="lat_gps_desp_ped" />
+		<result property="longitudGpsDespacho" column="long_gps_desp_ped" />
+	</resultMap>
+
+	<select id="getDetallePedidoRuta" parameterType="java.util.Map" resultMap="detallePedidoRutaResult" statementType="CALLABLE">
+		call sp_get_desp_pedidos_detail(
+			#{pi_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN},
+			#{pi_est_ped,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
+	</select>
 </mapper>

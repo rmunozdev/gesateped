@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.gesateped.dao.MonitoreoDao;
 import pe.com.gesateped.model.Bodega;
+import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
+import pe.com.gesateped.model.extend.DetallePedidoRuta;
 
 @Repository
 public class MonitoreoDaoImpl implements MonitoreoDao {
@@ -28,6 +30,21 @@ public class MonitoreoDaoImpl implements MonitoreoDao {
 		Map<String,Object> parameters = new HashMap<>();
 		parameters.put("pi_cod_bod", codigoBodega);
 		return gesatepedSession.selectList("monitoreoDao.getUnidades",parameters);
+	}
+
+	@Override
+	public List<EstadoPedido> getEstadoPedidos(String codigoHojaRuta) {
+		Map<String,Object> parameters = new HashMap<>();
+		parameters.put("pi_cod_hoj_rut", codigoHojaRuta);
+		return gesatepedSession.selectList("monitoreoDao.getEstadoPedidos",parameters);
+	}
+
+	@Override
+	public List<DetallePedidoRuta> getDetallePedidoRuta(String codigoHojaRuta, String estadoPedido) {
+		Map<String,Object> parameters = new HashMap<>();
+		parameters.put("pi_cod_hoj_rut", codigoHojaRuta);
+		parameters.put("pi_est_ped", estadoPedido);
+		return gesatepedSession.selectList("monitoreoDao.getDetallePedidoRuta",parameters);
 	}
 
 }
