@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script src="${pageContext.request.contextPath}/js/jquery.fileDownload.js"></script>
+
 <script>
 	(()=>{
 		window.addEventListener('load',iniciar);
@@ -41,5 +42,6 @@
 		<span>
 			<button id="descargarBtn">Descargar Reporte</button>
 		</span>
+		
 	</div>
 </div>

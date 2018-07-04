@@ -36,6 +36,8 @@ public class MonitoreoDaoImpl implements MonitoreoDao {
 	public List<EstadoPedido> getEstadoPedidos(String codigoHojaRuta) {
 		Map<String,Object> parameters = new HashMap<>();
 		parameters.put("pi_cod_hoj_rut", codigoHojaRuta);
+		parameters.put("po_msg_cod", "");
+		parameters.put("po_msg_desc", "");
 		return gesatepedSession.selectList("monitoreoDao.getEstadoPedidos",parameters);
 	}
 
@@ -45,6 +47,15 @@ public class MonitoreoDaoImpl implements MonitoreoDao {
 		parameters.put("pi_cod_hoj_rut", codigoHojaRuta);
 		parameters.put("pi_est_ped", estadoPedido);
 		return gesatepedSession.selectList("monitoreoDao.getDetallePedidoRuta",parameters);
+	}
+
+	@Override
+	public List<EstadoPedido> getEstadoPorBodega(String codigoBodega) {
+		Map<String,Object> parameters = new HashMap<>();
+		parameters.put("pi_cod_bod", codigoBodega);
+		parameters.put("po_msg_cod", "");
+		parameters.put("po_msg_desc", "");
+		return gesatepedSession.selectList("monitoreoDao.getEstadoPedidosPorBodega",parameters);
 	}
 
 }

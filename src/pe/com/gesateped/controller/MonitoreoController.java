@@ -18,7 +18,7 @@ import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
 import pe.com.gesateped.model.extend.DetallePedidoRuta;
 
-@SessionAttributes({ "bodega" })
+@SessionAttributes({ "bodega"})
 @Controller
 @RequestMapping("/monitoreo")
 public class MonitoreoController {
@@ -31,9 +31,7 @@ public class MonitoreoController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView iniciar(ModelMap modelMap) {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
-		Bodega bodega = new Bodega();
-		bodega.setCodigo("x");
-		modelMap.addAttribute("bodega", bodega);
+		modelMap.addAttribute("bodega", new Bodega());
 		return new ModelAndView("monitoreo");
 	}
 	
@@ -42,6 +40,13 @@ public class MonitoreoController {
 	public List<Unidad> verUnidades(Bodega bodega) {
 		logger.info("bodega: " + bodega.getCodigo());
 		return this.monitoreoBL.getUnidades(bodega);
+	}
+	
+	@RequestMapping(path="verEstadoPedidosPorBodega",method = RequestMethod.POST)
+	@ResponseBody
+	public List<EstadoPedido> verEstadosPedidosPorBodega(Bodega bodega) {
+		logger.info("codigoBodega:" + bodega.getCodigo());
+		return this.monitoreoBL.getEstadoPedidosPorBodega(bodega.getCodigo());
 	}
 	
 	
@@ -70,7 +75,18 @@ public class MonitoreoController {
 	@ResponseBody
 	public List<DetallePedidoRuta> verDetallePedidosPendientes(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
-		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "PEND");
+		List<DetallePedidoRuta> detallePedidosPendientesRuta = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "PEND");
+		if(detallePedidosPendientesRuta.isEmpty()) {
+			DetallePedidoRuta mockItem = new DetallePedidoRuta();
+			/*
+			 * codigo hoja ruta: 89be9b4f
+			 * placa: A7V-510
+			 */
+			mockItem.setCodigoPedido("PED0000004");
+			mockItem.setHoraInicioVentana("8:00");
+			detallePedidosPendientesRuta.add(mockItem);
+		}
+		return detallePedidosPendientesRuta;
 	}
 	
 	@RequestMapping(path="verDetallePedidosReprogramados",method = RequestMethod.POST)

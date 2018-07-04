@@ -38,4 +38,9 @@ public class MonitoreoBLImpl  implements MonitoreoBL {
 		return monitoreoDao.getDetallePedidoRuta(codigoHojaRuta, estadoPedido);
 	}
 
+	@Override
+	public List<EstadoPedido> getEstadoPedidosPorBodega(String codigoBodega) {
+		return monitoreoDao.getEstadoPorBodega(codigoBodega);
+	}
+
 }

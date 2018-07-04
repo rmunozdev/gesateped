@@ -1,7 +1,7 @@
 /**
  * 
  */
-function crearTablaPedidosAtendidos() {
+function crearTablaPedidosAtendidos(paths) {
 	$('#tblPedidosAtendidos').dataTable(
 			$.extend( true, {}, null,{
 			 'aaData'   : {},
@@ -9,11 +9,8 @@ function crearTablaPedidosAtendidos() {
 	              'aTargets': [3],
 	              'mData': null, 
 	              'mRender' : function (data, type, row) {
-	            	  if(type === 'display'){
-	            		  console.log(JSON.stringify(data));
-	                      data = '<input type="radio" name="unidad" value="' + data.codigoPedido + '">';
-	                   }
-	            	  return data;
+	            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
+	                  return cadenaBoton;
 	              }
 	          } ],
 	        'aoColumns': [
@@ -23,7 +20,10 @@ function crearTablaPedidosAtendidos() {
 		        {}
 			],
 			'fnRowCallback': function( nRow, aData, iDataIndex ) {
-				
+				$(nRow).find('img.location-marker').unbind('click');
+				$(nRow).find('img.location-marker').click(function(){
+					localizarAtendido(aData);
+				});
 				
 			}, 
 	         "fnDrawCallback": function () {
@@ -43,4 +43,8 @@ function actualizarTablaPedidosAtendidos(data) {
 		oTable.fnDraw();
 		oTable.fnPageChange('first');
 	}
+}
+
+function localizarAtendido(data) {
+	console.log("Localizando..",data);
 }

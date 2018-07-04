@@ -11,6 +11,7 @@ function crearTablaUnidades() {
 	              'mRender' : function (data, type, row) {
 	            	  if(type === 'display'){
 	            		  console.log(JSON.stringify(data));
+	            		  localforage.setItem(data.codigoHojaRuta,new UnidadSeleccionada(data.codigoHojaRuta,data.numeroPlaca));
 	                      data = '<input type="radio" name="unidad" value="' + data.codigoHojaRuta + '">';
 	                   }
 	            	  return data;

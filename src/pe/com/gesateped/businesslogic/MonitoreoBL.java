@@ -13,5 +13,6 @@ public interface MonitoreoBL {
 	public List<Unidad> getUnidades(Bodega bodega);
 	public List<EstadoPedido> getEstadoPedidos(String codigoHojaRuta);
 	public List<DetallePedidoRuta> getDetallePedidosRuta(String codigoHojaRuta,String estadoPedido);
+	public List<EstadoPedido> getEstadoPedidosPorBodega(String codigoBodega);
 	
 }

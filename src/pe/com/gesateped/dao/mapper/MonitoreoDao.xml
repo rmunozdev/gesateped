@@ -32,8 +32,18 @@
 	</resultMap>
 
 	<select id="getEstadoPedidos" parameterType="java.util.Map" resultMap="estadoPedidoResult" statementType="CALLABLE">
-		call sp_get_desp_pedidos(
-			#{pi_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN}
+		call sp_get_desp_ped_unid(
+			#{pi_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN},
+			#{po_msg_cod,javaType=String,jdbcType=INTEGER,mode=OUT},
+			#{po_msg_desc,javaType=String,jdbcType=VARCHAR,mode=OUT}
+		)
+	</select>
+	
+	<select id="getEstadoPedidosPorBodega" parameterType="java.util.Map" resultMap="estadoPedidoResult" statementType="CALLABLE">
+		call sp_get_desp_ped_bod(
+			#{pi_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN},
+			#{po_msg_cod,javaType=String,jdbcType=INTEGER,mode=OUT},
+			#{po_msg_desc,javaType=String,jdbcType=VARCHAR,mode=OUT}
 		)
 	</select>
 	
@@ -53,7 +63,7 @@
 	</resultMap>
 
 	<select id="getDetallePedidoRuta" parameterType="java.util.Map" resultMap="detallePedidoRutaResult" statementType="CALLABLE">
-		call sp_get_desp_pedidos_detail(
+		call sp_get_desp_ped_unid_detail(
 			#{pi_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN},
 			#{pi_est_ped,javaType=String,jdbcType=VARCHAR,mode=IN}
 		)
