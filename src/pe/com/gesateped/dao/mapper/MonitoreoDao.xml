@@ -18,6 +18,8 @@
 		<result property="nombreChofer" column="nom_chof" />
 		<result property="apellidoChofer" column="ape_chof" />
 		<result property="telefonoChofer" column="telf_chof" />
+		<result property="totalPedidosPendientes" column="tot_ped_pend_unid" />
+		<result property="totalPedidos" column="tot_ped_unid" />
 	</resultMap>
 
 	<select id="getUnidades" parameterType="java.util.Map" resultMap="unidadResult" statementType="CALLABLE">

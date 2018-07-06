@@ -43,5 +43,8 @@ public class Bodega {
 		this.zonaCobertura = zonaCobertura;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		return (this.getCodigo().equals(((Bodega)obj).codigo));
+	}
 }

@@ -3,35 +3,38 @@
  */
 function crearTablaPedidosPendientes(paths) {
 	$('#tblPedidosPendientes').dataTable(
-			$.extend( true, {}, null,{
-			 'aaData'   : {},
-	         'aoColumnDefs': [ {
-	              'aTargets': [3],
-	              'mData': null, 
-	              'mRender' : function (data, type, row) {
-	            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
-	                  return cadenaBoton;
-	              }
-	          } ],
-	        'aoColumns': [
-		        { 'mData': 'codigoPedido'},
-		        { 'mData': 'horaInicioVentana'},
-		        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
-		        {}
-			],
-			'fnRowCallback': function( nRow, aData, iDataIndex ) {
-				$(nRow).find('img.location-marker').unbind('click');
-				$(nRow).find('img.location-marker').click(function(){
-					iniciarMonitoreo(aData);
-				});
-			}, 
-	         "fnDrawCallback": function () {
-	 			
-	          },
-	          "oLanguage": {
-	              "sEmptyTable":     "My Custom Message On Empty Table"
-	          }
-	    }));
+			{
+				'bPaginate':  false,
+				 'bFilter'	: false,
+				 'bInfo': false,
+				 'aaData'   : {},
+		         'aoColumnDefs': [ {
+		              'aTargets': [3],
+		              'mData': null, 
+		              'mRender' : function (data, type, row) {
+		            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
+		                  return cadenaBoton;
+		              }
+		          } ],
+		        'aoColumns': [
+			        { 'mData': 'codigoPedido'},
+			        { 'mData': 'horaInicioVentana'},
+			        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
+			        {}
+				],
+				'fnRowCallback': function( nRow, aData, iDataIndex ) {
+					$(nRow).find('img.location-marker').unbind('click');
+					$(nRow).find('img.location-marker').click(function(){
+						iniciarMonitoreo(aData);
+					});
+				}, 
+		         "fnDrawCallback": function () {
+		 			
+		          },
+		          "oLanguage": {
+		              "sEmptyTable":     "My Custom Message On Empty Table"
+		          }
+		    });
 }
 
 function actualizarTablaPedidosPendientes(data,codigoHojaRuta) {
@@ -63,6 +66,7 @@ function iniciarMonitoreo(aData) {
 		console.log("Se usara direccion de tienda");
 		direccion = aData.direccionTienda +" "+ aData.distritoTienda + " Peru";
 	}
+	localforage.setItem("destinoSeleccionado",direccion);
 	
 	
 	const geocoder = new google.maps.Geocoder();
@@ -75,12 +79,6 @@ function iniciarMonitoreo(aData) {
 				center: results[0].geometry.location
 			});
 			
-		    const marker = new google.maps.Marker({
-		        map: map,
-		        position: results[0].geometry.location,
-		        title: "Google I/O",
-		        optimized: false
-		      });
 		    initTracking(map,direccion);
 		} else {
 		      console.log(
@@ -88,5 +86,9 @@ function iniciarMonitoreo(aData) {
 		      );
 		}
 	});
-	$('div#pedidoMap').dialog();
+	$('div#pedidoMap').dialog({
+		maxWidth:600,
+        maxHeight: 500,
+		width: 600,
+        height: 500});
 }

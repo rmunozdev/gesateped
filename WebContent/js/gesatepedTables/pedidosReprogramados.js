@@ -3,36 +3,23 @@
  */
 function crearTablaPedidosReprogramados() {
 	$('#tblPedidosReprogramados').dataTable(
-			$.extend( true, {}, null,{
-			 'aaData'   : {},
-	         'aoColumnDefs': [ {
-	              'aTargets': [3],
-	              'mData': null, 
-	              'mRender' : function (data, type, row) {
-	            	  if(type === 'display'){
-	            		  console.log(JSON.stringify(data));
-	                      data = '<input type="radio" name="unidad" value="' + data.codigoPedido + '">';
-	                   }
-	            	  return data;
-	              }
-	          } ],
-	        'aoColumns': [
-		        { 'mData': 'codigoPedido'},
-		        { 'mData': 'horaInicioVentana'},
-		        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
-		        {}
-			],
-			'fnRowCallback': function( nRow, aData, iDataIndex ) {
-				
-				
-			}, 
-	         "fnDrawCallback": function () {
-	 			
-	          },
-	          "oLanguage": {
-	              "sEmptyTable":     "My Custom Message On Empty Table"
-	          }
-	    }));
+			{
+				'bPaginate':  false,
+				 'bFilter'	: false,
+				 'bInfo': false,
+				 'aaData'   : {},
+		        'aoColumns': [
+			        { 'mData': 'codigoPedido'},
+			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>Unset</i>"}
+				],
+				'fnRowCallback': function( nRow, aData, iDataIndex ) {
+				}, 
+		         "fnDrawCallback": function () {
+		          },
+		          "oLanguage": {
+		              "sEmptyTable":     "My Custom Message On Empty Table"
+		          }
+		    });
 }
 
 function actualizarTablaPedidosReprogramados(data) {

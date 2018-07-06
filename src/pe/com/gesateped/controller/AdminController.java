@@ -23,8 +23,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import pe.com.gesateped.batch.HojaRutaBatch;
-import pe.com.gesateped.businesslogic.AdminBL;
-import pe.com.gesateped.common.Parametros;
 import pe.com.gesateped.reports.PedidoReport;
 
 @Controller
@@ -32,12 +30,6 @@ import pe.com.gesateped.reports.PedidoReport;
 public class AdminController {
 	
 	private final static Logger logger = Logger.getLogger(AdminController.class);
-	
-	@Autowired
-	private AdminBL adminBL;
-	
-	@Autowired
-	private Parametros parametros;
 	
 	@Autowired
 	private PedidoReport pedidoReport;
@@ -53,8 +45,7 @@ public class AdminController {
 	
 	@RequestMapping("/runbatch")
 	public void runbatch(HttpServletResponse response, HttpSession session)  throws IOException {
-		hojaRutaBatch.generarHojaRuta(session.getServletContext().getRealPath("/report/HojaRuta.jasper"));
-		
+		hojaRutaBatch.generarHojaRuta();
 		response.setContentType("text/plain");
 		response.getWriter().print("Batch executed");
 	}

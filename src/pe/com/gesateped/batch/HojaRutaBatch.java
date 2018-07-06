@@ -3,6 +3,7 @@ package pe.com.gesateped.batch;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +29,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import pe.com.gesateped.batch.filter.FiltroBodega;
 import pe.com.gesateped.batch.filter.FiltroCapacidad;
@@ -58,9 +57,6 @@ public class HojaRutaBatch {
 	@Autowired
 	private PedidoReport pedidoReport;
 	
-	@Autowired
-	private Parametros parametros;
-	
 	private ServletContext context;
 	
 	@Autowired
@@ -68,7 +64,7 @@ public class HojaRutaBatch {
 		this.context = context;
 	}
 
-	public void generarHojaRuta(String jaspersource) {
+	public void generarHojaRuta() {
 		
 		List<Ruta> rutasGeneradas = new ArrayList<>();
 
@@ -128,9 +124,6 @@ public class HojaRutaBatch {
 			}
 
 		}
-		
-		//generarReporte(jaspersource);
-
 	}
 
 	private void asignarHorarios(List<Ruta> rutas) {
@@ -223,27 +216,55 @@ public class HojaRutaBatch {
 			filtrado.remove(referencia.getUnidad());
 		}
 		return filtrado;
-		
 	}
 	
-	private void generarReporte(String pathSource) {
+	public List<String> generarReporte() {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		try {
-			JRDataSource jrDataSource = new JRBeanCollectionDataSource(pedidoReport.prepareData());
-			String pathDestination = Parametros.getDirectorioDestinoHojaRuta() + "/reporte.pdf";
-			String source = this.context.getRealPath("/report/HojaRuta.jasper");
-			File destino = new File(pathDestination);
-			FileOutputStream fileOutputStream = new FileOutputStream(destino);
-			
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(source);
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrDataSource);
-			JasperExportManager.exportReportToPdfStream(jasperPrint, fileOutputStream);
-			
-			
- 
+			//Se filtra data por cada bodega
+			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+			String marcadorFecha = simpleDateFormat.format(new Date());
+			for(String nombreBodega : grupos.keySet()) {
+				List<Map<String, ?>> grupo = grupos.get(nombreBodega);
+				JRDataSource jrDataSource = new JRBeanCollectionDataSource(grupo);
+				//20180702_HojaRuta_nombrebodega.pdf
+				String pathDestination = Parametros.getDirectorioDestinoHojaRuta() + "/"+marcadorFecha+"_HojaRuta_"
+						+ nombreBodega
+						+ ".pdf";
+				String source = this.context.getRealPath("/report/HojaRuta.jasper");
+				File destino = new File(pathDestination);
+				FileOutputStream fileOutputStream = new FileOutputStream(destino);
+				
+				JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(source);
+				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrDataSource);
+				JasperExportManager.exportReportToPdfStream(jasperPrint, fileOutputStream);
+			}
+			return new ArrayList<>(grupos.keySet());
 		} catch (JRException | IOException e) {
 			e.printStackTrace();
 		}
+		return Collections.emptyList();
 	}
-
+	
+	public void imprimirReporte(OutputStream output, String nombreBodega) {
+		try {
+			//Se filtra data por cada bodega
+			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega();
+			for(String nombreBodegaActual : grupos.keySet()) {
+				if(nombreBodegaActual.equals(nombreBodega)) {
+					List<Map<String, ?>> grupo = grupos.get(nombreBodegaActual);
+					JRDataSource jrDataSource = new JRBeanCollectionDataSource(grupo);
+					String source = this.context.getRealPath("/report/HojaRuta.jasper");
+					JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(source);
+					Map<String, Object> parameters = new HashMap<String, Object>();
+					JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrDataSource);
+					JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+					return;
+				}
+			}
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+	}
 }

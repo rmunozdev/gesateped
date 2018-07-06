@@ -17,7 +17,6 @@ public class QuartzLoader {
 		MethodInvokingJobDetailFactoryBean obj = new MethodInvokingJobDetailFactoryBean();
 		obj.setTargetBeanName("hojaRutaBach");
 		obj.setTargetMethod("generarHojaRuta");
-		obj.setArguments(new String[] {"x"});
 		return obj;
 	}
 	

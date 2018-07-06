@@ -10,9 +10,20 @@
 		<put-attribute name="body" value="" />
 	</definition>
 	
+    <definition name="bootstrapDefinition" template="/jsp/layout/bootstrapLayout.jsp">
+		<put-attribute name="title" value="Sistema de Atención de Pedidos" />
+		<put-attribute name="header" value="/jsp/template/bootstrapHeader.jsp" />
+		<put-attribute name="menu" value="/jsp/template/bootstraptMenu.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+	
     <!-- Pagina Principal -->
 	<definition name="homepage" extends="baseDefinition">
 	    <put-attribute name="body" value="/jsp/homepage.jsp" /> 
+	</definition>
+	
+	<definition name="bootstrapHomepage" extends="bootstrapDefinition">
+	    <put-attribute name="body" value="/jsp/bootstrap-homepage.jsp" /> 
 	</definition>
 	
 	<!-- Administracion (control) -->
@@ -20,10 +31,13 @@
 		<put-attribute name="body" value="/jsp/admin/control.jsp" />  
 	</definition>
 	
-	<!-- Monitoreo -->
-	<definition name="monitoreo" extends="baseDefinition">  
-		<put-attribute name="body" value="/jsp/monitoreo/dashboard.jsp" />  
+	<definition name="starter" extends="bootstrapDefinition">  
+		<put-attribute name="body" value="/jsp/admin/bootstrap-starter.jsp" />  
 	</definition>
 	
+	<!-- Monitoreo -->
+	<definition name="monitoreo" extends="bootstrapDefinition">  
+		<put-attribute name="body" value="/jsp/monitoreo/bootstrap-dashboard.jsp" />  
+	</definition>
     
 </tiles-definitions>

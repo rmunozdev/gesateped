@@ -4,10 +4,13 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/js/dataTable/media/js/jquery.dataTables.js"></script> --%>
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css"> -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dashboard.css">
 
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.js"></script>
+
+<!-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script> -->
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.7.2/localforage.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
@@ -62,14 +65,19 @@ function actualizarUnidadesPorBodega(){
 		cache : false
 	});
 	var form  = $('#frmBodega');
-	
+	hideAllDetails();
 	$.ajax({
 		url: form.attr('action'),
 		type: form.attr('method'),
 		data: form.serialize(),
 		Accept : 'application/json',
 		success:function(data){
-			actualizarTablaUnidades(data);
+			if(data.length && data.length > 0) {
+				$('#tblUnidades').show();
+				actualizarTablaUnidades(data);
+			} else {
+				$('#tblUnidades').hide();
+			}
 		}
 	});
 	//Ver estados de pedidos por bodega
@@ -79,7 +87,13 @@ function actualizarUnidadesPorBodega(){
 		data: form.serialize(),
 		Accept : 'application/json',
 		success:function(data){
-			actualizarGraficaEstadoPedidosPorBodega(data);
+			if(data.length && data.length > 0) {
+				$("#graficaTotalBodega").show();
+				actualizarGraficaEstadoPedidosPorBodega(data);	
+			} else {
+				$("#graficaTotalBodega").hide();
+				
+			}
 		}
 	});
 	
@@ -92,14 +106,19 @@ function verDashBoardUnidad(codigoHojaRuta) {
 		data: {codigoHojaRuta : codigoHojaRuta},
 		Accept : 'application/json',
 		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			crearGrafica(data);
-			verDetallePedidosAtendidos(codigoHojaRuta);
-			verDetallePedidosNoAtendidos(codigoHojaRuta);
-			verDetallePedidosPendientes(codigoHojaRuta);
-			verDetallePedidosReprogramados(codigoHojaRuta);
-			verDetallePedidosCancelados(codigoHojaRuta);
+			if(data.length && data.length > 0) {
+				
+				showAllDetails();
+				crearGrafica(data);
+				verDetallePedidosAtendidos(codigoHojaRuta);
+				verDetallePedidosNoAtendidos(codigoHojaRuta);
+				verDetallePedidosPendientes(codigoHojaRuta);
+				verDetallePedidosReprogramados(codigoHojaRuta);
+				verDetallePedidosCancelados(codigoHojaRuta);
+			} else {
+				
+				hideAllDetails();
+			}
 		}
 	});
 }
@@ -125,8 +144,6 @@ function crearGrafica(estadoPedidos) {
 	                '#005dff'
 	            ]
 	        }],
-
-	        // These labels appear in the legend and in the tooltips when hovering different arcs
 	        labels: [
 	        	estadoPedidos[0].nombre,
 	        	estadoPedidos[1].nombre,
@@ -160,8 +177,6 @@ function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
 	                '#36a2eb'
 	            ]
 	        }],
-
-	        // These labels appear in the legend and in the tooltips when hovering different arcs
 	        labels: [
 	        	estadoPedidos[0].nombre,
 	        	estadoPedidos[1].nombre,
@@ -241,134 +256,153 @@ function verDetallePedidosCancelados(codigoHojaRuta) {
 	});
 }
 
+
+function showAllDetails() {
+	$("#graficaTotalUnidad").show();
+	$("#detallePedidosAtendidos").show();
+	$("#detallePedidosNoAtendidos").show();
+	$("#detallePedidosPendientes").show();
+	$("#detallePedidosReprogramados").show();
+	$("#detallePedidosCancelados").show();
+}
+
+function hideAllDetails() {
+	$("#graficaTotalUnidad").hide();
+	$("#detallePedidosAtendidos").hide();
+	$("#detallePedidosNoAtendidos").hide();
+	$("#detallePedidosPendientes").hide();
+	$("#detallePedidosReprogramados").hide();
+	$("#detallePedidosCancelados").hide();
+}
+
 </script>
 <div>
-	<h1>MONITOREO DE DESPACHO DE PEDIDOS</h1>
-	<div>
-		<span>
-			<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
-				<label>Bodega: </label>
-				<form:select path="codigo" style="width: 200px" onchange="actualizarUnidadesPorBodega()" >
-					<form:option value="0" label="-- Seleccione --" />
-					<form:options items="${bodegas}" itemValue="codigo" itemLabel="nombre" />
-				</form:select>
-				<jsp:useBean id="now" class="java.util.Date"/> 
-				<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></label>
-				
-			</form:form>
-		</span>
-	</div>
+	<div class="jumbotron">
+        <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
+      </div>
+	<div class="row-fluid marketing">
+	        <div class="span6">
+	          <h4>Bodega</h4>
+	         <span>
+				<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
+					<label>Bodega: </label>
+					<form:select path="codigo" style="width: 200px" onchange="actualizarUnidadesPorBodega()" >
+						<form:option value="0" label="-- Seleccione --" />
+						<form:options items="${bodegas}" itemValue="codigo" itemLabel="nombre" />
+					</form:select>
+					<jsp:useBean id="now" class="java.util.Date"/> 
+					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></label>
+				</form:form>
+			</span>
+	        </div>
 	
-	<div style="width:300px;height:300px">
-		<div>
-			<h2>Monitoreo del Total de Pedidos</h2>
+	        <div id="graficaTotalBodega" class="span6" style="display:none">
+				<p>Monitoreo del Total de Pedidos</p>
+		         <div style="width:300px;height:300px">
+					<canvas id="chartPedidosPorBodega" width="200px" height="200px"></canvas>
+				</div>
+	        </div>
+	        
+	        <div class="span12">
+	        	<table id="tblUnidades" class="table" style="display:none">
+					<thead>
+						<tr>
+							<th><label></label></th>
+							<th><label>Numero de Placa</label></th>
+							<th><label>Chofer</label></th>
+							<th><label>Telefono</label></th>
+							<th><label>Porcentaje de Atención</label></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyUnidades">
+					</tbody>		
+				</table>
+	        </div>
+	        
+	        <div id="graficaTotalUnidad" class="span12" style="display:none">
+	        	<p>Monitoreo de Despacho de Pedidos</p>
+	        	<div style="width:300px;height:300px">
+					<canvas id="myChart" width="200px" height="200px"></canvas>
+				</div>
+	        </div>
+	        <hr>
+	        
+	        <div id="detallePedidosAtendidos" style="display:none" class="span12" >
+	        	<p>Pedidos Atendidos</p>
+				<table id="tblPedidosAtendidos" class="table" >
+					<thead>
+						<tr>
+							<th><label>Código de pedido</label></th>
+							<th><label>Ventana Horaria</label></th>
+							<th><label>Hora Pactada</label></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPedidosAtendidos">
+					</tbody>		
+				</table>
+	        </div>
+	        
+	        <div id="detallePedidosNoAtendidos" style="display:none" class="span12">
+	        	<p>Pedidos No Atendidos</p>
+				<table id="tblPedidosNoAtendidos" class="table">
+					<thead>
+						<tr>
+							<th><label>Código de pedido</label></th>
+							<th><label>Ventana Horaria</label></th>
+							<th><label>Hora Pactada</label></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPedidosNoAtendidos">
+					</tbody>		
+				</table>
+	        </div>
+	        
+	        <div id="detallePedidosPendientes" style="display:none" class="span12">
+	        	<p>Pedidos Pendientes</p>
+				<table id="tblPedidosPendientes" class="table">
+					<thead>
+						<tr>
+							<th><label>Código de pedido</label></th>
+							<th><label>Ventana Horaria</label></th>
+							<th><label>Hora Pactada</label></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPedidosPendientes">
+					</tbody>		
+				</table>
+	        </div>
+	        
+	        <div id="detallePedidosReprogramados" style="display:none" class="span12">
+				<p>Pedidos Reprogramados</p>
+				<table id="tblPedidosReprogramados" class="table">
+					<thead>
+						<tr>
+							<th><label>Código de pedido</label></th>
+							<th><label>Motivo</label></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPedidosReprogramados">
+					</tbody>		
+				</table>	        
+	        </div>
+	        
+	        <div id="detallePedidosCancelados" style="display:none" class="span12">
+		        <p>Pedidos Cancelados</p>
+				<table id="tblPedidosCancelados" class="table">
+					<thead>
+						<tr>
+							<th><label>Código de pedido</label></th>
+							<th><label>Motivo</label></th>
+						</tr>
+					</thead>
+					<tbody id="tbodyPedidosCancelados">
+					</tbody>		
+				</table>
+	        </div>
+	</div>
+		<div id="pedidoMap" style="display: none;border: 1px solid black; width:512px; height:512px">
 		</div>
-		<canvas id="chartPedidosPorBodega" width="200px" height="200px"></canvas>
-	</div>
-	
-	<div>
-		<table id="tblUnidades" class="table">
-			<thead>
-				<tr>
-					<th><label></label></th>
-					<th><label>Numero de Placa</label></th>
-					<th><label>Chofer</label></th>
-					<th><label>Telefono</label></th>
-					<th><label>Porcentaje de Atención</label></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyUnidades">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div style="width:300px;height:300px">
-		<div>
-			<h2>Monitoreo de Despacho de Pedidos</h2>
-		</div>
-		<canvas id="myChart" width="200px" height="200px"></canvas>
-	</div>
-	
-	
-	<div>
-		<h2>Pedidos Atendidos</h2>
-		<table id="tblPedidosAtendidos" class="table">
-			<thead>
-				<tr>
-					<th><label>Código de pedido</label></th>
-					<th><label>Ventana Horaria</label></th>
-					<th><label>Hora Pactada</label></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyPedidosAtendidos">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div>
-		<h2>Pedidos No Atendidos</h2>
-		<table id="tblPedidosNoAtendidos" class="table">
-			<thead>
-				<tr>
-					<th><label>Código de pedido</label></th>
-					<th><label>Ventana Horaria</label></th>
-					<th><label>Hora Pactada</label></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyPedidosNoAtendidos">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div>
-		<h2>Pedidos Pendientes</h2>
-		<table id="tblPedidosPendientes" class="table">
-			<thead>
-				<tr>
-					<th><label>Código de pedido</label></th>
-					<th><label>Ventana Horaria</label></th>
-					<th><label>Hora Pactada</label></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyPedidosPendientes">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div>
-		<h2>Pedidos Reprogramados</h2>
-		<table id="tblPedidosReprogramados" class="table">
-			<thead>
-				<tr>
-					<th><label>Código de pedido</label></th>
-					<th><label>Motivo</label></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyPedidosReprogramados">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div>
-		<h2>Pedidos Cancelados</h2>
-		<table id="tblPedidosCancelados" class="table">
-			<thead>
-				<tr>
-					<th><label>Código de pedido</label></th>
-					<th><label>Motivo</label></th>
-				</tr>
-			</thead>
-			<tbody id="tbodyPedidosCancelados">
-			</tbody>		
-		</table>
-	</div>
-	
-	<div id="hiddenMap" style="visibility: hidden;">
-		<div id="pedidoMap">
-		</div>
-		
-	</div>
 </div>

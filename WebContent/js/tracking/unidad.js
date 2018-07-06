@@ -2,7 +2,9 @@
  * 
  */
 function initTracking(map,destino) {
-	var directionsDisplay = new google.maps.DirectionsRenderer();
+	var directionsDisplay = new google.maps.DirectionsRenderer({
+		preserveViewport : true
+	});
 	  
 	  firebaseDB.ref('gesatepedMap').on('value',snapshot=>{
 		  const value = snapshot.val();

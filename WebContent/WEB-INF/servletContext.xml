@@ -15,12 +15,11 @@
 	<context:component-scan base-package="pe.com.gesateped" />
 	<mvc:annotation-driven />
 	
-	<mvc:view-controller path="/" view-name="homepage" />
+	<mvc:view-controller path="/" view-name="bootstrapHomepage" />
 
 	<mvc:resources mapping="/css/**" location="/css/" />
-
+	<mvc:resources mapping="/bootstrap/**" location="/bootstrap/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
-
 	<mvc:resources mapping="/js/**" location="/js/" />
 
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
