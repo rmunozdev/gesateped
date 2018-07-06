@@ -32,6 +32,7 @@ public class MonitoreoController {
 	public ModelAndView iniciar(ModelMap modelMap) {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
 		modelMap.addAttribute("bodega", new Bodega());
+		modelMap.addAttribute("menu", "monitoreo");
 		return new ModelAndView("monitoreo");
 	}
 	

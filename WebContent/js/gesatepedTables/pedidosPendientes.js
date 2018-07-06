@@ -47,17 +47,16 @@ function actualizarTablaPedidosPendientes(data,codigoHojaRuta) {
 		localforage.getItem(codigoHojaRuta)
 			.then(unidad => {
 				console.log("Estableciendo unidad: " ,unidad);
-				localforage.setItem("unidadSeleccionada",unidad);
+				localforage.setItem("unidadSeleccionada",{
+					unidad: unidad,
+					codigoHojaRuta: codigoHojaRuta
+				});
 		});
 	}
 }
 
 function iniciarMonitoreo(aData) {
 	console.log(aData);
-	localforage.getItem("unidadSeleccionada").then((unidadSeleccionada)=>{
-		console.log(unidadSeleccionada);
-	});
-	
 	var direccion;
 	if(aData.direccionCliente && aData.distritoCliente) {
 		console.log("Se usara direccion de cliente");
@@ -66,7 +65,12 @@ function iniciarMonitoreo(aData) {
 		console.log("Se usara direccion de tienda");
 		direccion = aData.direccionTienda +" "+ aData.distritoTienda + " Peru";
 	}
-	localforage.setItem("destinoSeleccionado",direccion);
+	
+	//Requerido por simulador.js
+	localforage.setItem("destinoSeleccionado",{
+		pedido: aData.codigoPedido,
+		destino: direccion
+	});
 	
 	
 	const geocoder = new google.maps.Geocoder();
@@ -90,5 +94,15 @@ function iniciarMonitoreo(aData) {
 		maxWidth:600,
         maxHeight: 500,
 		width: 600,
-        height: 500});
+        height: 500,
+        modal: true,
+        buttons: [
+        	{
+        		text : "Iniciar Simulación",
+        		click : function() {
+        			establecerPosicionUnidad();
+        		} 
+        	}
+        ]
+    });
 }

@@ -54,6 +54,7 @@ function crearTabla(params) {
 	crearTablaPedidosPendientes(paths);
 	crearTablaPedidosReprogramados();
 	crearTablaPedidosCancelados();
+	
 }
 
 
@@ -244,6 +245,7 @@ function verDetallePedidosCancelados(codigoHojaRuta) {
 </script>
 <div>
 	<h1>MONITOREO DE DESPACHO DE PEDIDOS</h1>
+	
 	<div>
 		<span>
 			<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
@@ -369,6 +371,5 @@ function verDetallePedidosCancelados(codigoHojaRuta) {
 	<div id="hiddenMap" style="visibility: hidden;">
 		<div id="pedidoMap">
 		</div>
-		
 	</div>
 </div>

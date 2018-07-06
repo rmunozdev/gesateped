@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.gesateped.batch.HojaRutaBatch;
 
+@SessionAttributes({ "location"})
 @Controller
 @RequestMapping("/starter")
 public class HomeController {
@@ -36,7 +38,7 @@ public class HomeController {
 	@ResponseBody
 	public List<String> construirHojaRutas(HttpSession session) {
 		try {
-			//this.hojaRutaBatch.generarHojaRuta();
+			this.hojaRutaBatch.generarHojaRuta();
 			List<String> bodegas = this.hojaRutaBatch.generarReporte();
 			return bodegas;
 		} catch (Exception exception) {

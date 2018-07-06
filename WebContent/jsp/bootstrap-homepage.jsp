@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="jumbotron">
         <h1>Atención de Pedidos</h1>
         <p class="lead">Genere eficazmente rutas para el despacho de pedidos y monitoree las unidades vehiculares en tiempo real.</p>
