@@ -7,10 +7,12 @@ function crearTablaPedidosCancelados() {
 				'bPaginate':  false,
 				 'bFilter'	: false,
 				 'bInfo': false,
+				 'bSort': false,
+				 'bAutoWidth': false,
 				 'aaData'   : {},
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
-			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>Unset</i>"}
+			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>--</i>"}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
 					
@@ -19,7 +21,7 @@ function crearTablaPedidosCancelados() {
 		 			
 		          },
 		          "oLanguage": {
-		              "sEmptyTable":     "My Custom Message On Empty Table"
+		              "sEmptyTable":     "No se encontraron pedidos cancelados"
 		          }
 		    });
 }

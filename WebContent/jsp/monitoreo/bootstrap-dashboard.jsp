@@ -304,6 +304,10 @@ function hideAllDetails() {
 	        </div>
 	        
 	        <div class="span12">
+	        	<div>
+					<p>Lista de Unidades activas para el 
+					<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />, por favor seleccione la unidad a monitorear. </p>
+				</div>
 	        	<table id="tblUnidades" class="table" style="display:none">
 					<thead>
 						<tr>
@@ -335,7 +339,7 @@ function hideAllDetails() {
 							<th><label>Código de pedido</label></th>
 							<th><label>Ventana Horaria</label></th>
 							<th><label>Hora Pactada</label></th>
-							<th></th>
+							<th><label>Ubicación</label></th>
 						</tr>
 					</thead>
 					<tbody id="tbodyPedidosAtendidos">
@@ -350,8 +354,9 @@ function hideAllDetails() {
 						<tr>
 							<th><label>Código de pedido</label></th>
 							<th><label>Ventana Horaria</label></th>
-							<th><label>Hora Pactada</label></th>
-							<th></th>
+							<th><label>Hora No Atención</label></th>
+							<th><label>Motivo</label></th>
+							<th><label>Ubicación</label></th>
 						</tr>
 					</thead>
 					<tbody id="tbodyPedidosNoAtendidos">
@@ -366,8 +371,7 @@ function hideAllDetails() {
 						<tr>
 							<th><label>Código de pedido</label></th>
 							<th><label>Ventana Horaria</label></th>
-							<th><label>Hora Pactada</label></th>
-							<th></th>
+							<th><label>Ubicación</label></th>
 						</tr>
 					</thead>
 					<tbody id="tbodyPedidosPendientes">
@@ -386,7 +390,7 @@ function hideAllDetails() {
 					</thead>
 					<tbody id="tbodyPedidosReprogramados">
 					</tbody>		
-				</table>	        
+				</table>
 	        </div>
 	        
 	        <div id="detallePedidosCancelados" style="display:none" class="span12">

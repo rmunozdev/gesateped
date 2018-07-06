@@ -7,6 +7,8 @@ function crearTablaUnidades() {
 				 'bPaginate':  false,
 				 'bFilter'	: false,
 				 'bInfo': false,
+				 'bSort': false,
+				 'bAutoWidth': false,
 				 'aaData'   : {},
 		         'aoColumnDefs': [ {
 		              'aTargets': [0],

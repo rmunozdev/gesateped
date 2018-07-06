@@ -7,9 +7,11 @@ function crearTablaPedidosNoAtendidos(paths) {
 				'bPaginate':  false,
 				 'bFilter'	: false,
 				 'bInfo': false,
+				 'bSort': false,
+				 'bAutoWidth': false,
 				 'aaData'   : {},
 		         'aoColumnDefs': [ {
-		              'aTargets': [3],
+		              'aTargets': [4],
 		              'mData': null, 
 		              'mRender' : function (data, type, row) {
 		            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
@@ -19,7 +21,8 @@ function crearTablaPedidosNoAtendidos(paths) {
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
 			        { 'mData': 'horaInicioVentana'},
-			        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
+			        { 'mData': 'fechaNoCumplimientoDespacho',"defaultContent":"<i>--</i>"},
+			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>--</i>"},
 			        {}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
@@ -33,7 +36,7 @@ function crearTablaPedidosNoAtendidos(paths) {
 		 			
 		          },
 		          "oLanguage": {
-		              "sEmptyTable":     "My Custom Message On Empty Table"
+		              "sEmptyTable":     "No se encontraron pedidos no atendidos"
 		          }
 		    });
 }

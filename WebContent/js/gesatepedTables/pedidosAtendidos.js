@@ -7,6 +7,8 @@ function crearTablaPedidosAtendidos(paths) {
 				'bPaginate':  false,
 				 'bFilter'	: false,
 				 'bInfo': false,
+				 'bSort': false,
+				 'bAutoWidth': false,
 				 'aaData'   : {},
 		         'aoColumnDefs': [ {
 		              'aTargets': [3],
@@ -33,7 +35,7 @@ function crearTablaPedidosAtendidos(paths) {
 		 			
 		          },
 		          "oLanguage": {
-		              "sEmptyTable":     "My Custom Message On Empty Table"
+		              "sEmptyTable":     "No se encontraron pedidos atendidos"
 		          }
 		    });
 }

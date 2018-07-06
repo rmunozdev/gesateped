@@ -4,22 +4,34 @@
 function crearTablaPedidosPendientes(paths) {
 	$('#tblPedidosPendientes').dataTable(
 			{
-				'bPaginate':  false,
+				 'bPaginate':  false,
 				 'bFilter'	: false,
 				 'bInfo': false,
+				 'bSort': false,
+				 'bAutoWidth': false,
 				 'aaData'   : {},
 		         'aoColumnDefs': [ {
-		              'aTargets': [3],
+		              'aTargets': [2],
 		              'mData': null, 
-		              'mRender' : function (data, type, row) {
-		            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
-		                  return cadenaBoton;
+		              'mRender' : function (data, type, row,position) {
+		            	  if(position.row == 0) {
+		            		  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
+		            		  return cadenaBoton;
+		            	  } else {
+		            		  return "";
+		            	  }
 		              }
-		          } ],
+		          	}, {
+		          		'aTargets' : [1],
+		          		'mData': null,
+		          		'mRender': function (data,type,row) {
+		          			return data.horaInicioVentana + " a " + data.horaFinVentana;
+		          		}
+		          	}
+		         ],
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
-			        { 'mData': 'horaInicioVentana'},
-			        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
+			        {},
 			        {}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
