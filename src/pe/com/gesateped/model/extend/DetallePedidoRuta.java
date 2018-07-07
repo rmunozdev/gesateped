@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import pe.com.gesateped.util.JsonDateSerializer;
 
 @JsonInclude(Include.NON_NULL)
 public class DetallePedidoRuta {
@@ -11,6 +14,7 @@ public class DetallePedidoRuta {
 	private String codigoPedido;
 	private String horaInicioVentana;
 	private String horaFinVentana;
+	
 	private Date fechaPactadaDespacho;
 	private Date fechaNoCumplimientoDespacho;
 	private String descripcionMotivoPedido;
@@ -39,12 +43,16 @@ public class DetallePedidoRuta {
 	public void setHoraFinVentana(String horaFinVentana) {
 		this.horaFinVentana = horaFinVentana;
 	}
+	
+	@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getFechaPactadaDespacho() {
 		return fechaPactadaDespacho;
 	}
 	public void setFechaPactadaDespacho(Date fechaPactadaDespacho) {
 		this.fechaPactadaDespacho = fechaPactadaDespacho;
 	}
+	
+	@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getFechaNoCumplimientoDespacho() {
 		return fechaNoCumplimientoDespacho;
 	}

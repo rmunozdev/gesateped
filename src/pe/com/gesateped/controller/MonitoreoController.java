@@ -1,5 +1,6 @@
 package pe.com.gesateped.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -23,7 +24,7 @@ import pe.com.gesateped.model.extend.DetallePedidoRuta;
 @RequestMapping("/monitoreo")
 public class MonitoreoController {
 
-	private final static Logger logger = Logger.getLogger(AdminController.class);
+	private final static Logger logger = Logger.getLogger(MonitoreoController.class);
 	
 	@Autowired
 	private MonitoreoBL monitoreoBL;
@@ -62,14 +63,42 @@ public class MonitoreoController {
 	@ResponseBody
 	public List<DetallePedidoRuta> verDetallePedidosAtendidos(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
-		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "ATEN");
+		List<DetallePedidoRuta> pedidosAtendidos = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "ATEN");
+		
+		if(pedidosAtendidos.isEmpty()) {
+			DetallePedidoRuta mock = new DetallePedidoRuta();
+			mock.setCodigoPedido("PED0000024");
+			mock.setHoraInicioVentana("8:00");
+			mock.setHoraFinVentana("10:00");
+			mock.setFechaPactadaDespacho(new Date());
+			mock.setDireccionCliente("Calle Doña Ester 216");
+			mock.setDistritoCliente("Surco");
+			pedidosAtendidos.add(mock);
+		}
+		
+		return pedidosAtendidos;
 	}
 	
 	@RequestMapping(path="verDetallePedidosNoAtendidos",method = RequestMethod.POST)
 	@ResponseBody
 	public List<DetallePedidoRuta> verDetallePedidosNoAtendidos(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
-		return this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "NATE");
+		List<DetallePedidoRuta> pedidosNoAtendidos = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "NATE");
+		if(pedidosNoAtendidos.isEmpty()) {
+			DetallePedidoRuta mock = new DetallePedidoRuta();
+			mock.setCodigoPedido("PED0000024");
+			mock.setHoraInicioVentana("8:00");
+			mock.setHoraFinVentana("10:00");
+			mock.setFechaPactadaDespacho(new Date());
+			mock.setDireccionCliente("Calle Doña Ester 216");
+			mock.setDistritoCliente("Surco");
+			mock.setFechaNoCumplimientoDespacho(new Date());
+			mock.setDescripcionMotivoPedido("Sin motivo");
+			mock.setLatitudGpsDespacho(-12.136258);
+			mock.setLongitudGpsDespacho(-76.996071);
+			pedidosNoAtendidos.add(mock);
+		}
+		return pedidosNoAtendidos;
 	}
 	
 	@RequestMapping(path="verDetallePedidosPendientes",method = RequestMethod.POST)

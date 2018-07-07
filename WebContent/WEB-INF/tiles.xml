@@ -3,13 +3,6 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-    <definition name="baseDefinition" template="/jsp/layout/defaultLayout.jsp">
-		<put-attribute name="title" value="Sistema de Atención de Pedidos" />
-		<put-attribute name="header" value="/jsp/template/defaultHeader.jsp" />
-		<put-attribute name="menu" value="/jsp/template/defaultMenu.jsp" />
-		<put-attribute name="body" value="" />
-	</definition>
-	
     <definition name="bootstrapDefinition" template="/jsp/layout/bootstrapLayout.jsp">
 		<put-attribute name="title" value="Sistema de Atención de Pedidos" />
 		<put-attribute name="header" value="/jsp/template/bootstrapHeader.jsp" />
@@ -18,20 +11,12 @@
 	</definition>
 	
     <!-- Pagina Principal -->
-	<definition name="homepage" extends="baseDefinition">
-	    <put-attribute name="body" value="/jsp/homepage.jsp" /> 
-	</definition>
-	
 	<definition name="bootstrapHomepage" extends="bootstrapDefinition">
 	    <put-attribute name="body" value="/jsp/bootstrap-homepage.jsp" /> 
 	</definition>
 	
 	<!-- Administracion (control) -->
-	<definition name="admin" extends="baseDefinition">  
-		<put-attribute name="body" value="/jsp/admin/control.jsp" />  
-	</definition>
-	
-	<definition name="starter" extends="bootstrapDefinition">  
+	<definition name="starter" extends="bootstrapDefinition">
 		<put-attribute name="body" value="/jsp/admin/bootstrap-starter.jsp" />  
 	</definition>
 	

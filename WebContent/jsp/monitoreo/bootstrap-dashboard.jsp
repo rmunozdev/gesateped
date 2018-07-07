@@ -107,14 +107,24 @@ function verDashBoardUnidad(codigoHojaRuta) {
 		Accept : 'application/json',
 		success:function(data){
 			if(data.length && data.length > 0) {
+				//Se establece unidad en base a codigo de ruta seleccionado
+				localforage.getItem(codigoHojaRuta)
+				.then(unidad => {
+					localforage.setItem("unidadSeleccionada",{
+						unidad: unidad,
+						codigoHojaRuta: codigoHojaRuta
+					}).then(()=>{
+						showAllDetails();
+						crearGrafica(data);
+						verDetallePedidosAtendidos(codigoHojaRuta);
+						verDetallePedidosNoAtendidos(codigoHojaRuta);
+						verDetallePedidosPendientes(codigoHojaRuta);
+						verDetallePedidosReprogramados(codigoHojaRuta);
+						verDetallePedidosCancelados(codigoHojaRuta);
+					});
+				});
 				
-				showAllDetails();
-				crearGrafica(data);
-				verDetallePedidosAtendidos(codigoHojaRuta);
-				verDetallePedidosNoAtendidos(codigoHojaRuta);
-				verDetallePedidosPendientes(codigoHojaRuta);
-				verDetallePedidosReprogramados(codigoHojaRuta);
-				verDetallePedidosCancelados(codigoHojaRuta);
+				
 			} else {
 				
 				hideAllDetails();

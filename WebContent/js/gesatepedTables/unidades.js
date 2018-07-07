@@ -15,12 +15,24 @@ function crearTablaUnidades() {
 		              'mData': null, 
 		              'mRender' : function (data, type, row) {
 		            	  if(type === 'display'){
-		            		  localforage.setItem(data.codigoHojaRuta,new UnidadSeleccionada(data.codigoHojaRuta,data.numeroPlaca));
+		            		  localforage.setItem(data.codigoHojaRuta,
+		            				  new UnidadSeleccionada(data.codigoHojaRuta,data.numeroPlaca)
+		            		  );
 		                      data = '<input type="radio" name="unidad" value="' + data.codigoHojaRuta + '">';
 		                   }
 		            	  return data;
 		              }
+		         	},{
+		         		'aTargets': [2],
+			              'mData': null, 
+			              'mRender' : function (data, type, row) {
+			            	  if(type === 'display'){
+			            		  return data.nombreChofer + " " + data.apellidoChofer;
+			                   }
+			            	  return data;
+			              }
 		         	},
+		         	
 		         	{
 		         		'aTargets': [4],
 		         		'mData': null,
@@ -47,7 +59,7 @@ function crearTablaUnidades() {
 		        'aoColumns': [
 		        	{ },
 			        { 'mData': 'numeroPlaca'},
-			        { 'mData': 'nombreChofer'},
+			        { },
 			        { 'mData': 'telefonoChofer'},
 			        { }
 			        

@@ -56,20 +56,13 @@ function actualizarTablaPedidosPendientes(data,codigoHojaRuta) {
 		oTable.fnAddData(data);
 		oTable.fnDraw();
 		oTable.fnPageChange('first');
-		localforage.getItem(codigoHojaRuta)
-			.then(unidad => {
-				console.log("Estableciendo unidad: " ,unidad);
-				localforage.setItem("unidadSeleccionada",{
-					unidad: unidad,
-					codigoHojaRuta: codigoHojaRuta
-				});
-		});
 	}
 }
 
 function iniciarMonitoreo(aData) {
-	console.log(aData);
 	var direccion;
+	
+	//TODO rmunozdev Actualizar lógica
 	if(aData.direccionCliente && aData.distritoCliente) {
 		console.log("Se usara direccion de cliente");
 		direccion = aData.direccionCliente +" "+ aData.distritoCliente + " Peru";
@@ -82,39 +75,41 @@ function iniciarMonitoreo(aData) {
 	localforage.setItem("destinoSeleccionado",{
 		pedido: aData.codigoPedido,
 		destino: direccion
-	});
-	
-	
-	const geocoder = new google.maps.Geocoder();
-	geocoder.geocode({address: direccion}, (results, status) =>{
-		if (status === 'OK') {
-			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
-				zoom: 16,
-				disableDefaultUI: true,
-				disableDoubleClickZoom: true,
-				center: results[0].geometry.location
-			});
+	}).then(()=>{
+		const geocoder = new google.maps.Geocoder();
+		geocoder.geocode({address: direccion}, (results, status) =>{
+			if (status === 'OK') {
+				const map = new google.maps.Map(document.getElementById('pedidoMap'), {
+					zoom: 16,
+					disableDefaultUI: true,
+					disableDoubleClickZoom: true,
+					center: results[0].geometry.location
+				});
+				
+				initTracking(map,direccion);
+			} else {
+				console.log(
+						'Geocode was not successful for the following reason: ' + status
+				);
+			}
 			
-		    initTracking(map,direccion);
-		} else {
-		      console.log(
-		        'Geocode was not successful for the following reason: ' + status
-		      );
-		}
+			$('div#pedidoMap').dialog({
+				maxWidth:600,
+		        maxHeight: 500,
+				width: 600,
+		        height: 500,
+		        modal: true,
+		        buttons: [
+		        	{
+		        		text : "Iniciar Simulación",
+		        		click : function() {
+		        			establecerParadasRuta().then(()=>{
+		        				simularMovimiento();
+		        			});
+		        		} 
+		        	}
+		        ]
+		    });
+		});
 	});
-	$('div#pedidoMap').dialog({
-		maxWidth:600,
-        maxHeight: 500,
-		width: 600,
-        height: 500,
-        modal: true,
-        buttons: [
-        	{
-        		text : "Iniciar Simulación",
-        		click : function() {
-        			establecerPosicionUnidad();
-        		} 
-        	}
-        ]
-    });
 }
