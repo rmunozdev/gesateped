@@ -7,13 +7,18 @@
 <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css"> -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dashboard.css">
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css"/>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.js"></script>
-
 <!-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script> -->
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/collapse/jquery.collapse.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/collapse/jquery.collapse_storage.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery/collapse/jquery.collapse_cookie_storage.js"></script>
+
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.7.2/localforage.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
+</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/dashboard.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/simulador.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/unidad.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/unidades.js"></script>
@@ -22,270 +27,26 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosPendientes.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosReprogramados.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosCancelados.js"></script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
-</script>
 
-<script>
-const firebaseConfig = {
-		apiKey: "AIzaSyBiFvJ6Uvz7Hg54xc2VIEhlIZiMrFXl7ps",
-	    authDomain: "sodimacmonitor.firebaseapp.com",
-	    databaseURL: "https://sodimacmonitor.firebaseio.com",
-	    projectId: "sodimacmonitor",
-	    storageBucket: "sodimacmonitor.appspot.com",
-	    messagingSenderId: "756903087303"
-};
-firebase.initializeApp(firebaseConfig);
-const firebaseDB = firebase.database();
-(()=>{
-	_globalContextPath = "${pageContext.request.contextPath}";
-	window.addEventListener('load',crearTabla);
-})();
-
-function UnidadSeleccionada(hojaRuta,placa) {
-	this.hojaRuta = hojaRuta;
-	this.placa = placa;
-}
-
-function crearTabla(params) {
-	var paths = {
-		marker : "${pageContext.request.contextPath}/images/location-marker.png"
+<style>
+	.tbl-descripcion {
+		
+		background-color: #dce6ef;
+	    padding: 10px 5px;
+	    left: 0px;
+	    position: relative;
 	}
-	crearTablaUnidades();
-	crearTablaPedidosAtendidos(paths);
-	crearTablaPedidosNoAtendidos(paths);
-	crearTablaPedidosPendientes(paths);
-	crearTablaPedidosReprogramados();
-	crearTablaPedidosCancelados();
-}
-
-
-function actualizarUnidadesPorBodega(){
-	$.ajaxSetup({
-		cache : false
-	});
-	var form  = $('#frmBodega');
-	hideAllDetails();
-	$.ajax({
-		url: form.attr('action'),
-		type: form.attr('method'),
-		data: form.serialize(),
-		Accept : 'application/json',
-		success:function(data){
-			if(data.length && data.length > 0) {
-				$('#tblUnidades').show();
-				actualizarTablaUnidades(data);
-			} else {
-				$('#tblUnidades').hide();
-			}
-		}
-	});
-	//Ver estados de pedidos por bodega
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verEstadoPedidosPorBodega',
-		type: 'POST',
-		data: form.serialize(),
-		Accept : 'application/json',
-		success:function(data){
-			if(data.length && data.length > 0) {
-				$("#graficaTotalBodega").show();
-				actualizarGraficaEstadoPedidosPorBodega(data);	
-			} else {
-				$("#graficaTotalBodega").hide();
-				
-			}
-		}
-	});
 	
-}
+	.tbl-descripcion a {
+		color: black !important;
+	}
+	.tbl-contenedor {
+		left: 15px;
+	    position: relative;
+	    width: 750px;
+	}
+</style>
 
-function verDashBoardUnidad(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verEstadoPedidos',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			if(data.length && data.length > 0) {
-				//Se establece unidad en base a codigo de ruta seleccionado
-				localforage.getItem(codigoHojaRuta)
-				.then(unidad => {
-					localforage.setItem("unidadSeleccionada",{
-						unidad: unidad,
-						codigoHojaRuta: codigoHojaRuta
-					}).then(()=>{
-						showAllDetails();
-						crearGrafica(data);
-						verDetallePedidosAtendidos(codigoHojaRuta);
-						verDetallePedidosNoAtendidos(codigoHojaRuta);
-						verDetallePedidosPendientes(codigoHojaRuta);
-						verDetallePedidosReprogramados(codigoHojaRuta);
-						verDetallePedidosCancelados(codigoHojaRuta);
-					});
-				});
-				
-				
-			} else {
-				
-				hideAllDetails();
-			}
-		}
-	});
-}
-
-function crearGrafica(estadoPedidos) {
-	var ctx = document.getElementById("myChart").getContext('2d');
-	var myDoughnutChart = new Chart(ctx, {
-	    type: 'doughnut',
-	    data: {
-	        datasets: [{
-	            data: [
-	            	estadoPedidos[0].porcentaje, //pendientes
-	            	estadoPedidos[1].porcentaje, //atendidos
-	            	estadoPedidos[2].porcentaje, //no atendidos
-	            	estadoPedidos[3].porcentaje, //reprogramados
-	            	estadoPedidos[4].porcentaje //cancelados
-	            	],
-	            backgroundColor: [
-	                '#b7afab',
-	                '#9ccedc',
-	                '#dc6f33',
-	                '#e4c583',
-	                '#005dff'
-	            ]
-	        }],
-	        labels: [
-	        	estadoPedidos[0].nombre,
-	        	estadoPedidos[1].nombre,
-	        	estadoPedidos[2].nombre,
-	        	estadoPedidos[3].nombre,
-	        	estadoPedidos[4].nombre
-	        ]
-	    },
-	    options: {}
-	});
-}
-
-function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
-	var ctx = document.getElementById("chartPedidosPorBodega").getContext('2d');
-	var myDoughnutChart = new Chart(ctx, {
-	    type: 'doughnut',
-	    data: {
-	        datasets: [{
-	            data: [
-	            	estadoPedidos[0].porcentaje, 
-	            	estadoPedidos[1].porcentaje, 
-	            	estadoPedidos[2].porcentaje, 
-	            	estadoPedidos[3].porcentaje, 
-	            	estadoPedidos[4].porcentaje
-	            	],
-	            backgroundColor: [
-	            	'#dc0e40',
-	                '#156f15',
-	                '#f19f2a',
-	                '#dff369',
-	                '#36a2eb'
-	            ]
-	        }],
-	        labels: [
-	        	estadoPedidos[0].nombre,
-	        	estadoPedidos[1].nombre,
-	        	estadoPedidos[2].nombre,
-	        	estadoPedidos[3].nombre,
-	        	estadoPedidos[4].nombre
-	        ]
-	    },
-	    options: {}
-	});
-}
-
-function verDetallePedidosAtendidos(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verDetallePedidosAtendidos',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			actualizarTablaPedidosAtendidos(data);
-		}
-	});
-}
-
-function verDetallePedidosNoAtendidos(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verDetallePedidosNoAtendidos',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			actualizarTablaPedidosNoAtendidos(data);
-		}
-	});
-}
-function verDetallePedidosPendientes(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verDetallePedidosPendientes',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			actualizarTablaPedidosPendientes(data,codigoHojaRuta);
-		}
-	});
-}
-function verDetallePedidosReprogramados(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verDetallePedidosReprogramados',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			actualizarTablaPedidosReprogramados(data);
-		}
-	});
-}
-function verDetallePedidosCancelados(codigoHojaRuta) {
-	$.ajax({
-		url: '${pageContext.request.contextPath}/monitoreo/verDetallePedidosCancelados',
-		type: 'POST',
-		data: {codigoHojaRuta : codigoHojaRuta},
-		Accept : 'application/json',
-		success:function(data){
-			console.log("Success");
-			console.log(JSON.stringify(data));
-			actualizarTablaPedidosCancelados(data);
-		}
-	});
-}
-
-
-function showAllDetails() {
-	$("#graficaTotalUnidad").show();
-	$("#detallePedidosAtendidos").show();
-	$("#detallePedidosNoAtendidos").show();
-	$("#detallePedidosPendientes").show();
-	$("#detallePedidosReprogramados").show();
-	$("#detallePedidosCancelados").show();
-}
-
-function hideAllDetails() {
-	$("#graficaTotalUnidad").hide();
-	$("#detallePedidosAtendidos").hide();
-	$("#detallePedidosNoAtendidos").hide();
-	$("#detallePedidosPendientes").hide();
-	$("#detallePedidosReprogramados").hide();
-	$("#detallePedidosCancelados").hide();
-}
-
-</script>
 <div>
 	<div class="jumbotron">
         <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
@@ -313,12 +74,12 @@ function hideAllDetails() {
 				</div>
 	        </div>
 	        
-	        <div class="span12">
+	        <div id="panelUnidades" class="span12" style="display:none">
 	        	<div>
 					<p>Lista de Unidades activas para el 
 					<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
-	        	<table id="tblUnidades" class="table" style="display:none">
+	        	<table id="tblUnidades" class="table">
 					<thead>
 						<tr>
 							<th><label></label></th>
@@ -341,9 +102,38 @@ function hideAllDetails() {
 	        </div>
 	        <hr>
 	        
-	        <div id="detallePedidosAtendidos" style="display:none" class="span12" >
-	        	<p>Pedidos Atendidos</p>
-				<table id="tblPedidosAtendidos" class="table" >
+	</div>
+	<div id="dialogMap" style="display: none;">
+		<div id="monitoreoMap"
+			style="border: 1px solid black; width:512px; height:480px">
+		</div>
+		<div id="controlPanel" class="botonera">
+			<button class="btn btn-sm btn-success" id="iniciarSimBtn">Iniciar Simulación</button>
+			<button class="btn btn-sm btn-danger" style="display: none;" id="detenerSimBtn">Detener Simulación</button>
+			<script>
+				$("#iniciarSimBtn").click(function(event){
+					event.preventDefault();
+					$("#detenerSimBtn").show();
+					$("#iniciarSimBtn").hide();
+					simularMovimiento();
+					
+				});
+				$("#detenerSimBtn").click(function(event){
+					event.preventDefault();
+					$("#iniciarSimBtn").show();
+					$("#detenerSimBtn").hide();
+					detenerSimulacion();
+				});
+			</script>
+		</div>
+	</div>
+	<div id="pedidoMap"
+			style="display: none;border: 1px solid black; width:512px; height:480px">
+	</div>
+	<div id="accordion" data-collapse>
+		<h3 class="tbl-descripcion open">Pedidos Atendidos</h3>
+		<div class="tbl-contenedor">
+			<table id="tblPedidosAtendidos" class="table" >
 					<thead>
 						<tr>
 							<th><label>Código de pedido</label></th>
@@ -355,11 +145,10 @@ function hideAllDetails() {
 					<tbody id="tbodyPedidosAtendidos">
 					</tbody>		
 				</table>
-	        </div>
-	        
-	        <div id="detallePedidosNoAtendidos" style="display:none" class="span12">
-	        	<p>Pedidos No Atendidos</p>
-				<table id="tblPedidosNoAtendidos" class="table">
+		</div>
+		<h3 class="tbl-descripcion open">Pedidos No Atendidos</h3>
+		<div class="tbl-contenedor">
+			<table id="tblPedidosNoAtendidos" class="table">
 					<thead>
 						<tr>
 							<th><label>Código de pedido</label></th>
@@ -372,11 +161,10 @@ function hideAllDetails() {
 					<tbody id="tbodyPedidosNoAtendidos">
 					</tbody>		
 				</table>
-	        </div>
-	        
-	        <div id="detallePedidosPendientes" style="display:none" class="span12">
-	        	<p>Pedidos Pendientes</p>
-				<table id="tblPedidosPendientes" class="table">
+		</div>
+		<h3 class="tbl-descripcion open">Pedidos Pendientes</h3>
+		<div class="tbl-contenedor">
+			<table id="tblPedidosPendientes" class="table">
 					<thead>
 						<tr>
 							<th><label>Código de pedido</label></th>
@@ -387,11 +175,10 @@ function hideAllDetails() {
 					<tbody id="tbodyPedidosPendientes">
 					</tbody>		
 				</table>
-	        </div>
-	        
-	        <div id="detallePedidosReprogramados" style="display:none" class="span12">
-				<p>Pedidos Reprogramados</p>
-				<table id="tblPedidosReprogramados" class="table">
+		</div>
+		<h3 class="tbl-descripcion open">Pedidos Reprogramados</h3>
+		<div class="tbl-contenedor">
+			<table id="tblPedidosReprogramados" class="table">
 					<thead>
 						<tr>
 							<th><label>Código de pedido</label></th>
@@ -401,11 +188,10 @@ function hideAllDetails() {
 					<tbody id="tbodyPedidosReprogramados">
 					</tbody>		
 				</table>
-	        </div>
-	        
-	        <div id="detallePedidosCancelados" style="display:none" class="span12">
-		        <p>Pedidos Cancelados</p>
-				<table id="tblPedidosCancelados" class="table">
+		</div>
+		<h3 class="tbl-descripcion open">Pedidos Cancelados</h3>
+		<div class="tbl-contenedor">
+			<table id="tblPedidosCancelados" class="table">
 					<thead>
 						<tr>
 							<th><label>Código de pedido</label></th>
@@ -415,8 +201,6 @@ function hideAllDetails() {
 					<tbody id="tbodyPedidosCancelados">
 					</tbody>		
 				</table>
-	        </div>
-	</div>
-		<div id="pedidoMap" style="display: none;border: 1px solid black; width:512px; height:512px">
 		</div>
+	</div>
 </div>

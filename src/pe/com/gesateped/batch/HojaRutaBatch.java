@@ -65,7 +65,6 @@ public class HojaRutaBatch {
 	}
 
 	public void generarHojaRuta() {
-		
 		List<Ruta> rutasGeneradas = new ArrayList<>();
 
 		List<PedidoNormalizado> pedidosNormalizado = adminBL.obtenerPedidosNormalizados();
@@ -218,11 +217,11 @@ public class HojaRutaBatch {
 		return filtrado;
 	}
 	
-	public List<String> generarReporte() {
+	public List<String> generarReporte(Date fechaDespacho) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		try {
 			//Se filtra data por cada bodega
-			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega();
+			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega(fechaDespacho);
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 			String marcadorFecha = simpleDateFormat.format(new Date());
 			for(String nombreBodega : grupos.keySet()) {
@@ -247,10 +246,15 @@ public class HojaRutaBatch {
 		return Collections.emptyList();
 	}
 	
-	public void imprimirReporte(OutputStream output, String nombreBodega) {
+	public List<String> getBodegasAsignadas(Date fechaDespacho) {
+		Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega(fechaDespacho);
+		return new ArrayList<>(grupos.keySet());
+	}
+	
+	public void imprimirReporte(OutputStream output, String nombreBodega,Date fechaDespacho) {
 		try {
 			//Se filtra data por cada bodega
-			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega();
+			Map<String, List<Map<String, ?>>> grupos = pedidoReport.getGruposPorBodega(fechaDespacho);
 			for(String nombreBodegaActual : grupos.keySet()) {
 				if(nombreBodegaActual.equals(nombreBodega)) {
 					List<Map<String, ?>> grupo = grupos.get(nombreBodegaActual);

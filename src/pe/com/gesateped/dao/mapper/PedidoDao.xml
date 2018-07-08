@@ -76,7 +76,9 @@
 	<select id="obtenerRutas"
 		parameterType="java.util.Map"
 		resultMap="rutaMapResult" statementType="CALLABLE">
-		call sp_obtener_rutas()
+		call sp_obtener_rutas(
+		 	#{_fecha_despacho,javaType=java.util.Date,jdbcType=DATE,mode=IN}
+		)
 	</select>
 	
 	<resultMap id="detalleRutaMapResult" type="java.util.Map">

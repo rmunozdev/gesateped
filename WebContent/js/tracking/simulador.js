@@ -11,9 +11,10 @@ function establecerParadasRuta() {
 						}
 				};
 				obtenerPuntoDePartida(pedido).then(origen=>{
+					
+					
+					
 					var directionsService = new google.maps.DirectionsService();
-					 console.log("destino",destino);
-					 console.log("Unidad",origen);
 					 var request = {
 						origin: new google.maps.LatLng(origen.lat,origen.lng),
 						destination: destino.destino,
@@ -42,9 +43,8 @@ function establecerParadasRuta() {
 						    			
 						    			tripPoints.push({
 						    				placa: pedido.unidadAsignada.numeroPlaca,
-						    				timeleft: demoraPendiente,
-											distanceleft: distanciaPendiente,
-						    				duration: durationInSeconds,
+						    				timeleft: formatTime(demoraPendiente),
+											distanceleft: formatDistance(distanciaPendiente),
 						    				locations: {
 						    					lat : step.start_location.lat(),
 						    					lng : step.start_location.lng()
@@ -66,12 +66,12 @@ function establecerParadasRuta() {
 	});
 	 return finishPromise;
 }
-
+var refreshIntervalId;
 function simularMovimiento() {
 	console.log("Se inicia simulacion");
 	localforage.getItem("tripLocations").then(tripPoints=>{
 		let index = 0;
-		let refreshIntervalId = setInterval(()=>{
+		refreshIntervalId = setInterval(()=>{
 			tripPoints[index];
 			let myUnidadLocation = {
 					route_id: 'A034',
@@ -95,6 +95,12 @@ function simularMovimiento() {
 			}
 		},2000);
 	});
+}
+
+function detenerSimulacion() {
+	if(refreshIntervalId) {
+		clearInterval(refreshIntervalId);
+	}
 }
 
 

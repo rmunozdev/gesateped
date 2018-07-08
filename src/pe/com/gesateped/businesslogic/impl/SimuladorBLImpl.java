@@ -1,6 +1,7 @@
 package pe.com.gesateped.businesslogic.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,8 @@ public class SimuladorBLImpl implements SimuladorBL {
 	}
 	
 	public Ruta obtenerRuta(String codigoHojaRuta) {
-		List<Ruta> rutas = this.adminBL.obtenerRutas();
+		//Simulacion>> Fecha despacho hoy
+		List<Ruta> rutas = this.adminBL.obtenerRutas(new Date());
 		
 		//Filtrar pedidos por hoja de ruta
 		for(Ruta ruta : rutas) {

@@ -1,6 +1,7 @@
 package pe.com.gesateped.reports;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,9 @@ public class PedidoReportImpl implements PedidoReport {
 	private PedidoDao pedidoDao;
 	
 	@Override
-	public List<Map<String, ?>> prepareData() {
+	public List<Map<String, ?>> prepareData(Date fechaDespacho) {
 		List<Map<String,?>> maps = new ArrayList<>();
-		for (Ruta ruta : pedidoDao.obtenerRutas()) {
+		for (Ruta ruta : pedidoDao.obtenerRutas(fechaDespacho)) {
 			for (PedidoNormalizado pedido : ruta.getPedidos()) {
 				Map<String,Object> map = new HashMap<>();
 				System.out.println("Orden pedido:" + pedido.getOrden());
@@ -48,10 +49,10 @@ public class PedidoReportImpl implements PedidoReport {
 		return maps;
 	}
 	
-	public Map<String,List<Map<String,?>>> getGruposPorBodega() {
+	public Map<String,List<Map<String,?>>> getGruposPorBodega(Date fechaDespacho) {
 		Map<String,List<Map<String, ?>>> grupos = new HashMap<>();
 		List<Map<String,?>> grupo;
-		for (Ruta ruta : pedidoDao.obtenerRutas()) {
+		for (Ruta ruta : pedidoDao.obtenerRutas(fechaDespacho)) {
 			if(grupos.containsKey(ruta.getNombreBodega())) {
 				grupo = grupos.get(ruta.getNombreBodega());
 			} else {

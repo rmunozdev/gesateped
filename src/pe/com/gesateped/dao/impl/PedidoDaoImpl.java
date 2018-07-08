@@ -149,9 +149,12 @@ public class PedidoDaoImpl implements PedidoDao {
 	}
 
 	@Override
-	public List<Ruta> obtenerRutas() {
+	public List<Ruta> obtenerRutas(Date fechaDespacho) {
 		List<Ruta> rutas = new ArrayList<>();
-		List<Map<Object,Object>> resultados = gesatepedSession.selectList("pedidoDao.obtenerRutas");
+		
+		Map<String,Object> parametersRuta = new HashMap<>();
+		parametersRuta.put("_fecha_despacho", fechaDespacho);
+		List<Map<Object,Object>> resultados = gesatepedSession.selectList("pedidoDao.obtenerRutas",parametersRuta);
 		
 		for (Map<Object, Object> resultadoMap : resultados) {
 			Ruta ruta = new Ruta();

@@ -1,7 +1,8 @@
 function initTracking(map,destino) {
 	iniciarUnidadEnFirebase().then(()=>{
 		var directionsDisplay = new google.maps.DirectionsRenderer({
-			preserveViewport : true
+			preserveViewport : false,
+			suppressMarkers : true
 		});
 		  
 		  firebaseDB.ref('gesatepedMap').on('value',snapshot=>{
@@ -115,18 +116,28 @@ function iniciarUnidadEnFirebase() {
 					};
 					
 					obtenerPuntoDePartida(pedido).then((origen)=>{
-						firebaseDB
+						obtenerDetallesRuta(origen,destino).then((route)=>{
+							
+							let distanciaPendiente = 0;
+					    	let demoraPendiente = 0;
+					    	route.legs.forEach(leg=>{
+					    		distanciaPendiente += leg.distance.value;
+					    		demoraPendiente += leg.duration.value;
+					    	});
+							
+							firebaseDB
 							.ref('gesatepedUnidad')
 							.set({
 								"viaje" : {
 									placa: pedido.unidadAsignada.numeroPlaca,
-									timeleft: 0,
-									distanceleft: 0,
+									timeleft: formatTime(demoraPendiente),
+									distanceleft: formatDistance(distanciaPendiente),
 									lat: origen.lat, 
 									lng: origen.lng	
 								}
 							}).then(()=>{
 								resolve();
+						});
 						});
 					});
 			});
@@ -136,7 +147,7 @@ function iniciarUnidadEnFirebase() {
 }
 
 function obtenerPuntoDePartida(pedido) {
-	let finishPromise = new Promise((resolve,reject)=>{
+	return new Promise((resolve,reject)=>{
 		$.ajax({
 			url: _globalContextPath+'/sim/partidas',
 			type: 'POST',
@@ -163,7 +174,26 @@ function obtenerPuntoDePartida(pedido) {
 			}
 		});
 	});
-	return finishPromise;
+}
+
+function obtenerDetallesRuta(origen,destino) {
+	return new Promise((resolve,reject)=>{
+		var directionsService = new google.maps.DirectionsService();
+		 var request = {
+			origin: new google.maps.LatLng(origen.lat,origen.lng),
+			destination: destino.destino,
+			travelMode: 'DRIVING'
+		 };
+		 
+		 directionsService.route(request, function(result, status){
+			 if (status == 'OK') {
+				 const route = result.routes[0];
+				 resolve(route);
+			 } else {
+				 reject("Fallo consulta a directions.",origen,destino);
+			 }
+		 });
+	});
 }
 
 
@@ -187,4 +217,26 @@ function colorToUnidadMarker(color) {
 	      console.log(`colorToBusMarker(${color}) not handled`);
 	      return '';
 	  }
+}
+
+
+function formatTime(seconds) {
+    var sec_num = seconds; // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
+
+function formatDistance(meters) {
+	if(meters<100) {
+		return meters + " m";
+	} else {
+		var kilometros = meters/1000;
+		return kilometros + "km"
 	}
+}

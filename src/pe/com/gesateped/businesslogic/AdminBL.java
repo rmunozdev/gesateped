@@ -1,5 +1,6 @@
 package pe.com.gesateped.businesslogic;
 
+import java.util.Date;
 import java.util.List;
 
 import pe.com.gesateped.model.Bodega;
@@ -16,7 +17,7 @@ public interface AdminBL {
 	List<PedidoNormalizado> obtenerPedidosNormalizados();
 	List<UnidadNormalizada> obtenerUnidadesNormalizadas();
 	void registrarHojaRuta(Ruta ruta);
-	List<Ruta> obtenerRutas();
+	List<Ruta> obtenerRutas(Date fechaDespacho);
 	Bodega obtenerBodega(String codigoBodega);
 	List<VentanaHoraria> obtenerVentanas();
 	List<Parametro> listarParametros();

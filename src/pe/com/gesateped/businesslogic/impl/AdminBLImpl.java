@@ -1,6 +1,7 @@
 package pe.com.gesateped.businesslogic.impl;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class AdminBLImpl implements AdminBL {
 	}
 
 	@Override
-	public List<Ruta> obtenerRutas() {
-		return pedidoDao.obtenerRutas();
+	public List<Ruta> obtenerRutas(Date fechaDespacho) {
+		return pedidoDao.obtenerRutas(fechaDespacho);
 	}
 
 	@Override

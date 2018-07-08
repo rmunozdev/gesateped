@@ -11,8 +11,9 @@
 	})();
 	
 	function iniciar() {
-		
-		document.getElementById("generarBtn").onclick = generarRutas;
+		if(document.getElementById("generarBtn")) {
+			document.getElementById("generarBtn").onclick = generarRutas;
+		}
 		document.getElementById("descargarBtn").onclick = descargarReporte;
 	}
 	var myresponse;
@@ -49,16 +50,33 @@
 	}
 
 </script>
-<div id="step1" class="jumbotron">
-        <p class="lead">Las hojas de rutas se construirán para los pedidos a despachar mañana.</p>
-        <a class="btn btn-large btn-success" href="#" id="generarBtn">Iniciar construcción</a>
-      </div>
+<c:choose>
+	<c:when test="${empty bodegas}">
+		<div id="step1" class="jumbotron">
+        	<p class="lead">Las hojas de rutas se construirán para los pedidos a despachar mañana.</p>
+        	<a class="btn btn-large btn-success" href="#" id="generarBtn">Iniciar construcción</a>
+      	</div>
+		<div id="step2" class="jumbotron" style="display:none">
+	        <p class="lead">Ya se generaron las hojas de ruta, para descargar, por favor elija una bodega.</p>
+	        <select id="bodegasList"  class="selectpicker">
+	        </select>
+	        <a class="btn btn-large btn-success" href="#" id="descargarBtn">Descargar</a>
+      	</div>
+	</c:when>
+	<c:otherwise>
+		<div id="step2" class="jumbotron">
+	        <p class="lead">Ya se generaron las hojas de ruta, para descargar, por favor elija una bodega.</p>
+	        <select id="bodegasList"  class="selectpicker">
+	        	<c:forEach items="${bodegas}" var="bodega" >
+	        		<option value="${bodega}">${bodega}</option>
+	        	</c:forEach>
+	        </select>
+	        <a class="btn btn-large btn-success" href="#" id="descargarBtn">Descargar</a>
+      	</div>
+	</c:otherwise>
+</c:choose>
+
 <hr>
 
-<div id="step2" class="jumbotron" style="display:none">
-        <p class="lead">Ya se generaron las hojas de ruta, para descargar, por favor elija una bodega.</p>
-        <select id="bodegasList"  class="selectpicker">
-        </select>
-        <a class="btn btn-large btn-success" href="#" id="descargarBtn">Descargar</a>
-      </div>
+
 <hr>

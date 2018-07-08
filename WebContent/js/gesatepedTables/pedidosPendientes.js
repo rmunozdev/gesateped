@@ -44,7 +44,7 @@ function crearTablaPedidosPendientes(paths) {
 		 			
 		          },
 		          "oLanguage": {
-		              "sEmptyTable":     "My Custom Message On Empty Table"
+		              "sEmptyTable": "No se encontraron pedidos pendientes"
 		          }
 		    });
 }
@@ -79,36 +79,86 @@ function iniciarMonitoreo(aData) {
 		const geocoder = new google.maps.Geocoder();
 		geocoder.geocode({address: direccion}, (results, status) =>{
 			if (status === 'OK') {
-				const map = new google.maps.Map(document.getElementById('pedidoMap'), {
+				const map = new google.maps.Map(document.getElementById('monitoreoMap'), {
 					zoom: 16,
 					disableDefaultUI: true,
 					disableDoubleClickZoom: true,
 					center: results[0].geometry.location
 				});
 				
-				initTracking(map,direccion);
+				//Se crean marcas para origen y destino
+				localforage.getItem("unidadSeleccionada")
+					.then(unidadSeleccionada=>{
+						let pedido = {
+								codigoPedido: aData.codigoPedido,
+								codigoHojaRuta: unidadSeleccionada.codigoHojaRuta,
+								unidadAsignada: {
+									numeroPlaca: unidadSeleccionada.unidad.placa
+								}
+						};
+						obtenerPuntoDePartida(pedido).then(origen=>{
+							
+							const destinoMarker = new google.maps.Marker({
+								  position: {
+									  lat: results[0].geometry.location.lat(),
+									  lng: results[0].geometry.location.lng()
+								  },
+								  map: map,
+								  title: "Destino",
+								  optimized: false,
+								  label: {
+									    color: 'red',
+									    fontWeight: 'bold',
+									    text: aData.codigoPedido
+									  },
+								  icon: {
+									  labelOrigin: new google.maps.Point(11, 50),
+									    url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+									    size: new google.maps.Size(32, 40),
+									    origin: new google.maps.Point(0, 0),
+									    anchor: new google.maps.Point(11, 40)
+								  }
+							 });
+							
+							var origenMarker = new google.maps.Marker({
+						        position:  new google.maps.LatLng(origen.lat, origen.lng),
+						        map: map,
+						        title: 'Partida',
+						        label: {
+								    color: 'red',
+								    fontWeight: 'bold',
+								    text: "Partida"
+								},
+						        icon: {
+						        	  labelOrigin: new google.maps.Point(50, 25),
+									  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+									  size: new google.maps.Size(32, 40),
+									  origin: new google.maps.Point(0, 0),
+									  anchor: new google.maps.Point(11,40)
+								
+								},
+						 });
+							
+							initTracking(map,direccion);
+						});
+				});
 			} else {
 				console.log(
 						'Geocode was not successful for the following reason: ' + status
 				);
 			}
 			
-			$('div#pedidoMap').dialog({
+			$('div#dialogMap').dialog({
 				maxWidth:600,
-		        maxHeight: 500,
-				width: 600,
-		        height: 500,
+		        maxHeight: 612,
+				width: 550,
+		        height: 590,
 		        modal: true,
-		        buttons: [
-		        	{
-		        		text : "Iniciar Simulación",
-		        		click : function() {
-		        			establecerParadasRuta().then(()=>{
-		        				simularMovimiento();
-		        			});
-		        		} 
-		        	}
-		        ]
+		        closeOnEscape: false,
+		        close: function() {
+		        	console.log("Se detiene simulacion(si se inicio)");
+		        	detenerSimulacion();
+		        }
 		    });
 		});
 	});
