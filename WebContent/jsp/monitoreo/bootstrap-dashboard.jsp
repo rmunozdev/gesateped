@@ -18,15 +18,7 @@
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/dashboard.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/simulador.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/unidad.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/unidades.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosAtendidos.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosNoAtendidos.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosPendientes.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosReprogramados.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosCancelados.js"></script>
+
 
 <style>
 	.tbl-descripcion {
@@ -51,7 +43,22 @@
 	<div class="jumbotron">
         <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
       </div>
-	<div class="row-fluid marketing">
+      
+     <c:choose>
+     	<c:when test="${empty rutas}">
+     		No hay rutas para despachar hoy.
+     	</c:when>
+     	<c:otherwise>
+     		<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/dashboard.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/simulador.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/unidad.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/unidades.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosAtendidos.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosNoAtendidos.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosPendientes.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosReprogramados.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosCancelados.js"></script>
+     		<div class="row-fluid marketing">
 	        <div class="span6">
 	          <h4>Bodega</h4>
 	         <span>
@@ -72,6 +79,11 @@
 		         <div style="width:300px;height:300px">
 					<canvas id="chartPedidosPorBodega" width="200px" height="200px"></canvas>
 				</div>
+	        </div>
+	        <div id="noHayPedidosMsg" class="span6" style="display:none">
+	        	<p>No hay pedidos asignados a esta bodega.
+	        		Para visualizar grafica, por favor elegir bodega con pedidos asignados
+	        	</p>
 	        </div>
 	        
 	        <div id="panelUnidades" class="span12" style="display:none">
@@ -115,8 +127,9 @@
 					event.preventDefault();
 					$("#detenerSimBtn").show();
 					$("#iniciarSimBtn").hide();
-					simularMovimiento();
-					
+					establecerParadasRuta().then(()=>{
+						simularMovimiento();
+					});
 				});
 				$("#detenerSimBtn").click(function(event){
 					event.preventDefault();
@@ -130,7 +143,7 @@
 	<div id="pedidoMap"
 			style="display: none;border: 1px solid black; width:512px; height:480px">
 	</div>
-	<div id="accordion" data-collapse>
+	<div id="accordion" data-collapse style="display:none">
 		<h3 class="tbl-descripcion open">Pedidos Atendidos</h3>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosAtendidos" class="table" >
@@ -203,4 +216,8 @@
 				</table>
 		</div>
 	</div>
+     	</c:otherwise>
+     </c:choose>
+      
+	
 </div>

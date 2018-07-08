@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import pe.com.gesateped.businesslogic.AdminBL;
 import pe.com.gesateped.businesslogic.MonitoreoBL;
 import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
 import pe.com.gesateped.model.extend.DetallePedidoRuta;
+import pe.com.gesateped.model.extend.Ruta;
 
 @SessionAttributes({ "bodega"})
 @Controller
@@ -29,11 +31,18 @@ public class MonitoreoController {
 	@Autowired
 	private MonitoreoBL monitoreoBL;
 	
+	@Autowired
+	private AdminBL adminBL;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView iniciar(ModelMap modelMap) {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
 		modelMap.addAttribute("bodega", new Bodega());
 		modelMap.addAttribute("menu", "monitoreo");
+		
+		List<Ruta> rutas = this.adminBL.obtenerRutas(new Date());
+		modelMap.addAttribute("rutas", rutas);
+		
 		return new ModelAndView("monitoreo");
 	}
 	

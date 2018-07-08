@@ -10,7 +10,7 @@ firebase.initializeApp(firebaseConfig);
 const firebaseDB = firebase.database();
 (()=>{
 	
-	window.addEventListener('load',crearTabla);
+	window.addEventListener('load',iniciar);
 })();
 
 function UnidadSeleccionada(hojaRuta,placa) {
@@ -18,15 +18,10 @@ function UnidadSeleccionada(hojaRuta,placa) {
 	this.placa = placa;
 }
 
-function crearTabla(params) {
+function iniciar() {
 	var paths = {
 		marker : _globalContextPath+"/images/location-marker.png"
 	}
-//	$( "#accordion" ).accordion({
-//		heightStyle: "content",
-//		collapsible: true,
-//		active: false
-//	});
 	crearTablaUnidades();
 	crearTablaPedidosAtendidos(paths);
 	crearTablaPedidosNoAtendidos(paths);
@@ -65,10 +60,11 @@ function actualizarUnidadesPorBodega(){
 		success:function(data){
 			if(data.length && data.length > 0) {
 				$("#graficaTotalBodega").show();
+				$("#noHayPedidosMsg").hide();
 				actualizarGraficaEstadoPedidosPorBodega(data);	
 			} else {
 				$("#graficaTotalBodega").hide();
-				
+				$("#noHayPedidosMsg").show();
 			}
 		}
 	});
@@ -244,8 +240,10 @@ function verDetallePedidosCancelados(codigoHojaRuta) {
 
 function showAllDetails() {
 	$("#graficaTotalUnidad").show();
+	$("#accordion").show();
 }
 
 function hideAllDetails() {
 	$("#graficaTotalUnidad").hide();
+	$("#accordion").hide();
 }

@@ -48,6 +48,9 @@ public class PedidoDaoImpl implements PedidoDao {
 				pedido.setCodigoPedido(String.valueOf(resultado.get("cod_ped")));
 				pedido.setCodigoBodega(String.valueOf(resultado.get("cod_bod")));
 				pedido.setFechaDespacho((Date)resultado.get("fec_desp_ped"));
+				pedido.setFechaReprogramacion((Date)resultado.get("fec_repro_ped"));
+				pedido.setFechaCancelamiento((Date)resultado.get("fec_canc_ped"));
+				pedido.setFechaDevolucion((Date)resultado.get("fec_devo_ped"));
 				
 				String codigoCliente = String.valueOf(resultado.get("cod_cli"));
 				String codigoTiendaDesp = String.valueOf(resultado.get("cod_tiend_desp"));

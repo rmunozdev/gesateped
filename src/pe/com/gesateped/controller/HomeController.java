@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.gesateped.batch.HojaRutaBatch;
+import pe.com.gesateped.businesslogic.AdminBL;
+import pe.com.gesateped.model.extend.PedidoNormalizado;
 
 @SessionAttributes({ "location"})
 @Controller
@@ -29,16 +31,25 @@ public class HomeController {
 
 	@Autowired
 	private HojaRutaBatch hojaRutaBatch;
+	
+	@Autowired
+	private AdminBL adminBL;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView inicio(ModelMap model) {
 		logger.info("inicio() success");
-		
 		//Hay rutas para mañana?
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, 1);
 		List<String> bodegas = this.hojaRutaBatch.getBodegasAsignadas(calendar.getTime());
 		model.addAttribute("bodegas", bodegas);
+		
+		//Hay pedidos para mañana
+		if(bodegas.isEmpty()) {
+			List<PedidoNormalizado> pedidos = this.adminBL.obtenerPedidosNormalizados();
+			model.addAttribute("pedidos",pedidos);
+		}
+		
 		return new ModelAndView("starter");
 	}
 

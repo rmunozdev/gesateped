@@ -1,5 +1,5 @@
 function establecerParadasRuta() {
-	let finishPromise = new Promise((resolve,reject)=>{
+	return new Promise((resolve,reject)=>{
 		
 		localforage.getItem("destinoSeleccionado").then(destino=>{
 			localforage.getItem("unidadSeleccionada").then(unidadSeleccionada=>{
@@ -64,7 +64,7 @@ function establecerParadasRuta() {
 			});
 		});
 	});
-	 return finishPromise;
+	 
 }
 var refreshIntervalId;
 function simularMovimiento() {
@@ -85,7 +85,7 @@ function simularMovimiento() {
 			};
 			
 			const unidadesLocations = {
-					"Trip_X" : myUnidadLocation
+					"viaje" : myUnidadLocation
 			};
 			firebaseDB.ref('gesatepedUnidad').set(unidadesLocations);
 			index++;

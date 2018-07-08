@@ -1,5 +1,6 @@
 package pe.com.gesateped.model.extend;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -20,6 +21,9 @@ public class PedidoNormalizado implements Medible {
 	private String codigoHojaRuta;
 	private String ventana;
 	private Date fechaDespacho;
+	private Date fechaReprogramacion;
+	private Date fechaCancelamiento;
+	private Date fechaDevolucion;
 	
 	//Requerido al usar google maps directions
 	private long tiempoCronometrico; //Tiempo (segundos) transcurrido basado en el orden
@@ -239,5 +243,66 @@ public class PedidoNormalizado implements Medible {
 		this.fechaEstimadaLlegada = fechaEstimadaLlegada;
 	}
 
+	public Date getFechaReprogramacion() {
+		return fechaReprogramacion;
+	}
+
+	public void setFechaReprogramacion(Date fechaReprogramacion) {
+		this.fechaReprogramacion = fechaReprogramacion;
+	}
+
+	public Date getFechaCancelamiento() {
+		return fechaCancelamiento;
+	}
+
+	public void setFechaCancelamiento(Date fechaCancelamiento) {
+		this.fechaCancelamiento = fechaCancelamiento;
+	}
+
+	public Date getFechaDevolucion() {
+		return fechaDevolucion;
+	}
+
+	public void setFechaDevolucion(Date fechaDevolucion) {
+		this.fechaDevolucion = fechaDevolucion;
+	}
 	
+	public String getClasificacionTipo() {
+		return this.tipoPedido.toString();
+	}
+	
+	public String getClasificacionFecha() {
+		
+		Calendar tomorrow = Calendar.getInstance();
+		tomorrow.add(Calendar.DATE, 1);
+		tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+		tomorrow.set(Calendar.MINUTE, 0);
+		tomorrow.set(Calendar.SECOND, 0);
+		tomorrow.set(Calendar.MILLISECOND, 0);
+		
+		Calendar thisDate = Calendar.getInstance();
+		thisDate.setTime(this.fechaDespacho);
+		thisDate.set(Calendar.HOUR_OF_DAY, 0);
+		thisDate.set(Calendar.MINUTE, 0);
+		thisDate.set(Calendar.SECOND, 0);
+		thisDate.set(Calendar.MILLISECOND, 0);
+		
+		
+		if(this.fechaCancelamiento!=null) {
+			return "Cancelado";
+		} else if(thisDate.getTime().compareTo(tomorrow.getTime())==0) {
+			return "Despacho normal";
+		} else if(this.fechaDevolucion != null 
+				&& this.fechaReprogramacion == null) {
+			return "Devolución";
+		} else if(this.fechaReprogramacion != null) {
+			return "Reprogramado";
+		} else {
+			System.out.println("Fecha despacho: " + this.fechaDespacho);
+			System.out.println("Fecha mañana: " + tomorrow.getTime());
+			System.out.println("Mañana segun fecha despacho: " + thisDate.getTime());
+			System.out.println("Comparacion: " + (thisDate.getTime().compareTo(tomorrow.getTime())==0));
+			throw new IllegalStateException("No se puede determinar clasificacion fecha para " + this.codigoPedido);
+		}
+	}
 }
