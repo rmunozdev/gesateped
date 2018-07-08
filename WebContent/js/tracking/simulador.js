@@ -11,9 +11,6 @@ function establecerParadasRuta() {
 						}
 				};
 				obtenerPuntoDePartida(pedido).then(origen=>{
-					
-					
-					
 					var directionsService = new google.maps.DirectionsService();
 					 var request = {
 						origin: new google.maps.LatLng(origen.lat,origen.lng),
