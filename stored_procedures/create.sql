@@ -543,6 +543,9 @@ BEGIN
 		ped.cod_tiend_devo,
 		ped.fec_ret_tiend,
         ped.fec_desp_ped,
+        ped.fec_repro_ped,
+        ped.fec_canc_ped,
+        ped.fec_devo_ped,
 		det.cod_bod,
 		det.cant_prod,
 		pro.cod_prod,
@@ -565,9 +568,9 @@ BEGIN
     inner join tb_producto pro on pro.cod_prod = det.cod_prod 
     where 
 		ped.fec_canc_ped is null
-		and ped.fec_desp_ped = _fecha_despacho 
+		and (ped.fec_desp_ped = _fecha_despacho 
 		or ped.fec_repro_ped = _fecha_despacho
-        or ped.fec_devo_ped = _fecha_despacho
+        or ped.fec_devo_ped = _fecha_despacho)
     order by ped.cod_ped;
 END$$
 DELIMITER ;
