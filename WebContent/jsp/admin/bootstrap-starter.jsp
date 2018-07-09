@@ -86,14 +86,25 @@
         	<hr>
         	<a id="pedidosBtn">Ver detalle pedidos a procesar</a>
         	
-        	<div id="detallePedidos" style="display:none">
-        		<ol>
-	        		<c:forEach items="${pedidos }" var="pedido">
-						<li>
-							${pedido.codigoPedido }	${pedido.clasificacionTipo } ${pedido.clasificacionFecha }
-						</li>	        			
+        	<div id="detallePedidos" class="container" style="display:none">
+        		<table class="table">
+        			<thead>
+        				<tr>
+						<th>Codigo</th>
+						<th>Tipo</th>
+						<th>Fecha</th>
+						</tr>
+        			</thead>
+	        		<tbody>
+	        			<c:forEach items="${pedidos }" var="pedido">
+						<tr>
+							<td>${pedido.codigoPedido }</td>
+							<td>${pedido.clasificacionTipo }</td>
+							<td>${pedido.clasificacionFecha }</td>
+						</tr>	        			
 	        		</c:forEach>
-        		</ol>
+	        		</tbody>
+        		</table>
         	</div>
         	
         	

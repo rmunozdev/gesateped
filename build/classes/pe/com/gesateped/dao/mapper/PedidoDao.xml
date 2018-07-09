@@ -49,7 +49,7 @@
         #{_fec_desp_hoj_rut,javaType=java.util.Date,jdbcType=DATE,mode=IN},
         #{_cod_unid_chof,javaType=String,jdbcType=VARCHAR,mode=IN},
         #{_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN},
-        #{RANDOM_KEY,javaType=String,jdbcType=VARCHAR,mode=OUT}
+        #{GENERATED_HR_KEY,javaType=String,jdbcType=VARCHAR,mode=OUT}
     )}
 	</insert>
 	

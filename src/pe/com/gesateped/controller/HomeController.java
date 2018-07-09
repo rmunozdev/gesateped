@@ -45,10 +45,8 @@ public class HomeController {
 		model.addAttribute("bodegas", bodegas);
 		
 		//Hay pedidos para mañana
-		if(bodegas.isEmpty()) {
-			List<PedidoNormalizado> pedidos = this.adminBL.obtenerPedidosNormalizados();
-			model.addAttribute("pedidos",pedidos);
-		}
+		List<PedidoNormalizado> pedidos = this.adminBL.obtenerPedidosNormalizados();
+		model.addAttribute("pedidos",pedidos);
 		
 		return new ModelAndView("starter");
 	}

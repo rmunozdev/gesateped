@@ -245,6 +245,7 @@ public class HojaRutaBatch {
 				JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(source);
 				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrDataSource);
 				JasperExportManager.exportReportToPdfStream(jasperPrint, fileOutputStream);
+				fileOutputStream.close();
 			}
 			return new ArrayList<>(grupos.keySet());
 		} catch (JRException | IOException e) {

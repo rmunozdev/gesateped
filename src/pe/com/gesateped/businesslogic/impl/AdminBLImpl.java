@@ -31,7 +31,8 @@ public class AdminBLImpl implements AdminBL {
 	@Override
 	public List<PedidoNormalizado> obtenerPedidosNormalizados() {
 		Calendar tomarrow = Calendar.getInstance();
-		tomarrow.add(Calendar.DAY_OF_MONTH, 1);
+		tomarrow.add(Calendar.DATE, 1);
+		System.out.println("Buscando pedidos a despachar el: " + tomarrow.getTime());
 		return pedidoDao.obtenerPedidosNormalizados(tomarrow.getTime());
 	}
 

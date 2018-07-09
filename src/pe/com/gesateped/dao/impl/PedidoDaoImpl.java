@@ -135,9 +135,9 @@ public class PedidoDaoImpl implements PedidoDao {
 		parameters.put("_fec_desp_hoj_rut", ruta.getFechaDespacho());
 		parameters.put("_cod_bod", ruta.getCodigoBodega());
 		parameters.put("_cod_unid_chof", ruta.getUnidad().getCodigoUnidadChofer());
-		parameters.put("RANDOM_KEY", null);
+		parameters.put("GENERATED_HR_KEY", null);
 		gesatepedSession.insert("pedidoDao.registrarHojaRuta", parameters );
-		Object insertedKey = parameters.get("RANDOM_KEY");
+		Object insertedKey = parameters.get("GENERATED_HR_KEY");
 		System.out.println("Inserted a retrieved id: " + insertedKey);
 		//Estableciendo codigo hoja de ruta creado
 		for(PedidoNormalizado pedido : ruta.getPedidos()) {
