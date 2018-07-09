@@ -122,22 +122,7 @@
 		<div id="controlPanel" class="botonera">
 			<button class="btn btn-sm btn-success" id="iniciarSimBtn">Iniciar Simulación</button>
 			<button class="btn btn-sm btn-danger" style="display: none;" id="detenerSimBtn">Detener Simulación</button>
-			<script>
-				$("#iniciarSimBtn").click(function(event){
-					event.preventDefault();
-					$("#detenerSimBtn").show();
-					$("#iniciarSimBtn").hide();
-					establecerParadasRuta().then(()=>{
-						simularMovimiento();
-					});
-				});
-				$("#detenerSimBtn").click(function(event){
-					event.preventDefault();
-					$("#iniciarSimBtn").show();
-					$("#detenerSimBtn").hide();
-					detenerSimulacion();
-				});
-			</script>
+			<button class="btn btn-sm btn-success" style="display: none;" id="continuarSimBtn">Continuar Simulación</button>
 		</div>
 	</div>
 	<div id="pedidoMap"

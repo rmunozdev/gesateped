@@ -148,6 +148,8 @@ function iniciarMonitoreo(aData) {
 				);
 			}
 			
+			//Se activan opciones para simular
+			let simulador = new Simulador($("#iniciarSimBtn"),$("#detenerSimBtn"),$("#continuarSimBtn"));
 			$('div#dialogMap').dialog({
 				maxWidth:600,
 		        maxHeight: 612,
@@ -157,7 +159,7 @@ function iniciarMonitoreo(aData) {
 		        closeOnEscape: false,
 		        close: function() {
 		        	console.log("Se detiene simulacion(si se inicio)");
-		        	detenerSimulacion();
+		        	simulador.cancelar();
 		        }
 		    });
 		});
