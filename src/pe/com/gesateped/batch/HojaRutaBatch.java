@@ -63,6 +63,13 @@ public class HojaRutaBatch {
 	public HojaRutaBatch(ServletContext context) {
 		this.context = context;
 	}
+	
+	public void ejecutar() {
+		this.generarHojaRuta();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, 1);
+		this.generarReporte(calendar.getTime());
+	}
 
 	public void generarHojaRuta() {
 		List<Ruta> rutasGeneradas = new ArrayList<>();

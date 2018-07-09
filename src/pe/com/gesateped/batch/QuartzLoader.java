@@ -1,11 +1,18 @@
 package pe.com.gesateped.batch;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import pe.com.gesateped.common.Parametros;
 
 @Configuration
 @ComponentScan("pe.com.gesateped.batch")
@@ -16,7 +23,7 @@ public class QuartzLoader {
 	public MethodInvokingJobDetailFactoryBean methodInvokingJobDetailFactoryBean() {
 		MethodInvokingJobDetailFactoryBean obj = new MethodInvokingJobDetailFactoryBean();
 		obj.setTargetBeanName("hojaRutaBach");
-		obj.setTargetMethod("generarHojaRuta");
+		obj.setTargetMethod("ejecutar");
 		return obj;
 	}
 	
@@ -27,7 +34,19 @@ public class QuartzLoader {
 		stFactory.setStartDelay(3000);
 		stFactory.setName("mytrigger");
 		stFactory.setGroup("mygroup");
-		stFactory.setCronExpression("0 6 10 1/1 * ? *");
+		
+		String horaEjecucion = Parametros.getHoraEjecucion();
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(format.parse(horaEjecucion));
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+			int minutes = calendar.get(Calendar.MINUTE);
+			stFactory.setCronExpression("0 "+minutes + " " + hour + " 1/1 * ? *");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		return stFactory;
 	}
 	
