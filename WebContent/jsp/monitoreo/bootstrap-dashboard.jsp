@@ -37,12 +37,19 @@
 	    position: relative;
 	    width: 750px;
 	}
+	
+	.left-text {
+		
+	}
+	
+	
 </style>
 
 <div>
 	<div class="jumbotron">
         <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
       </div>
+
       
      <c:choose>
      	<c:when test="${empty rutas}">
@@ -59,35 +66,36 @@
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosReprogramados.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosCancelados.js"></script>
      		<div class="row-fluid marketing">
-	        <div class="span6">
-	          <h4>Bodega</h4>
-	         <span>
+	        <div class="span6 panel panel-default">
+	          <h4 class="panel-heading">Bodega</h4>
+	         <div class="panel-body">
+	         	<div class="left-text">
+			        <jsp:useBean id="now" class="java.util.Date"/> 
+					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></label>
+			    </div>
 				<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
-					<label>Bodega: </label>
-					<form:select path="codigo" style="width: 200px" onchange="actualizarUnidadesPorBodega()" >
-						<form:option value="0" label="-- Seleccione --" />
+					<form:select path="codigo" class="selectpicker" onchange="actualizarUnidadesPorBodega()" >
+						<form:option value="0" label="-- Por favor seleccione --" />
 						<form:options items="${bodegas}" itemValue="codigo" itemLabel="nombre" />
 					</form:select>
-					<jsp:useBean id="now" class="java.util.Date"/> 
-					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></label>
 				</form:form>
-			</span>
+			</div>
 	        </div>
 	
 	        <div id="graficaTotalBodega" class="span6" style="display:none">
-				<p>Monitoreo del Total de Pedidos</p>
+				<p class="alert alert-info">Monitoreo del Total de Pedidos</p>
 		         <div style="width:300px;height:300px">
 					<canvas id="chartPedidosPorBodega" width="200px" height="200px"></canvas>
 				</div>
 	        </div>
 	        <div id="noHayPedidosMsg" class="span6" style="display:none">
-	        	<p>No hay pedidos asignados a esta bodega.
+	        	<p class="alert alert-danger">No hay pedidos asignados a esta bodega.
 	        		Para visualizar grafica, por favor elegir bodega con pedidos asignados
 	        	</p>
 	        </div>
 	        
 	        <div id="panelUnidades" class="span12" style="display:none">
-	        	<div>
+	        	<div class="alert alert-warning">
 					<p>Lista de Unidades activas para el 
 					<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
@@ -107,7 +115,7 @@
 	        </div>
 	        
 	        <div id="graficaTotalUnidad" class="span12" style="display:none">
-	        	<p>Monitoreo de Despacho de Pedidos</p>
+	        	<p class="alert alert-info">Monitoreo de Despacho de Pedidos</p>
 	        	<div style="width:300px;height:300px">
 					<canvas id="myChart" width="200px" height="200px"></canvas>
 				</div>

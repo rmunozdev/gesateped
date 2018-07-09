@@ -133,7 +133,11 @@ function crearGrafica(estadoPedidos) {
 	        	estadoPedidos[4].nombre
 	        ]
 	    },
-	    options: {}
+	    options: {
+	    	legend: {
+	    		position: "left"
+	    	}
+	    }
 	});
 }
 
@@ -166,7 +170,11 @@ function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
 	        	estadoPedidos[4].nombre
 	        ]
 	    },
-	    options: {}
+	    options: {
+	    	legend: {
+	    		position: "left"
+	    	}
+	    }
 	});
 }
 
