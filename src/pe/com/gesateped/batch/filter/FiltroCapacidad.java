@@ -35,6 +35,7 @@ public class FiltroCapacidad implements Filtro {
 		List<PedidoNormalizado> descartados = new ArrayList<>();
 		for (PedidoNormalizado pedido : origen) {
 			if(!filtrados.contains(pedido)) {
+				System.out.println("Descartado pedido: " + pedido.getCodigoPedido() + " Peso: " + pedido.getPeso() + " Volumen: " + pedido.getVolumen());
 				descartados.add(pedido);
 			}
 		}

@@ -41,7 +41,11 @@
 	var myresponse;
 	function generarRutas(event) {
 		event.preventDefault();
+		$("#construyendo").show();
+		$("#generarBtn").hide();
 		fetch('starter/construir').then(response => response.json()).then(data=>{
+			$("#generarBtn").show();
+			$("#construyendo").hide();
 			myresponse = data;
 			if(data) {
 				//Construir select para la data.
@@ -83,6 +87,13 @@
 		<div id="step1" class="jumbotron">
         	<p class="lead">Las hojas de rutas se construirán para los pedidos a despachar mañana.</p>
         	<a class="btn btn-large btn-success" id="generarBtn">Iniciar construcción</a><br>
+        	<div id="construyendo" style="display:none">
+        		<p>Procesando...</p>
+        		<img
+        			src="${pageContext.request.contextPath}/images/procesando.gif"
+        			class="img-thumbnail" height="100" width="100"
+        			alt="Procesando..."></div>
+        	<br>
         	<hr>
         	<a id="pedidosBtn">Ver detalle pedidos a procesar</a>
         	
@@ -90,14 +101,16 @@
         		<table class="table">
         			<thead>
         				<tr>
+						<th>#</th>
 						<th>Codigo</th>
 						<th>Tipo</th>
 						<th>Fecha</th>
 						</tr>
         			</thead>
 	        		<tbody>
-	        			<c:forEach items="${pedidos }" var="pedido">
+	        			<c:forEach items="${pedidos }" var="pedido" varStatus="loop">
 						<tr>
+							<td>${loop.index + 1 }</td>
 							<td>${pedido.codigoPedido }</td>
 							<td>${pedido.clasificacionTipo }</td>
 							<td>${pedido.clasificacionFecha }</td>

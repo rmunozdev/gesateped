@@ -25,7 +25,6 @@ public class PedidoReportImpl implements PedidoReport {
 		for (Ruta ruta : pedidoDao.obtenerRutas(fechaDespacho)) {
 			for (PedidoNormalizado pedido : ruta.getPedidos()) {
 				Map<String,Object> map = new HashMap<>();
-				System.out.println("Orden pedido:" + pedido.getOrden());
 				map.put("orden", pedido.getOrden());
 				map.put("nombre_apellido", pedido.getCliente());
 				map.put("direccion", pedido.getDomicilio());
@@ -61,7 +60,6 @@ public class PedidoReportImpl implements PedidoReport {
 			}
 			for (PedidoNormalizado pedido : ruta.getPedidos()) {
 				Map<String,Object> map = new HashMap<>();
-				System.out.println("Orden pedido:" + pedido.getOrden());
 				map.put("orden", pedido.getOrden());
 				map.put("nombre_apellido", pedido.getCliente());
 				map.put("direccion", pedido.getDomicilio());

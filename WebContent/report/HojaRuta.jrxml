@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HojaRuta" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="cod_hoj_rut" class="java.lang.String"/>
+	<parameter name="chofer" class="java.lang.String"/>
+	<parameter name="brevete" class="java.lang.String"/>
+	<parameter name="placa" class="java.lang.String"/>
+	<parameter name="soat" class="java.lang.String"/>
+	<parameter name="peso" class="java.lang.String"/>
+	<parameter name="volumen" class="java.lang.String"/>
+	<parameter name="fec_generacion" class="java.lang.String"/>
+	<parameter name="fec_desp" class="java.lang.String"/>
+	<parameter name="bodega" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="orden" class="java.lang.Integer"/>
+	<field name="nombre_apellido" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="pedido" class="java.lang.String"/>
+	<field name="ventana" class="java.lang.String"/>
+	<field name="chofer" class="java.lang.String"/>
+	<field name="brevete" class="java.lang.String"/>
+	<field name="placa" class="java.lang.String"/>
+	<field name="soat" class="java.lang.String"/>
+	<field name="peso" class="java.lang.String"/>
+	<field name="volumen" class="java.lang.String"/>
+	<field name="fec_generacion" class="java.util.Date"/>
+	<field name="fec_desp" class="java.util.Date"/>
+	<field name="bodega" class="java.lang.String"/>
+	<field name="cod_hoj_rut" class="java.lang.String"/>
+	<group name="Group1" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{cod_hoj_rut}]]></groupExpression>
+		<groupHeader>
+			<band height="231">
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="-1" y="230" width="802" height="1" uuid="e9d2002a-c8ee-4649-a258-640dad29110c"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="70" y="200" width="170" height="30" uuid="65827fd0-75d1-4062-a67a-8de2378cf50b"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Nombre y Apellido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="240" y="200" width="293" height="30" uuid="1d4660ad-3b71-4ace-91bd-985c44d51e9d"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Dirección de Despacho]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="633" y="200" width="169" height="30" uuid="bd6b6113-a1bd-4d4b-afac-4b7b0dd735d3"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Rango Horario]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="533" y="200" width="100" height="30" uuid="7a8a3039-8ef8-4748-9786-0c01c0f79c74"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Código de Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="200" width="70" height="30" uuid="c9ac7291-2f7f-4f93-ac3b-274aeb78e27e"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Orden de Despacho]]></text>
+				</staticText>
+				<image>
+					<reportElement x="0" y="0" width="200" height="71" uuid="5ed35fa8-7e75-4507-8c4a-4264d6594fa7"/>
+					<imageExpression><![CDATA["sodimaclogo.jpg"]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="0" y="80" width="100" height="20" uuid="35fbaf6a-06dc-4240-81c3-795d88af371c"/>
+					<text><![CDATA[Chofer:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="100" width="100" height="20" uuid="ac503dd1-6295-479b-b457-ae284f99069b"/>
+					<text><![CDATA[Brevete:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="80" width="100" height="20" uuid="a4f9bc47-e8d5-4c50-92ba-e3e5190d22b7"/>
+					<text><![CDATA[Placa de la Unidad:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="100" width="100" height="20" uuid="826b29ac-8465-4c2a-aa3c-fe3417b1a97c"/>
+					<text><![CDATA[SOAT:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="120" width="100" height="20" uuid="058a34fb-14d6-48e9-a513-12deecf490c5"/>
+					<text><![CDATA[Peso Max. de carga:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="270" y="140" width="100" height="20" uuid="5e96b79a-2ae0-4a03-b46c-bcd97707f8a0"/>
+					<text><![CDATA[Volumen de carga:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="580" y="80" width="100" height="30" uuid="4e95ba47-6e13-4334-a415-3d25eb9a0c7c"/>
+					<text><![CDATA[Fecha de Generación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="580" y="110" width="100" height="30" uuid="b339233d-695f-4c0f-9250-bba0f1644f4a"/>
+					<text><![CDATA[Fecha de Despacho:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="580" y="140" width="100" height="30" uuid="35ec0576-7695-4918-971a-1652beda89c7"/>
+					<text><![CDATA[Bodega:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="220" y="20" width="360" height="50" uuid="01a8f20d-119c-417c-bfb0-0d25157b81fd"/>
+					<textElement verticalAlignment="Middle">
+						<font size="25" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["HOJA DE RUTA " + $F{cod_hoj_rut}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="80" width="100" height="20" uuid="66edf028-83d4-4098-b726-de778dc6091a"/>
+					<textFieldExpression><![CDATA[$F{chofer}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="100" width="100" height="20" uuid="e3869b1e-1ad9-4e3d-b429-da7c45b717ff"/>
+					<textFieldExpression><![CDATA[$F{brevete}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="370" y="80" width="100" height="20" uuid="d25507fd-acee-4ef1-a2b0-31cbffc44207"/>
+					<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="370" y="100" width="100" height="20" uuid="dcc9fb5d-a8f9-4cd5-acd2-242f2caac3e7"/>
+					<textFieldExpression><![CDATA[$F{soat}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="370" y="120" width="100" height="20" uuid="8f9165ac-8866-4680-9d46-2bd6469fb5a7"/>
+					<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="370" y="140" width="100" height="20" uuid="37f7d08c-fa7f-438f-aa59-b53491f210d1"/>
+					<textFieldExpression><![CDATA[$F{volumen}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="680" y="80" width="100" height="30" uuid="d273e714-d078-41c3-97fc-2b60ebb22785"/>
+					<textFieldExpression><![CDATA[$F{fec_generacion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="680" y="110" width="100" height="30" uuid="5e1433f0-4546-4b82-a639-d2da0ed479fd"/>
+					<textFieldExpression><![CDATA[$F{fec_desp}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="680" y="140" width="100" height="30" uuid="ffa2c71d-08c4-4ecf-b28f-457770a6c371"/>
+					<textFieldExpression><![CDATA[$F{bodega}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="fa7cec56-4ec1-48e6-a26e-7266a995d174"/>
+				<textField>
+					<reportElement x="0" y="0" width="70" height="15" uuid="ae5356f8-26ac-41d5-8e6f-4c405203acf4">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68fee6b8-eea2-4d3a-ad0b-60876e5c3ef5"/>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{orden}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="70" y="0" width="170" height="15" uuid="4c3647eb-6ea8-4568-9e91-f2c59daaebf5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="640372ce-3604-4060-ae0d-9a7e3a2ce541"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{nombre_apellido}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="240" y="0" width="293" height="15" uuid="5bdb437e-042b-4890-8cae-f14f2b7e0b03">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edd4f89d-f2f0-41e9-8f14-1c29f886c4ff"/>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="533" y="0" width="100" height="15" uuid="1152e940-6845-4419-a29e-34693a934306">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2459d759-d208-49d3-82f0-cc0b291046fd"/>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="633" y="0" width="169" height="15" uuid="bcc7442f-5c7f-48e9-9e76-be3eb5d58dd5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a89166c-f5c2-4037-bc44-e2b75ca4b130"/>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{ventana}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="e5e27efa-b599-499b-9ca3-848cb511cb7b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="18cfe1ca-f7d6-48b0-9827-28578b42a5e0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
