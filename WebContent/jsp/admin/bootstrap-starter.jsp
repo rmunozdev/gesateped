@@ -55,7 +55,7 @@
 					sel.append($('<option value="'+bodega+'">'+bodega+'</option>'));
 				});
 				//sel.addClass('selectpicker');
-				$('.selectpicker').selectpicker('render');
+				$('.selectpicker').selectpicker('refresh');
 				$('#step1').hide();
 				$('#step2').show(1000);
 			} else {

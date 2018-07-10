@@ -53,14 +53,7 @@ public class Ruta {
 	}
 	
 	public Date getFechaDespacho() {
-		if(this.fechaDespacho == null) {
-			if(this.pedidos.isEmpty()) {
-				return null;
-			}
-			return this.pedidos.get(0).getFechaDespacho();
-		}
 		return this.fechaDespacho;
-		
 	}
 	
 	public String getCodigoBodega() {

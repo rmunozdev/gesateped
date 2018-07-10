@@ -41,6 +41,7 @@ import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.model.extend.Ruta;
 import pe.com.gesateped.model.extend.UnidadNormalizada;
 import pe.com.gesateped.reports.PedidoReport;
+import pe.com.gesateped.util.GesatepedUtil;
 
 /**
  * Clase para ejecución de proceso generador de hoja de rutas.
@@ -66,9 +67,7 @@ public class HojaRutaBatch {
 	
 	public void ejecutar() {
 		this.generarHojaRuta();
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, 1);
-		this.generarReporte(calendar.getTime());
+		this.generarReporte(GesatepedUtil.getDiaSiguiente());
 	}
 
 	public void generarHojaRuta() {

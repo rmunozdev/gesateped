@@ -9,13 +9,13 @@ import pe.com.gesateped.batch.algorithm.BuscadorCombinacional;
 import pe.com.gesateped.batch.algorithm.Controlador;
 import pe.com.gesateped.batch.algorithm.Resultado;
 import pe.com.gesateped.batch.control.ControladorPeso;
-import pe.com.gesateped.batch.control.ControladorTiempo;
 import pe.com.gesateped.batch.control.ControladorVolumen;
 import pe.com.gesateped.batch.control.GoogleControl;
 import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.model.extend.Ruta;
 import pe.com.gesateped.model.extend.UnidadNormalizada;
+import pe.com.gesateped.util.GesatepedUtil;
 
 /**
  * Construye hojas de rutas, siguiendo diversos mecanismos para alcanzar la
@@ -72,6 +72,7 @@ public class Despachador {
 					Ruta ruta = new Ruta();
 					ruta.setPedidos(resultado.getPedidos());
 					ruta.setUnidad(unidad);
+					ruta.setFechaDespacho(GesatepedUtil.getDiaSiguiente());
 					this.rutas.add(ruta);
 					this.reducirPedidos(resultado.getPedidos(),pedidosAProcesar);
 				} else {
