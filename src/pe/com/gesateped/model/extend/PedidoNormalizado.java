@@ -117,12 +117,6 @@ public class PedidoNormalizado implements Medible {
 		this.demora = demora;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		PedidoNormalizado comparable = (PedidoNormalizado) obj;
-		return this.codigoPedido.equals(comparable.getCodigoPedido());
-	}
-
 	public String getCliente() {
 		return cliente;
 	}
@@ -304,5 +298,11 @@ public class PedidoNormalizado implements Medible {
 			System.out.println("Comparacion: " + (thisDate.getTime().compareTo(tomorrow.getTime())==0));
 			throw new IllegalStateException("No se puede determinar clasificacion fecha para " + this.codigoPedido);
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		PedidoNormalizado comparable = (PedidoNormalizado) obj;
+		return this.codigoPedido.equals(comparable.getCodigoPedido());
 	}
 }

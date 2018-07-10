@@ -53,7 +53,9 @@
       
      <c:choose>
      	<c:when test="${empty rutas}">
-     		No hay rutas para despachar hoy.
+     		<div class="alert alert-danger">
+     			No hay rutas para despachar hoy.
+     		</div>
      	</c:when>
      	<c:otherwise>
      		<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/dashboard.js"></script>
