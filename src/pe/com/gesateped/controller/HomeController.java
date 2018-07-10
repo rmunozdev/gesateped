@@ -1,7 +1,6 @@
 package pe.com.gesateped.controller;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pe.com.gesateped.batch.HojaRutaBatch;
 import pe.com.gesateped.businesslogic.AdminBL;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
+import pe.com.gesateped.util.GesatepedUtil;
 
 @SessionAttributes({ "location"})
 @Controller
@@ -38,10 +38,7 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView inicio(ModelMap model) {
 		logger.info("inicio() success");
-		//Hay rutas para mañana?
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, 1);
-		List<String> bodegas = this.hojaRutaBatch.getBodegasAsignadas(calendar.getTime());
+		List<String> bodegas = this.hojaRutaBatch.getBodegasAsignadas(GesatepedUtil.getDiaSiguiente());
 		model.addAttribute("bodegas", bodegas);
 		
 		//Hay pedidos para mañana
@@ -56,10 +53,7 @@ public class HomeController {
 	public List<String> construirHojaRutas(HttpSession session) {
 		try {
 			this.hojaRutaBatch.generarHojaRuta();
-			//Reporte fecha de despacho: mañana
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DATE, 1);
-			List<String> bodegas = this.hojaRutaBatch.generarReporte(calendar.getTime());
+			List<String> bodegas = this.hojaRutaBatch.generarReporte(GesatepedUtil.getDiaSiguiente());
 			return bodegas;
 		} catch (Exception exception) {
 			logger.error("No se pudo generar hoja de ruta", exception);
@@ -73,10 +67,7 @@ public class HomeController {
 		try {
 			response.setContentType("application/pdf");
 			response.setHeader("Content-Disposition", "attachment; filename=HojaRutas.pdf");
-			//La descarga para despacho de mañana.
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DATE, 1);
-			this.hojaRutaBatch.imprimirReporte(response.getOutputStream(), nombreBodega,calendar.getTime());
+			this.hojaRutaBatch.imprimirReporte(response.getOutputStream(), nombreBodega,GesatepedUtil.getDiaSiguiente());
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		} catch (IOException e) {

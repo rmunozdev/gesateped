@@ -94,6 +94,7 @@ public class PedidoDaoImpl implements PedidoDao {
 	private void setDomicilioObjetivo(PedidoNormalizado pedido, String domicilioCliente, String domicilioTiendaDesp, String domicilioTiendaDevol) {
 		switch(pedido.getTipoPedido()) {
 		case DEVOLUCION_A_TIENDA:
+			pedido.setDomicilio(domicilioCliente);
 			break;
 		case RECOJO_EN_TIENDA:
 			pedido.setDomicilio(domicilioTiendaDesp);
@@ -177,7 +178,7 @@ public class PedidoDaoImpl implements PedidoDao {
 			ruta.setUnidad(unidad);
 			Map<String,Object> parameters = new HashMap<>();
 			parameters.put("_cod_hoj_rut", ruta.getCodigoRuta());
-			List<Map<Object,Object>> detalles = gesatepedSession.selectList("pedidoDao.obtenerDetalleRutaCliente",parameters);
+			List<Map<Object,Object>> detalles = gesatepedSession.selectList("pedidoDao.obtenerDetalleRuta",parameters);
 			System.out.println("detalles de ruta para hoja ruta " + ruta.getCodigoRuta() + " : " + detalles.size());
 			
 			List<PedidoNormalizado> pedidos = new ArrayList<>();
@@ -186,13 +187,36 @@ public class PedidoDaoImpl implements PedidoDao {
 				pedido.setCodigoPedido(String.valueOf(detalleMap.get("cod_ped")));
 				pedido.setOrden((Integer)detalleMap.get("ord_desp_ped"));
 				
-				if(detalleMap.get("nom_cli") == null || detalleMap.get("fec_ret_tiend") != null) {
-					pedido.setCliente(String.valueOf(detalleMap.get("nom_tiend")));
-					pedido.setDomicilio(String.valueOf(detalleMap.get("dir_tiend")) + " " + String.valueOf(detalleMap.get("dist_tiend")));
-				} else {
+				String codigoCliente = String.valueOf(detalleMap.get("cod_cli"));
+				String codigoTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoCod"));
+				String codigoTiendaDevo = String.valueOf(detalleMap.get("tiendaDevolucionCod"));
+				String fechaRetiroTiend = String.valueOf(detalleMap.get("fec_ret_tiend"));
+				pedido.setTipoPedido(identificarTipoPedido(codigoCliente, codigoTiendaDesp, codigoTiendaDevo, fechaRetiroTiend));
+				
+				//Se adaptan direcciones a lo requerido por apis externas (google)
+				String domicilioCliente = String.valueOf(detalleMap.get("dir_cli")) + " " + String.valueOf(detalleMap.get("dir_cli")) + " Peru";
+				String domicilioTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoDir")) + " " + String.valueOf(detalleMap.get("tiendaDespachoDistNom")) + " Peru";
+				String domicilioTiendaDevol = String.valueOf(detalleMap.get("tiendaDevolucionDir"))+ " " + String.valueOf(detalleMap.get("tiendaDevolucionDistNom")) + " Peru";
+				
+				setDomicilioObjetivo(pedido, domicilioCliente, domicilioTiendaDesp, domicilioTiendaDevol);
+				
+				switch(pedido.getTipoPedido()) {
+				case DEVOLUCION_A_TIENDA:
 					pedido.setCliente(String.valueOf(detalleMap.get("nom_cli")) + " " + String.valueOf(detalleMap.get("ape_cli")));
-					pedido.setDomicilio(String.valueOf(detalleMap.get("dir_cli")) + " " + String.valueOf(detalleMap.get("dist_cli")));
+					break;
+				case RECOJO_EN_TIENDA:
+					pedido.setCliente(String.valueOf(detalleMap.get("tiendaDespachoNom")));
+					break;
+				case REPOSICION_TIENDA:
+					pedido.setCliente(String.valueOf(detalleMap.get("tiendaDespachoNom")));
+					break;
+				case SERVICIO_A_CLIENTE:
+					pedido.setCliente(String.valueOf(detalleMap.get("nom_cli")) + " " + String.valueOf(detalleMap.get("ape_cli")));
+					break;
+				default:
+					break;
 				}
+				
 				pedido.setVentana("De " + String.valueOf(detalleMap.get("hor_ini_vent_hor")) + " a " + String.valueOf(detalleMap.get("hor_fin_vent_hor")));
 				pedidos.add(pedido);
 			}

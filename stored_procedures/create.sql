@@ -456,14 +456,22 @@ BEGIN
     pedido.fec_ret_tiend,
     detalle.ord_desp_ped,
     detalle.cod_hoj_rut,
+    cliente.cod_cli,
 	cliente.nom_cli, 
     cliente.ape_cli,
     cliente.dir_cli,
     distrito.nom_dist as dist_cli,
-    tienda.cod_tiend,
-    tienda.nom_tiend,
-    tienda.dir_tiend,
-    distrito_tienda.nom_dist as dist_tiend,
+    tiendaDespacho.cod_tiend as tiendaDespachoCod,
+    tiendaDespacho.nom_tiend as tiendaDespachoNom,
+    tiendaDespacho.dir_tiend as tiendaDespachoDir,
+    distritoTiendaDespacho.nom_dist as tiendaDespachoDistNom,
+ 
+	tiendaDevolucion.cod_tiend as tiendaDevolucionCod,
+    tiendaDevolucion.nom_tiend as tiendaDevolucionNom,
+    tiendaDevolucion.dir_tiend as tiendaDevolucionDir,
+    distritoTiendaDevolucion.nom_dist as tiendaDevolucionDistNom,
+ 
+    
     ventana.hor_ini_vent_hor,
     ventana.hor_fin_vent_hor
 	from tb_detalle_hoja_ruta detalle 
@@ -471,51 +479,11 @@ BEGIN
 	left join tb_cliente cliente on pedido.cod_cli = cliente.cod_cli
 	left join tb_distrito distrito on cliente.cod_dist = distrito.cod_dist
     inner join tb_ventana_horaria ventana on ventana.cod_vent_hor = detalle.cod_vent_hor
-    left join tb_tienda tienda on tienda.cod_tiend = pedido.cod_tiend_desp
-    left join tb_distrito distrito_tienda on distrito_tienda.cod_dist = tienda.cod_dist
-    order by detalle.ord_desp_ped asc;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_detalles_ruta_cliente`(
-	IN _cod_hoj_rut varchar(10)
-)
-BEGIN
-	select pedido.cod_ped,
-    detalle.ord_desp_ped,
-	cliente.nom_cli, 
-    cliente.ape_cli,
-    cliente.dir_cli,
-    distrito.nom_dist,
-    ventana.hor_ini_vent_hor,
-    ventana.hor_fin_vent_hor
-	from tb_detalle_hoja_ruta detalle 
-	inner join tb_pedido pedido on pedido.cod_ped = detalle.cod_ped and detalle.cod_hoj_rut = _cod_hoj_rut
-	inner join tb_cliente cliente on pedido.cod_cli = cliente.cod_cli
-	inner join tb_distrito distrito on cliente.cod_dist = distrito.cod_dist
-    inner join tb_ventana_horaria ventana on ventana.cod_vent_hor = detalle.cod_vent_hor
-    order by detalle.ord_desp_ped asc;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_detalles_ruta_tienda`(
-	IN _cod_hoj_rut varchar(10)
-)
-BEGIN
-	select pedido.cod_ped,
-    detalle.ord_desp_ped,
-	tienda.nom_tiend, 
-    tienda.dir_tiend,
-    distrito.nom_dist,
-    ventana.hor_ini_vent_hor,
-    ventana.hor_fin_vent_hor
-	from tb_detalle_hoja_ruta detalle 
-	inner join tb_pedido pedido on pedido.cod_ped = detalle.cod_ped and detalle.cod_hoj_rut = _cod_hoj_rut
-	inner join tb_tienda tienda on pedido.cod_tiend_desp = tienda.cod_tiend
-	inner join tb_distrito distrito on tienda.cod_dist = distrito.cod_dist
-    inner join tb_ventana_horaria ventana on ventana.cod_vent_hor = detalle.cod_vent_hor
+    left join tb_tienda tiendaDespacho on tiendaDespacho.cod_tiend = pedido.cod_tiend_desp
+    left join tb_distrito distritoTiendaDespacho on distritoTiendaDespacho.cod_dist = tiendaDespacho.cod_dist
+    left join tb_tienda tiendaDevolucion on tiendaDevolucion.cod_tiend = pedido.cod_tiend_devo
+    left join tb_distrito distritoTiendaDevolucion on distritoTiendaDevolucion.cod_dist = tiendaDevolucion.cod_dist
+    
     order by detalle.ord_desp_ped asc;
 END$$
 DELIMITER ;
@@ -561,9 +529,21 @@ BEGIN
         cliente.dir_cli as clienteDireccion,
         cliente.nom_dist as clienteDireccionDist
 	from tb_pedido ped
-	left join (select cod_tiend,nom_tiend,dir_tiend,dist.cod_dist,dist.nom_dist from tb_tienda inner join tb_distrito dist on dist.cod_dist = tb_tienda.cod_dist) as tieDespacho on tieDespacho.cod_tiend=ped.cod_tiend_desp
-	left join (select cod_tiend,nom_tiend,dir_tiend,dist.cod_dist,dist.nom_dist from tb_tienda inner join tb_distrito dist on dist.cod_dist = tb_tienda.cod_dist) as tieDevol on tieDevol.cod_tiend=ped.cod_tiend_devo
-	left join (select cli.cod_cli,cli.nom_cli,cli.ape_cli,cli.num_dni_cli,cli.telf_cli,cli.dir_cli,dist.cod_dist,dist.nom_dist from tb_cliente cli inner join tb_distrito dist on dist.cod_dist = cli.cod_dist  ) as cliente on cliente.cod_cli = ped.cod_cli
+	left join (
+		select cod_tiend,nom_tiend,dir_tiend,dist.cod_dist,dist.nom_dist 
+        from tb_tienda 
+        inner join tb_distrito dist on dist.cod_dist = tb_tienda.cod_dist) 
+		as tieDespacho on tieDespacho.cod_tiend=ped.cod_tiend_desp
+	left join (
+		select cod_tiend,nom_tiend,dir_tiend,dist.cod_dist,dist.nom_dist 
+        from tb_tienda 
+        inner join tb_distrito dist on dist.cod_dist = tb_tienda.cod_dist) 
+        as tieDevol on tieDevol.cod_tiend=ped.cod_tiend_devo
+	left join (
+		select cli.cod_cli,cli.nom_cli,cli.ape_cli,cli.num_dni_cli,cli.telf_cli,cli.dir_cli,dist.cod_dist,dist.nom_dist 
+        from tb_cliente cli 
+        inner join tb_distrito dist on dist.cod_dist = cli.cod_dist  ) 
+        as cliente on cliente.cod_cli = ped.cod_cli
 	inner join tb_detalle_pedido det on det.cod_ped = ped.cod_ped 
     inner join tb_producto pro on pro.cod_prod = det.cod_prod 
     where 
