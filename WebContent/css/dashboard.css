@@ -26,3 +26,42 @@
 	position: absolute;
 	padding-left: 3px;
 }
+
+      
+#controlPanel {
+	width:512px;
+	border-radius: 5px;
+	border: 1px solid #001100;
+	margin-left: 0px;
+	margin-top: 1px;
+}
+.ctrlimg {
+	width: 32px;
+	height: 32px;
+}
+
+.info-panel {
+	padding: 5px;
+    top: 5px;
+	font-size: 12px;
+	text-align: left;
+    font-family: 'Roboto','sans-serif';
+    line-height: 10px;
+    
+}
+.simLbl {
+	font-size: 12px;
+	text-align: left;
+	font-family: 'Roboto','sans-serif';
+}
+
+/* Panel de botones */
+      .botonera {
+        margin: 2px 0;
+        text-align: center;
+		border-left: 1px solid #001100;
+      }
+      .botonera .btn {
+        font-size: 14px;
+        padding: 8px 13px;
+      }

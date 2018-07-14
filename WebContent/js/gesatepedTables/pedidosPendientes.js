@@ -82,7 +82,21 @@ function iniciarMonitoreo(aData) {
 					zoom: 16,
 					disableDefaultUI: true,
 					disableDoubleClickZoom: true,
-					center: results[0].geometry.location
+					center: results[0].geometry.location,
+					styles: [
+				          {
+				            featureType: "transit.station.bus",
+				            stylers: [
+				              { visibility: "off" }
+				            ]
+				          },
+				          {
+				        	  featureType: "poi.business",
+				        	  stylers: [
+				        		  { visibility: "off" }
+				        		  ]
+				          }
+				    ]
 				});
 				//Se crean marcas para origen y destino
 				localforage.getItem("unidadSeleccionada")
@@ -161,9 +175,9 @@ function iniciarMonitoreo(aData) {
 			$('div#dialogMap').dialog({
 				title: title,
 				maxWidth:600,
-		        maxHeight: 612,
+		        maxHeight: 600,
 				width: 550,
-		        height: 590,
+		        height: 580,
 		        modal: true,
 		        closeOnEscape: false,
 		        close: function() {

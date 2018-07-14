@@ -117,11 +117,11 @@ function crearGrafica(estadoPedidos) {
 	    data: {
 	        datasets: [{
 	            data: [
-	            	estadoPedidos[0].porcentaje * 100, //pendientes
-	            	estadoPedidos[1].porcentaje * 100, //atendidos
-	            	estadoPedidos[2].porcentaje * 100, //no atendidos
-	            	estadoPedidos[3].porcentaje * 100, //reprogramados
-	            	estadoPedidos[4].porcentaje * 100 //cancelados
+	            	(estadoPedidos[0].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[1].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[2].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[3].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[4].porcentaje  * 100).toFixed(2)
 	            	],
 	            backgroundColor: [
 	                '#b7afab',

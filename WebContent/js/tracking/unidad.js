@@ -41,12 +41,10 @@ function initTracking(map,destino) {
 					  marker.setLabel({
 						  color: 'blue',
 						  fontWeight: 'bold',
-						  text: unidad.placa + 
-								  " Tiempo:" + 
-								  unidad.timeleft + 
-								  " Distancia:" + 
-								  unidad.distanceleft
+						  text: unidad.placa
 					  });
+					  document.getElementById('distanceLbl').innerHTML = unidad.timeleft;
+					  document.getElementById('timeLbl').innerHTML = unidad.distanceleft;
 				  } else {
 					  //Si no estaba, se crea nuevo marcador
 					  console.log("Se crea nuevo marcador");
@@ -60,11 +58,7 @@ function initTracking(map,destino) {
 						  label: {
 							  color: 'blue',
 							  fontWeight: 'bold',
-							  text: unidad.placa + 
-									  " Tiempo:" + 
-									  unidad.timeleft + 
-									  " Distancia:" + 
-									  unidad.distanceleft
+							  text: unidad.placa
 						  },
 						  icon: {
 							  labelOrigin: new google.maps.Point(11, 50),
@@ -76,6 +70,8 @@ function initTracking(map,destino) {
 					  });
 					  
 					  unidadLocationMarkers[key] = marker;
+					  document.getElementById('distanceLbl').innerHTML = unidad.timeleft;
+					  document.getElementById('timeLbl').innerHTML = unidad.distanceleft;
 				  }
 				  
 				//Se pinta ruta una sola vez
@@ -93,6 +89,9 @@ function initTracking(map,destino) {
 						      directionsDisplay.setDirections(result);
 						    }
 					  });
+					  
+					//Se establece panel:
+					document.getElementById('endLbl').innerHTML = destino;
 				  }
 				  pintarRuta++;
 			  }
@@ -169,6 +168,7 @@ function obtenerPuntoDePartida(pedido) {
 								};
 								resolve(origen);
 						});
+						document.getElementById('initLbl').innerHTML = partida.direccion;
 					}
 				});
 			}

@@ -52,15 +52,7 @@
         padding: 14px 24px;
       }
       
-      /* Panel de botones */
-      .botonera {
-        margin: 5px 0;
-        text-align: center;
-      }
-      .botonera .btn {
-        font-size: 14px;
-        padding: 8px 13px;
-      }
+      
 
       /* Supporting marketing content */
       .marketing {

@@ -154,12 +154,40 @@
 	</div>
 	<div id="dialogMap" style="display: none;">
 		<div id="monitoreoMap"
-			style="border: 1px solid black; width:512px; height:480px">
+			style="border: 1px solid black; width:512px; height:420px">
 		</div>
-		<div id="controlPanel" class="botonera">
-			<button class="btn btn-sm btn-success" id="iniciarSimBtn">Iniciar Simulación</button>
-			<button class="btn btn-sm btn-danger" style="display: none;" id="detenerSimBtn">Detener Simulación</button>
-			<button class="btn btn-sm btn-success" style="display: none;" id="continuarSimBtn">Continuar Simulación</button>
+		<div id="controlPanel" class="row">
+			<div id="infoPanel" class="col-sm-10 info-panel">
+				<label>Inicio:</label>
+				<label id="initLbl"></label>
+				<br>
+				<label>Fin:</label>
+				<label id="endLbl"></label>
+				<br>
+				<label>Distancia restante:</label>
+				<label id="distanceLbl"></label>
+				<br>
+				<label>Tiempo restante:</label>
+				<label id="timeLbl"></label>
+			</div>
+			<div  class="col-sm-2 botonera">
+				<label class="simLbl">Simulación</label><br>
+				<a  id="iniciarSimBtn"><img class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/play.png"></a>
+				<!-- <button class="btn btn-sm btn-success"
+					id="iniciarSimBtn">
+					Iniciar Simulación
+				</button> -->
+				<a  id="detenerSimBtn" style="display: none;"><img class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/pause.png"></a>
+				<!-- <button class="btn btn-sm btn-danger"
+					style="display: none;" id="detenerSimBtn">
+					Detener Simulación
+				</button> -->
+				<a  id="continuarSimBtn" style="display: none;"><img  class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/play.png"></a>
+				<!-- <button class="btn btn-sm btn-success"
+					style="display: none;" id="continuarSimBtn">
+					Continuar Simulación
+				</button> -->
+			</div>
 		</div>
 	</div>
 	<div id="pedidoMap"
@@ -235,7 +263,7 @@
 					</thead>
 					<tbody id="tbodyPedidosCancelados">
 					</tbody>		
-				</table>
+			</table>
 		</div>
 	</div>
      	</c:otherwise>
