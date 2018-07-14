@@ -18,7 +18,7 @@
 		<result property="nombreChofer" column="nom_chof" />
 		<result property="apellidoChofer" column="ape_chof" />
 		<result property="telefonoChofer" column="telf_chof" />
-		<result property="totalPedidosPendientes" column="tot_ped_pend_unid" />
+		<result property="totalPedidosAtendidos" column="tot_ped_aten_unid" />
 		<result property="totalPedidos" column="tot_ped_unid" />
 	</resultMap>
 
@@ -55,9 +55,13 @@
 		<result property="horaFinVentana" column="hor_fin_vent_hor" />
 		<result property="fechaPactadaDespacho" column="fec_pact_desp" />
 		<result property="fechaNoCumplimientoDespacho" column="fec_no_cump_desp" />
-		<result property="descripcionMotivoPedido" column="desc_mot_ped_hr" />
+		<result property="descripcionMotivoPedidoHR" column="desc_mot_ped_hr" />
+		<result property="descripcionMotivoPedidoPE" column="desc_mot_ped_pe" />
+		<result property="nombresCliente" column="nom_cli" />
+		<result property="apellidosCliente" column="ape_cli" />
 		<result property="direccionCliente" column="dir_cli" />
 		<result property="distritoCliente" column="nom_dist_cli" />
+		<result property="nombreTienda" column="nom_tiend" />
 		<result property="direccionTienda" column="dir_tiend" />
 		<result property="distritoTienda" column="nom_dist_tiend" />
 		<result property="latitudGpsDespacho" column="lat_gps_desp_ped" />

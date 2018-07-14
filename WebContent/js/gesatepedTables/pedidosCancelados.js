@@ -12,7 +12,7 @@ function crearTablaPedidosCancelados() {
 				 'aaData'   : {},
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
-			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>--</i>"}
+			        { 'mData': 'descripcionMotivoPedidoPE',"defaultContent":"<i>--</i>"}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
 					
@@ -27,11 +27,11 @@ function crearTablaPedidosCancelados() {
 }
 
 function actualizarTablaPedidosCancelados(data) {
+	var oTable = $('#tblPedidosCancelados').dataTable();
+	oTable.fnClearTable();
 	if(data.length>0) {
-		var oTable = $('#tblPedidosCancelados').dataTable();
-		oTable.fnClearTable();
 		oTable.fnAddData(data);
-		oTable.fnDraw();
-		oTable.fnPageChange('first');
 	}
+	oTable.fnDraw();
+	oTable.fnPageChange('first');
 }

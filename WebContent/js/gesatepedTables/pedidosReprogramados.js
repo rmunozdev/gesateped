@@ -12,7 +12,7 @@ function crearTablaPedidosReprogramados() {
 				 'aaData'   : {},
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
-			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>--</i>"}
+			        { 'mData': 'descripcionMotivoPedidoPE',"defaultContent":"<i>--</i>"}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
 				}, 
@@ -25,11 +25,11 @@ function crearTablaPedidosReprogramados() {
 }
 
 function actualizarTablaPedidosReprogramados(data) {
+	var oTable = $('#tblPedidosReprogramados').dataTable();
+	oTable.fnClearTable();
 	if(data.length>0) {
-		var oTable = $('#tblPedidosReprogramados').dataTable();
-		oTable.fnClearTable();
 		oTable.fnAddData(data);
-		oTable.fnDraw();
-		oTable.fnPageChange('first');
 	}
+	oTable.fnDraw();
+	oTable.fnPageChange('first');
 }

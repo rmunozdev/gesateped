@@ -13,6 +13,8 @@ const firebaseDB = firebase.database();
 	window.addEventListener('load',iniciar);
 })();
 
+var reloadTask;
+
 function UnidadSeleccionada(hojaRuta,placa) {
 	this.hojaRuta = hojaRuta;
 	this.placa = placa;
@@ -32,6 +34,7 @@ function iniciar() {
 
 
 function actualizarUnidadesPorBodega(){
+	stopAutoRefresh();
 	$.ajaxSetup({
 		cache : false
 	});
@@ -72,6 +75,7 @@ function actualizarUnidadesPorBodega(){
 }
 
 function verDashBoardUnidad(codigoHojaRuta) {
+	stopAutoRefresh();
 	$.ajax({
 		url: _globalContextPath+'/monitoreo/verEstadoPedidos',
 		type: 'POST',
@@ -93,6 +97,8 @@ function verDashBoardUnidad(codigoHojaRuta) {
 						verDetallePedidosPendientes(codigoHojaRuta);
 						verDetallePedidosReprogramados(codigoHojaRuta);
 						verDetallePedidosCancelados(codigoHojaRuta);
+						
+						startAutoRefresh(codigoHojaRuta);
 					});
 				});
 				
@@ -111,11 +117,11 @@ function crearGrafica(estadoPedidos) {
 	    data: {
 	        datasets: [{
 	            data: [
-	            	estadoPedidos[0].porcentaje, //pendientes
-	            	estadoPedidos[1].porcentaje, //atendidos
-	            	estadoPedidos[2].porcentaje, //no atendidos
-	            	estadoPedidos[3].porcentaje, //reprogramados
-	            	estadoPedidos[4].porcentaje //cancelados
+	            	estadoPedidos[0].porcentaje * 100, //pendientes
+	            	estadoPedidos[1].porcentaje * 100, //atendidos
+	            	estadoPedidos[2].porcentaje * 100, //no atendidos
+	            	estadoPedidos[3].porcentaje * 100, //reprogramados
+	            	estadoPedidos[4].porcentaje * 100 //cancelados
 	            	],
 	            backgroundColor: [
 	                '#b7afab',
@@ -148,11 +154,11 @@ function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
 	    data: {
 	        datasets: [{
 	            data: [
-	            	estadoPedidos[0].porcentaje, 
-	            	estadoPedidos[1].porcentaje, 
-	            	estadoPedidos[2].porcentaje, 
-	            	estadoPedidos[3].porcentaje, 
-	            	estadoPedidos[4].porcentaje
+	            	(estadoPedidos[0].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[1].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[2].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[3].porcentaje  * 100).toFixed(2), 
+	            	(estadoPedidos[4].porcentaje  * 100).toFixed(2)
 	            	],
 	            backgroundColor: [
 	            	'#dc0e40',
@@ -255,3 +261,44 @@ function hideAllDetails() {
 	$("#graficaTotalUnidad").hide();
 	$("#accordion").hide();
 }
+
+function detectarCambios(codigoHojaRuta) {
+	//Conteo de resultados
+	var status = {
+		codigoHojaRuta: codigoHojaRuta,
+		atendidos: $('#tblPedidosAtendidos').dataTable().fnGetData().length,
+		noAtendidos: $('#tblPedidosNoAtendidos').dataTable().fnGetData().length,
+		pendientes: $('#tblPedidosPendientes').dataTable().fnGetData().length,
+		reprogramados: $('#tblPedidosReprogramados').dataTable().fnGetData().length,
+		cancelados: $('#tblPedidosCancelados').dataTable().fnGetData().length
+	}
+	$.ajax({
+		url: _globalContextPath+'/monitoreo/reload',
+		type: 'POST',
+		data: status,
+		Accept : 'text/plain',
+		success:function(data){
+			console.log(data);
+			if(data) {
+				console.log("Success");
+				verDashBoardUnidad(codigoHojaRuta);
+			} else {
+				console.log("Fail");
+			}
+		}
+	});
+}
+
+function startAutoRefresh(codigoHojaRuta) {
+	reloadTask = setInterval(() => {
+		detectarCambios(codigoHojaRuta);
+	}, 10*1000);
+}
+
+function stopAutoRefresh() {
+	if(reloadTask) {
+		clearInterval(reloadTask);
+	}
+}
+
+

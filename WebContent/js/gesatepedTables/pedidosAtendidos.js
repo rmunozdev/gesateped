@@ -48,13 +48,13 @@ function crearTablaPedidosAtendidos(paths) {
 }
 
 function actualizarTablaPedidosAtendidos(data) {
+	var oTable = $('#tblPedidosAtendidos').dataTable();
+	oTable.fnClearTable();
 	if(data.length>0) {
-		var oTable = $('#tblPedidosAtendidos').dataTable();
-		oTable.fnClearTable();
 		oTable.fnAddData(data);
-		oTable.fnDraw();
-		oTable.fnPageChange('first');
-	}
+	} 
+	oTable.fnDraw();
+	oTable.fnPageChange('first');
 }
 
 function localizarAtendido(aData) {
@@ -78,7 +78,21 @@ function localizarAtendido(aData) {
 				zoom: 16,
 				disableDefaultUI: true,
 				disableDoubleClickZoom: true,
-				center: results[0].geometry.location
+				center: results[0].geometry.location,
+				styles: [
+			          {
+			            featureType: "transit.station.bus",
+			            stylers: [
+			              { visibility: "off" }
+			            ]
+			          },
+			          {
+			        	  featureType: "poi.business",
+			        	  stylers: [
+			        		  { visibility: "off" }
+			        		  ]
+			          }
+			    ]
 			});
 			
 			 const marker = new google.maps.Marker({
@@ -87,10 +101,10 @@ function localizarAtendido(aData) {
 					  lng: results[0].geometry.location.lng()
 				  },
 				  map: map,
-				  title: aData.codigoPedido,
+				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}`,
 				  optimized: false,
 				  label: {
-					    color: 'black',
+					    color: 'blue',
 					    fontWeight: 'bold',
 					    text: aData.codigoPedido
 					  },
@@ -103,13 +117,26 @@ function localizarAtendido(aData) {
 				}
 			 });
 			
+			 
+			 //Label div
+//			 $("#pedidoMap").append(`<div class='map-panel'>
+//			 	<span class="map-panel-title">${aData.codigoPedido}</span><br>
+//			 	${direccion}</div>`);
+			 
 		} else {
 		      console.log(
 		        'Geocode was not successful for the following reason: ' + status
 		      );
 		}
 	});
+	
+	var title = `<div>
+		<img src="${_globalContextPath}/images/sodimaclogo-title.jpg" class="dialog-sodimac">
+			<span class="dialog-sodimac-title">UBICACIÓN ACTUAL DE PEDIDO ${aData.codigoPedido}</span>
+			</div>`;
+	
 	$('div#pedidoMap').dialog({
+		title: title,
 		maxWidth:600,
         maxHeight: 500,
 		width: 600,

@@ -31,7 +31,7 @@ function crearTablaPedidosNoAtendidos(paths) {
 			        { 'mData': 'codigoPedido'},
 			        {},
 			        { 'mData': 'fechaNoCumplimientoDespacho',"defaultContent":"<i>--</i>"},
-			        { 'mData': 'descripcionMotivoPedido',"defaultContent":"<i>--</i>"},
+			        { 'mData': 'descripcionMotivoPedidoHR',"defaultContent":"<i>--</i>"},
 			        {}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
@@ -51,13 +51,13 @@ function crearTablaPedidosNoAtendidos(paths) {
 }
 
 function actualizarTablaPedidosNoAtendidos(data) {
+	var oTable = $('#tblPedidosNoAtendidos').dataTable();
+	oTable.fnClearTable();
 	if(data.length>0) {
-		var oTable = $('#tblPedidosNoAtendidos').dataTable();
-		oTable.fnClearTable();
 		oTable.fnAddData(data);
-		oTable.fnDraw();
-		oTable.fnPageChange('first');
 	}
+	oTable.fnDraw();
+	oTable.fnPageChange('first');
 }
 
 function localizarNoAtendido(aData) {
@@ -81,7 +81,21 @@ function localizarNoAtendido(aData) {
 				zoom: 15,
 				disableDefaultUI: true,
 				disableDoubleClickZoom: true,
-				center: results[0].geometry.location
+				center: results[0].geometry.location,
+				styles: [
+			          {
+			            featureType: "transit.station.bus",
+			            stylers: [
+			              { visibility: "off" }
+			            ]
+			          },
+			          {
+			        	  featureType: "poi.business",
+			        	  stylers: [
+			        		  { visibility: "off" }
+			        		  ]
+			          }
+			    ]
 			});
 			
 			 const pedidoMarker = new google.maps.Marker({
@@ -90,7 +104,7 @@ function localizarNoAtendido(aData) {
 					  lng: results[0].geometry.location.lng()
 				  },
 				  map: map,
-				  title: aData.codigoPedido,
+				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}`,
 				  optimized: false,
 				  label: {
 					    color: 'blue',
@@ -106,6 +120,12 @@ function localizarNoAtendido(aData) {
 				  }
 			 });
 			 
+			//Label div
+			 /*
+			 $("#pedidoMap").append(`<div class='map-panel'>
+			 	<span class="map-panel-title">${aData.codigoPedido}</span><br>
+			 	${direccion}</div>`);
+			 */
 			 localforage.getItem("unidadSeleccionada").then((unidadSeleccionada)=>{
 				 var unidadMarker = new google.maps.Marker({
 				        position:  new google.maps.LatLng(aData.latitudGpsDespacho, aData.longitudGpsDespacho),
@@ -132,7 +152,14 @@ function localizarNoAtendido(aData) {
 		      );
 		}
 	});
+	
+	var title = `<div>
+		<img src="${_globalContextPath}/images/sodimaclogo-title.jpg" class="dialog-sodimac">
+			<span class="dialog-sodimac-title">UBICACIÓN ACTUAL DE PEDIDO ${aData.codigoPedido}</span>
+			</div>`;
+	
 	$('div#pedidoMap').dialog({
+		title : title,
 		maxWidth:600,
         maxHeight: 500,
 		width: 600,

@@ -18,13 +18,13 @@
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
 </script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@mapbox/polyline@1.0.0/src/polyline.min.js"></script>
 
 
 <style>
 	.tbl-descripcion {
-		
 		background-color: #dce6ef;
-	    padding: 10px 5px;
+	    padding: 5px 5px;
 	    left: 0px;
 	    position: relative;
 	}
@@ -40,6 +40,33 @@
 	
 	.left-text {
 		
+	}
+	
+	.dialog-sodimac {
+		height: 20px;
+	}
+	
+	.dialog-sodimac-title {
+		position: relative;
+	    left: 35px;
+	    top: 3px;
+	    text-decoration: underline;
+	}
+	
+	.map-panel {
+		position:absolute; 
+		right: 1%;
+    	bottom: 5%;
+		background: #f9f1dd;
+		padding: 6px;
+	    border: 2px solid #ad9595;
+	    border-radius: 5px;
+	    color: black;
+	    font-family: sans-serif;
+	}
+	.map-panel-title {
+		font-weight: bold;
+		text-decoration: underline
 	}
 	
 	
@@ -73,7 +100,7 @@
 	         <div class="panel-body">
 	         	<div class="left-text">
 			        <jsp:useBean id="now" class="java.util.Date"/> 
-					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></label>
+					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></label>
 			    </div>
 				<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
 					<form:select path="codigo" class="selectpicker" onchange="actualizarUnidadesPorBodega()" >
@@ -86,8 +113,8 @@
 	
 	        <div id="graficaTotalBodega" class="span6" style="display:none">
 				<p class="alert alert-info">Monitoreo del Total de Pedidos</p>
-		         <div style="width:300px;height:300px">
-					<canvas id="chartPedidosPorBodega" width="200px" height="200px"></canvas>
+		         <div style="width:300px;height:200px">
+					<canvas id="chartPedidosPorBodega" width="320px" height="200px"></canvas>
 				</div>
 	        </div>
 	        <div id="noHayPedidosMsg" class="span6" style="display:none">
@@ -99,7 +126,7 @@
 	        <div id="panelUnidades" class="span12" style="display:none">
 	        	<div class="alert alert-warning">
 					<p>Lista de Unidades activas para el 
-					<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />, por favor seleccione la unidad a monitorear. </p>
+					<fmt:formatDate value="${now}" pattern="yyyy/MM/dd" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
 	        	<table id="tblUnidades" class="table">
 					<thead>
@@ -118,8 +145,8 @@
 	        
 	        <div id="graficaTotalUnidad" class="span12" style="display:none">
 	        	<p class="alert alert-info">Monitoreo de Despacho de Pedidos</p>
-	        	<div style="width:300px;height:300px">
-					<canvas id="myChart" width="200px" height="200px"></canvas>
+	        	<div style="width:300px;height:200px">
+					<canvas id="myChart" width="320px" height="200px"></canvas>
 				</div>
 	        </div>
 	        <hr>
@@ -139,7 +166,7 @@
 			style="display: none;border: 1px solid black; width:512px; height:480px">
 	</div>
 	<div id="accordion" data-collapse style="display:none">
-		<h3 class="tbl-descripcion open">Pedidos Atendidos</h3>
+		<h4 class="tbl-descripcion open">Pedidos Atendidos</h4>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosAtendidos" class="table" >
 					<thead>
@@ -154,7 +181,7 @@
 					</tbody>		
 				</table>
 		</div>
-		<h3 class="tbl-descripcion open">Pedidos No Atendidos</h3>
+		<h4 class="tbl-descripcion open">Pedidos No Atendidos</h4>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosNoAtendidos" class="table">
 					<thead>
@@ -170,7 +197,7 @@
 					</tbody>		
 				</table>
 		</div>
-		<h3 class="tbl-descripcion open">Pedidos Pendientes</h3>
+		<h4 class="tbl-descripcion open">Pedidos Pendientes</h4>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosPendientes" class="table">
 					<thead>
@@ -184,7 +211,7 @@
 					</tbody>		
 				</table>
 		</div>
-		<h3 class="tbl-descripcion open">Pedidos Reprogramados</h3>
+		<h4 class="tbl-descripcion open">Pedidos Reprogramados</h4>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosReprogramados" class="table">
 					<thead>
@@ -197,7 +224,7 @@
 					</tbody>		
 				</table>
 		</div>
-		<h3 class="tbl-descripcion open">Pedidos Cancelados</h3>
+		<h4 class="tbl-descripcion open">Pedidos Cancelados</h4>
 		<div class="tbl-contenedor">
 			<table id="tblPedidosCancelados" class="table">
 					<thead>

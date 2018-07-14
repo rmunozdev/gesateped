@@ -1,21 +1,19 @@
 @charset "ISO-8859-1";
 
 .location-marker {
-	width: 32px;
-	height: 32px;
+	width: 25px;
+	height: 25px;
 }
 
 .bar-chart-bar {
     display: block; 
     position:relative; 
-    width: 100%; 
+    width: 150px; 
     height: 20px; 
 }
 .bar {
     float: left; 
     height: 100%; 
-   
-    
 }
 
 .bar1 {
@@ -24,3 +22,7 @@
 .bar2    {
         background-color: #c1ccc1;
     }
+.per-label {
+	position: absolute;
+	padding-left: 3px;
+}

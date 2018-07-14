@@ -103,11 +103,28 @@
 		  background-color: #f5f5f5;
 		}
 		
+		.ui-dialog-titlebar {
+		  background-color: #FFFFFF;
+		  background-image: none;
+		  color: #000;
+		}
+		
     </style>
     
     
     <script>
     	const _globalContextPath = "${pageContext.request.contextPath}";
+    	
+    	//Jquery Dialog Soporte html en titulo
+    	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+    	    _title: function(title) {
+    	        if (!this.options.title ) {
+    	            title.html("&#160;");
+    	        } else {
+    	            title.html(this.options.title);
+    	        }
+    	    }
+    	}));
     </script>
 </head>
 <body>

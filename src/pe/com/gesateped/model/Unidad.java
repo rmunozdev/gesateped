@@ -11,7 +11,7 @@ public class Unidad {
 	private String nombreChofer;
 	private String apellidoChofer;
 	private String telefonoChofer;
-	private int totalPedidosPendientes;
+	private int totalPedidosAtendidos;
 	private int totalPedidos;
 	
 	public String getCodigoHojaRuta() {
@@ -44,17 +44,18 @@ public class Unidad {
 	public void setTelefonoChofer(String telefonoChofer) {
 		this.telefonoChofer = telefonoChofer;
 	}
-	public int getTotalPedidosPendientes() {
-		return totalPedidosPendientes;
-	}
-	public void setTotalPedidosPendientes(int totalPedidosPendientes) {
-		this.totalPedidosPendientes = totalPedidosPendientes;
-	}
+	
 	public int getTotalPedidos() {
 		return totalPedidos;
 	}
 	public void setTotalPedidos(int totalPedidos) {
 		this.totalPedidos = totalPedidos;
+	}
+	public int getTotalPedidosAtendidos() {
+		return totalPedidosAtendidos;
+	}
+	public void setTotalPedidosAtendidos(int totalPedidosAtendidos) {
+		this.totalPedidosAtendidos = totalPedidosAtendidos;
 	}
 	
 	

@@ -50,18 +50,17 @@ function crearTablaPedidosPendientes(paths) {
 }
 
 function actualizarTablaPedidosPendientes(data,codigoHojaRuta) {
+	var oTable = $('#tblPedidosPendientes').dataTable();
+	oTable.fnClearTable();
 	if(data.length>0) {
-		var oTable = $('#tblPedidosPendientes').dataTable();
-		oTable.fnClearTable();
 		oTable.fnAddData(data);
-		oTable.fnDraw();
-		oTable.fnPageChange('first');
 	}
+	oTable.fnDraw();
+	oTable.fnPageChange('first');
 }
 
 function iniciarMonitoreo(aData) {
 	var direccion;
-	
 	//TODO rmunozdev Actualizar lógica
 	if(aData.direccionCliente && aData.distritoCliente) {
 		console.log("Se usara direccion de cliente");
@@ -85,7 +84,6 @@ function iniciarMonitoreo(aData) {
 					disableDoubleClickZoom: true,
 					center: results[0].geometry.location
 				});
-				
 				//Se crean marcas para origen y destino
 				localforage.getItem("unidadSeleccionada")
 					.then(unidadSeleccionada=>{
@@ -149,8 +147,19 @@ function iniciarMonitoreo(aData) {
 			}
 			
 			//Se activan opciones para simular
+			
+			
+			var title = `<div>
+			<img src="${_globalContextPath}/images/sodimaclogo-title.jpg" class="dialog-sodimac">
+				<span class="dialog-sodimac-title">UBICACIÓN ACTUAL DE LA UNIDAD</span>
+				</div>`;
+			//Se detiene autorefresh
+			stopAutoRefresh();
 			let simulador = new Simulador($("#iniciarSimBtn"),$("#detenerSimBtn"),$("#continuarSimBtn"));
+			
+			
 			$('div#dialogMap').dialog({
+				title: title,
 				maxWidth:600,
 		        maxHeight: 612,
 				width: 550,
@@ -160,6 +169,10 @@ function iniciarMonitoreo(aData) {
 		        close: function() {
 		        	console.log("Se detiene simulacion(si se inicio)");
 		        	simulador.cancelar();
+		        	//Se inicia autorefresh al cerrar
+		        	localforage.getItem("unidadSeleccionada").then(unidadSeleccionada=>{
+		        		startAutoRefresh(unidadSeleccionada.codigoHojaRuta);
+		        	});
 		        }
 		    });
 		});

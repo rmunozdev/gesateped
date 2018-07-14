@@ -39,15 +39,17 @@ function crearTablaUnidades() {
 		         		'mRender' : function(data, type, row){
 		         			if(type === 'display') {
 		         				console.log(JSON.stringify(data));
-		         				let atendidos = data.totalPedidos - data.totalPedidosPendientes;
+		         				let atendidos = data.totalPedidosAtendidos;
 		         				let total = data.totalPedidos;
 		         				
-		         				let porcentajeBase = (atendidos*100)/total;
+		         				let porcentajeBase = ((atendidos*100)/total).toFixed(2);
 		         				let porcentajeDefecto = 100 - porcentajeBase;
 		         				let content = `<div class="bar-chart-bar">
+		         					<span>
 		         					<div class="bar bar1" style="width:${porcentajeBase*0.8}%"></div>
 		         					<div class="bar bar2" style="width:${porcentajeDefecto*0.8}%"></div>
-		         					<span>${porcentajeBase}%</span>
+		         					</span>
+		         					<span class="per-label">${porcentajeBase}%</span>
 		         					</div>`
 		         				data = content;
 		         			}

@@ -17,9 +17,13 @@ public class DetallePedidoRuta {
 	
 	private Date fechaPactadaDespacho;
 	private Date fechaNoCumplimientoDespacho;
-	private String descripcionMotivoPedido;
+	private String descripcionMotivoPedidoHR;
+	private String descripcionMotivoPedidoPE;
+	private String nombresCliente;
+	private String apellidosCliente;
 	private String direccionCliente;
 	private String distritoCliente;
+	private String nombreTienda;
 	private String direccionTienda;
 	private String distritoTienda;
 	private double latitudGpsDespacho;
@@ -59,12 +63,7 @@ public class DetallePedidoRuta {
 	public void setFechaNoCumplimientoDespacho(Date fechaNoCumplimientoDespacho) {
 		this.fechaNoCumplimientoDespacho = fechaNoCumplimientoDespacho;
 	}
-	public String getDescripcionMotivoPedido() {
-		return descripcionMotivoPedido;
-	}
-	public void setDescripcionMotivoPedido(String descripcionMotivoPedido) {
-		this.descripcionMotivoPedido = descripcionMotivoPedido;
-	}
+	
 	public String getDireccionCliente() {
 		return direccionCliente;
 	}
@@ -100,6 +99,36 @@ public class DetallePedidoRuta {
 	}
 	public void setLongitudGpsDespacho(double longitudGpsDespacho) {
 		this.longitudGpsDespacho = longitudGpsDespacho;
+	}
+	public String getNombresCliente() {
+		return nombresCliente;
+	}
+	public void setNombresCliente(String nombresCliente) {
+		this.nombresCliente = nombresCliente;
+	}
+	public String getApellidosCliente() {
+		return apellidosCliente;
+	}
+	public void setApellidosCliente(String apellidosCliente) {
+		this.apellidosCliente = apellidosCliente;
+	}
+	public String getNombreTienda() {
+		return nombreTienda;
+	}
+	public void setNombreTienda(String nombreTienda) {
+		this.nombreTienda = nombreTienda;
+	}
+	public String getDescripcionMotivoPedidoHR() {
+		return descripcionMotivoPedidoHR;
+	}
+	public void setDescripcionMotivoPedidoHR(String descripcionMotivoPedidoHR) {
+		this.descripcionMotivoPedidoHR = descripcionMotivoPedidoHR;
+	}
+	public String getDescripcionMotivoPedidoPE() {
+		return descripcionMotivoPedidoPE;
+	}
+	public void setDescripcionMotivoPedidoPE(String descripcionMotivoPedidoPE) {
+		this.descripcionMotivoPedidoPE = descripcionMotivoPedidoPE;
 	}
 	
 }

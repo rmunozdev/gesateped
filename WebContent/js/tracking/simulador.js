@@ -23,30 +23,22 @@ function establecerParadasRuta() {
 						    	const route = result.routes[0];
 						    	
 						    	//Calculo de distancia total
+						    	let contador = {
+						    			distanciaPendiente : 0,
+						    			demoraPendiente : 0
+						    	};
+						    	
 						    	let distanciaPendiente = 0;
 						    	let demoraPendiente = 0;
 						    	route.legs.forEach(leg=>{
-						    		distanciaPendiente += leg.distance.value;
-						    		demoraPendiente += leg.duration.value;
+						    		contador.distanciaPendiente += leg.distance.value;
+						    		contador.demoraPendiente += leg.duration.value;
 						    	});
-						    	console.log("Distancia pendiente",distanciaPendiente);
-						    	console.log("Demora pendiente",demoraPendiente);
 						    	
 						    	route.legs.forEach(leg=>{
 						    		leg.steps.forEach(step=>{
-						    			const durationInSeconds = step.duration.value;
-						    			distanciaPendiente -= step.distance.value;
-						    			demoraPendiente -= step.duration.value;
-						    			
-						    			tripPoints.push({
-						    				placa: pedido.unidadAsignada.numeroPlaca,
-						    				timeleft: formatTime(demoraPendiente),
-											distanceleft: formatDistance(distanciaPendiente),
-						    				locations: {
-						    					lat : step.start_location.lat(),
-						    					lng : step.start_location.lng()
-						    				}
-						    			});
+						    			aumentarResolucion(step, tripPoints, pedido.unidadAsignada.numeroPlaca, contador);
+//						    			
 						    		});
 						    	});
 						    	localforage.setItem("tripLocations",tripPoints)
@@ -171,5 +163,77 @@ function Simulador(trigger,stopper,reactivate) {
 	}
 }
 
-
+function aumentarResolucion(step, tripPoints, placa, contador) {
+	
+	//Longitud de paso tiempo => 60 seg
+	const pointsNumber = parseInt(step.duration.value / 60);
+	
+	const secondsPerPoint = parseInt(step.duration.value/ pointsNumber);
+	const residuoSeconds = step.duration.value % pointsNumber
+	
+	//Importante: Son constantes
+	const metersPerPoint = parseInt(step.distance.value / pointsNumber);
+	const residuoMeters = step.distance.value % pointsNumber;
+	
+	if(pointsNumber > 0 ) {
+		const points = polyline.decode(step.polyline.points);
+		
+		const indexJump = parseInt(points.length / pointsNumber);
+		var index = 0;
+		var acumuladoSeconds = 0;
+		var acumuladoMeters = 0;
+		for(var i=0; i < pointsNumber; i++) {
+			let latitud = points[index][0];
+			let longitud = points[index][1];
+			
+			contador.distanciaPendiente -= metersPerPoint;
+			contador.demoraPendiente -= secondsPerPoint;
+			
+			acumuladoMeters += metersPerPoint;
+			acumuladoSeconds += secondsPerPoint;
+			
+			tripPoints.push({
+				placa: placa,
+				timeleft: formatTime(contador.demoraPendiente),
+				distanceleft: formatDistance(contador.distanciaPendiente),
+				locations: {
+					lat : latitud,
+					lng : longitud
+				}
+			});
+			index += indexJump;
+		}
+		if(residuoSeconds || residuoMeters) {
+			let latitud = step.end_location.lat();
+			let longitud = step.end_location.lng();
+			
+			contador.distanciaPendiente -= (step.distance.value - acumuladoMeters);
+			contador.demoraPendiente -= (step.duration.value - acumuladoSeconds);
+			
+			tripPoints.push({
+				placa: placa,
+				timeleft: formatTime(contador.demoraPendiente),
+				distanceleft: formatDistance(contador.distanciaPendiente),
+				locations: {
+					lat : latitud,
+					lng : longitud
+				}
+			});
+		}
+	} else {
+		const durationInSeconds = step.duration.value;
+		contador.distanciaPendiente -= step.distance.value;
+		contador.demoraPendiente -= step.duration.value;
+		
+		tripPoints.push({
+			placa: placa,
+			timeleft: formatTime(contador.demoraPendiente),
+			distanceleft: formatDistance(contador.distanciaPendiente),
+			locations: {
+				lat : step.start_location.lat(),
+				lng : step.start_location.lng()
+			}
+		});
+	}
+}
 
