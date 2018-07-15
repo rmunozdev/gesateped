@@ -208,8 +208,11 @@ BEGIN
 		   dhr.fec_no_cump_desp,
 		   mph.desc_mot_ped AS desc_mot_ped_hr,
 		   mpp.desc_mot_ped AS desc_mot_ped_pe,
+           cli.nom_cli,
+           cli.ape_cli,
            cli.dir_cli,
            dcli.nom_dist AS nom_dist_cli,
+           tie.nom_tiend,
            tie.dir_tiend,
            dtie.nom_dist AS nom_dist_tiend,
 		   dhr.lat_gps_desp_ped,
@@ -247,8 +250,11 @@ BEGIN
 		   dhr.fec_no_cump_desp,
 		   mph.desc_mot_ped AS desc_mot_ped_hr,
 		   mpp.desc_mot_ped AS desc_mot_ped_pe,
+           cli.nom_cli,
+           cli.ape_cli,
            cli.dir_cli,
            dcli.nom_dist AS nom_dist_cli,
+           tie.nom_tiend,
            tie.dir_tiend,
            dtie.nom_dist AS nom_dist_tiend,
 		   dhr.lat_gps_desp_ped,
@@ -275,7 +281,8 @@ BEGIN
       AND dhr.fec_no_cump_desp IS NULL
       AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
       AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE());
+      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
+    ORDER BY dhr.ord_desp_ped ASC;
 
   ELSEIF pi_est_ped = 'NATE' THEN -- Pedidos No Atendidos
     SELECT dhr.cod_ped,
@@ -285,8 +292,11 @@ BEGIN
 		   dhr.fec_no_cump_desp,
 		   mph.desc_mot_ped AS desc_mot_ped_hr,
 		   mpp.desc_mot_ped AS desc_mot_ped_pe,
+           cli.nom_cli,
+           cli.ape_cli,
            cli.dir_cli,
            dcli.nom_dist AS nom_dist_cli,
+		   tie.nom_tiend,           
            tie.dir_tiend,
            dtie.nom_dist AS nom_dist_tiend,
 		   dhr.lat_gps_desp_ped,
@@ -313,7 +323,8 @@ BEGIN
       AND dhr.fec_no_cump_desp IS NOT NULL
       AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
       AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE());
+      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
+    ORDER BY dhr.ord_desp_ped ASC;
 
   ELSEIF pi_est_ped = 'REPR' THEN -- Pedidos Reprogramados
     SELECT dhr.cod_ped,
@@ -323,8 +334,11 @@ BEGIN
 		   dhr.fec_no_cump_desp,
 		   mph.desc_mot_ped AS desc_mot_ped_hr,
 		   mpp.desc_mot_ped AS desc_mot_ped_pe,
+           cli.nom_cli,
+           cli.ape_cli,
            cli.dir_cli,
            dcli.nom_dist AS nom_dist_cli,
+           tie.nom_tiend,           
            tie.dir_tiend,
            dtie.nom_dist AS nom_dist_tiend,
 		   dhr.lat_gps_desp_ped,
@@ -345,7 +359,7 @@ BEGIN
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mph
 	  ON (dhr.cod_mot_ped = mph.cod_mot_ped)
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mpp
-	  ON (dhr.cod_mot_ped = mpp.cod_mot_ped)
+	  ON (ped.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND dhr.fec_pact_desp IS NULL
       AND dhr.fec_no_cump_desp IS NULL
@@ -361,8 +375,11 @@ BEGIN
 		   dhr.fec_no_cump_desp,
 		   mph.desc_mot_ped AS desc_mot_ped_hr,
 		   mpp.desc_mot_ped AS desc_mot_ped_pe,
+           cli.nom_cli,
+           cli.ape_cli,
            cli.dir_cli,
            dcli.nom_dist AS nom_dist_cli,
+           tie.nom_tiend,           
            tie.dir_tiend,
            dtie.nom_dist AS nom_dist_tiend,
 		   dhr.lat_gps_desp_ped,
@@ -383,7 +400,7 @@ BEGIN
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mph
 	  ON (dhr.cod_mot_ped = mph.cod_mot_ped)
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mpp
-	  ON (dhr.cod_mot_ped = mpp.cod_mot_ped)
+	  ON (ped.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND dhr.fec_pact_desp IS NULL
       AND dhr.fec_no_cump_desp IS NULL
@@ -411,7 +428,7 @@ BEGIN
             AND dhr.fec_no_cump_desp IS NULL
             AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
             AND ped.fec_canc_ped IS NULL
-            AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())) AS tot_ped_pend_unid,
+            AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())) AS tot_ped_aten_unid,
 		 (SELECT COUNT(dhr.cod_ped)
           FROM bd_gesateped.tb_detalle_hoja_ruta dhr
           WHERE dhr.cod_hoj_rut = hr.cod_hoj_rut) AS tot_ped_unid
@@ -547,12 +564,9 @@ BEGIN
 	inner join tb_detalle_pedido det on det.cod_ped = ped.cod_ped 
     inner join tb_producto pro on pro.cod_prod = det.cod_prod 
     where 
-		ped.fec_canc_ped is null
-		and (
-			(ped.fec_desp_ped = _fecha_despacho and ped.fec_repro_ped is null and ped.fec_devo_ped is null)
-			or ped.fec_repro_ped = _fecha_despacho
-			or ped.fec_devo_ped = _fecha_despacho
-        )
+		(ped.fec_desp_ped = _fecha_despacho AND ped.fec_repro_ped IS NULL AND ped.fec_canc_ped IS NULL)
+		OR (ped.fec_repro_ped = _fecha_despacho AND ped.fec_canc_ped IS NULL)
+		OR (ped.fec_repro_ped IS NULL AND ped.fec_devo_ped = _fecha_despacho AND ped.cod_tiend_devo IS NULL)
     order by ped.cod_ped;
 END$$
 DELIMITER ;

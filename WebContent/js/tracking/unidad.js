@@ -43,8 +43,8 @@ function initTracking(map,destino) {
 						  fontWeight: 'bold',
 						  text: unidad.placa
 					  });
-					  document.getElementById('distanceLbl').innerHTML = unidad.timeleft;
-					  document.getElementById('timeLbl').innerHTML = unidad.distanceleft;
+					  document.getElementById('distanceLbl').innerHTML = formatDistance(unidad.distanceleft);
+					  document.getElementById('timeLbl').innerHTML = formatTimeToMinutes(unidad.timeleft);
 				  } else {
 					  //Si no estaba, se crea nuevo marcador
 					  console.log("Se crea nuevo marcador");
@@ -70,8 +70,8 @@ function initTracking(map,destino) {
 					  });
 					  
 					  unidadLocationMarkers[key] = marker;
-					  document.getElementById('distanceLbl').innerHTML = unidad.timeleft;
-					  document.getElementById('timeLbl').innerHTML = unidad.distanceleft;
+					  document.getElementById('distanceLbl').innerHTML = formatDistance(unidad.distanceleft);
+					  document.getElementById('timeLbl').innerHTML = formatTimeToMinutes(unidad.timeleft);
 				  }
 				  
 				//Se pinta ruta una sola vez
@@ -79,7 +79,7 @@ function initTracking(map,destino) {
 					  var directionsService = new google.maps.DirectionsService();
 					  var request = {
 							    origin: new google.maps.LatLng(unidad.lat,unidad.lng),
-							    destination: destino,
+							    destination: destino + " Peru",
 							    travelMode: 'DRIVING'
 						};
 						
@@ -129,8 +129,8 @@ function iniciarUnidadEnFirebase() {
 							.set({
 								"viaje" : {
 									placa: pedido.unidadAsignada.numeroPlaca,
-									timeleft: formatTime(demoraPendiente),
-									distanceleft: formatDistance(distanciaPendiente),
+									timeleft: demoraPendiente,
+									distanceleft: distanciaPendiente,
 									lat: origen.lat, 
 									lng: origen.lng	
 								}
@@ -160,7 +160,7 @@ function obtenerPuntoDePartida(pedido) {
 						//Posicion original
 						let geocoder = new google.maps.Geocoder();
 						geocoder.geocode({
-							address:partida.direccion},
+							address:partida.direccion + " Peru"},
 							(results,status)=>{
 								let origen = {
 										lat: results[0].geometry.location.lat(),
@@ -181,7 +181,7 @@ function obtenerDetallesRuta(origen,destino) {
 		var directionsService = new google.maps.DirectionsService();
 		 var request = {
 			origin: new google.maps.LatLng(origen.lat,origen.lng),
-			destination: destino.destino,
+			destination: destino.destino + " Peru",
 			travelMode: 'DRIVING'
 		 };
 		 
@@ -232,11 +232,19 @@ function formatTime(seconds) {
     return hours+':'+minutes+':'+seconds;
 }
 
+function formatTimeToMinutes(seconds) {
+	console.log("Seconds",seconds);
+	var sec_num = seconds;
+	var minutos = Math.floor(sec_num/60);
+	return minutos.toFixed(0) + " minutos";
+}
+
 function formatDistance(meters) {
+	console.log("Meters",meters);
 	if(meters<100) {
 		return meters + " m";
 	} else {
 		var kilometros = meters/1000;
-		return kilometros + "km"
+		return kilometros.toFixed(2) + " km"
 	}
 }

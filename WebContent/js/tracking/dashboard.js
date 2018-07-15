@@ -32,6 +32,10 @@ function iniciar() {
 	crearTablaPedidosCancelados();
 }
 
+function onBodegaChange() {
+	$("#codigoHojaRutaField").val("");
+	actualizarUnidadesPorBodega();
+}
 
 function actualizarUnidadesPorBodega(){
 	stopAutoRefresh();
@@ -39,7 +43,9 @@ function actualizarUnidadesPorBodega(){
 		cache : false
 	});
 	var form  = $('#frmBodega');
-	hideAllDetails();
+	if(!$("#codigoHojaRutaField").val()) {
+		hideAllDetails();
+	}
 	$.ajax({
 		url: form.attr('action'),
 		type: form.attr('method'),
@@ -64,7 +70,8 @@ function actualizarUnidadesPorBodega(){
 			if(data.length && data.length > 0) {
 				$("#graficaTotalBodega").show();
 				$("#noHayPedidosMsg").hide();
-				actualizarGraficaEstadoPedidosPorBodega(data);	
+				mostrarGraficaTotal(data);
+				startAutoRefresh();
 			} else {
 				$("#graficaTotalBodega").hide();
 				$("#noHayPedidosMsg").show();
@@ -75,7 +82,7 @@ function actualizarUnidadesPorBodega(){
 }
 
 function verDashBoardUnidad(codigoHojaRuta) {
-	stopAutoRefresh();
+	//stopAutoRefresh();
 	$.ajax({
 		url: _globalContextPath+'/monitoreo/verEstadoPedidos',
 		type: 'POST',
@@ -91,14 +98,12 @@ function verDashBoardUnidad(codigoHojaRuta) {
 						codigoHojaRuta: codigoHojaRuta
 					}).then(()=>{
 						showAllDetails();
-						crearGrafica(data);
+						mostrarGraficaUnitaria(data);
 						verDetallePedidosAtendidos(codigoHojaRuta);
 						verDetallePedidosNoAtendidos(codigoHojaRuta);
 						verDetallePedidosPendientes(codigoHojaRuta);
 						verDetallePedidosReprogramados(codigoHojaRuta);
 						verDetallePedidosCancelados(codigoHojaRuta);
-						
-						startAutoRefresh(codigoHojaRuta);
 					});
 				});
 				
@@ -110,7 +115,7 @@ function verDashBoardUnidad(codigoHojaRuta) {
 	});
 }
 
-function crearGrafica(estadoPedidos) {
+function mostrarGraficaUnitaria(estadoPedidos) {
 	var ctx = document.getElementById("myChart").getContext('2d');
 	var myDoughnutChart = new Chart(ctx, {
 	    type: 'doughnut',
@@ -140,6 +145,14 @@ function crearGrafica(estadoPedidos) {
 	        ]
 	    },
 	    options: {
+	    	tooltips: {
+                mode: 'label',
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return data['datasets'][0]['data'][tooltipItem['index']] + '%';
+                    }
+                }
+            },
 	    	legend: {
 	    		position: "left"
 	    	}
@@ -147,7 +160,7 @@ function crearGrafica(estadoPedidos) {
 	});
 }
 
-function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
+function mostrarGraficaTotal(estadoPedidos) {
 	var ctx = document.getElementById("chartPedidosPorBodega").getContext('2d');
 	var myDoughnutChart = new Chart(ctx, {
 	    type: 'doughnut',
@@ -177,6 +190,14 @@ function actualizarGraficaEstadoPedidosPorBodega(estadoPedidos) {
 	        ]
 	    },
 	    options: {
+	    	tooltips: {
+                mode: 'label',
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return data['datasets'][0]['data'][tooltipItem['index']] + '%';
+                    }
+                }
+            },
 	    	legend: {
 	    		position: "left"
 	    	}
@@ -262,15 +283,10 @@ function hideAllDetails() {
 	$("#accordion").hide();
 }
 
-function detectarCambios(codigoHojaRuta) {
+function detectarCambios() {
 	//Conteo de resultados
 	var status = {
-		codigoHojaRuta: codigoHojaRuta,
-		atendidos: $('#tblPedidosAtendidos').dataTable().fnGetData().length,
-		noAtendidos: $('#tblPedidosNoAtendidos').dataTable().fnGetData().length,
-		pendientes: $('#tblPedidosPendientes').dataTable().fnGetData().length,
-		reprogramados: $('#tblPedidosReprogramados').dataTable().fnGetData().length,
-		cancelados: $('#tblPedidosCancelados').dataTable().fnGetData().length
+		codigoBodega: $( "#codigo" ).val()
 	}
 	$.ajax({
 		url: _globalContextPath+'/monitoreo/reload',
@@ -281,7 +297,10 @@ function detectarCambios(codigoHojaRuta) {
 			console.log(data);
 			if(data) {
 				console.log("Success");
-				verDashBoardUnidad(codigoHojaRuta);
+				actualizarUnidadesPorBodega();
+				if($("#accordion").is(":visible")) {
+					verDashBoardUnidad($("#codigoHojaRutaField").val());
+				}
 			} else {
 				console.log("Fail");
 			}
@@ -289,9 +308,9 @@ function detectarCambios(codigoHojaRuta) {
 	});
 }
 
-function startAutoRefresh(codigoHojaRuta) {
+function startAutoRefresh() {
 	reloadTask = setInterval(() => {
-		detectarCambios(codigoHojaRuta);
+		detectarCambios();
 	}, 10*1000);
 }
 

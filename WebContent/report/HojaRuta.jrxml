@@ -80,11 +80,11 @@
 					<imageExpression><![CDATA["sodimaclogo.jpg"]]></imageExpression>
 				</image>
 				<staticText>
-					<reportElement x="0" y="80" width="100" height="20" uuid="35fbaf6a-06dc-4240-81c3-795d88af371c"/>
+					<reportElement x="0" y="80" width="70" height="20" uuid="35fbaf6a-06dc-4240-81c3-795d88af371c"/>
 					<text><![CDATA[Chofer:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="100" width="100" height="20" uuid="ac503dd1-6295-479b-b457-ae284f99069b"/>
+					<reportElement x="0" y="100" width="70" height="20" uuid="ac503dd1-6295-479b-b457-ae284f99069b"/>
 					<text><![CDATA[Brevete:]]></text>
 				</staticText>
 				<staticText>
@@ -123,11 +123,11 @@
 					<textFieldExpression><![CDATA["HOJA DE RUTA " + $F{cod_hoj_rut}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="80" width="100" height="20" uuid="66edf028-83d4-4098-b726-de778dc6091a"/>
+					<reportElement x="70" y="80" width="130" height="20" uuid="66edf028-83d4-4098-b726-de778dc6091a"/>
 					<textFieldExpression><![CDATA[$F{chofer}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="100" width="100" height="20" uuid="e3869b1e-1ad9-4e3d-b429-da7c45b717ff"/>
+					<reportElement x="70" y="100" width="130" height="20" uuid="e3869b1e-1ad9-4e3d-b429-da7c45b717ff"/>
 					<textFieldExpression><![CDATA[$F{brevete}]]></textFieldExpression>
 				</textField>
 				<textField>
@@ -140,11 +140,14 @@
 				</textField>
 				<textField>
 					<reportElement x="370" y="120" width="100" height="20" uuid="8f9165ac-8866-4680-9d46-2bd6469fb5a7"/>
-					<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{peso} + " kg"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="370" y="140" width="100" height="20" uuid="37f7d08c-fa7f-438f-aa59-b53491f210d1"/>
-					<textFieldExpression><![CDATA[$F{volumen}]]></textFieldExpression>
+					<textElement markup="styled">
+						<font isUnderline="false" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{volumen} + " m<sup>3</sup>"]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy">
 					<reportElement x="680" y="80" width="100" height="30" uuid="d273e714-d078-41c3-97fc-2b60ebb22785"/>

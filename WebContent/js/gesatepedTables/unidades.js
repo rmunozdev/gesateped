@@ -18,7 +18,14 @@ function crearTablaUnidades() {
 		            		  localforage.setItem(data.codigoHojaRuta,
 		            				  new UnidadSeleccionada(data.codigoHojaRuta,data.numeroPlaca)
 		            		  );
-		                      data = '<input type="radio" name="unidad" value="' + data.codigoHojaRuta + '">';
+		            		  console.log("Checked",$("#codigoHojaRutaField").val(),data.codigoHojaRuta);
+		            		  var isSelected = false;
+		            		  if($("#codigoHojaRutaField").val() && data.codigoHojaRuta) {
+		            			  isSelected = $("#codigoHojaRutaField").val().trim() == data.codigoHojaRuta.trim();
+		            		  }
+		            		  console.log("Equals?",($("#codigoHojaRutaField").val() == data.codigoHojaRuta));
+		            		  var checkedMark = isSelected?'checked="checked"':"";
+		                      data = '<input type="radio" name="unidad" value="' + data.codigoHojaRuta + '" '+ checkedMark +'>';
 		                   }
 		            	  return data;
 		              }
@@ -82,6 +89,7 @@ function actualizarTablaUnidades(data) {
 	oTable.fnPageChange('first');
 	$('input:radio[name=unidad]').click(function() { 
 		console.log($(this).val());
+		$("#codigoHojaRutaField").val($(this).val());
 		verDashBoardUnidad($(this).val());
 	});
 }

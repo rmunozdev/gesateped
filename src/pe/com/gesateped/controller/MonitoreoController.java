@@ -3,6 +3,8 @@ package pe.com.gesateped.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,9 @@ public class MonitoreoController {
 	@Autowired
 	private AdminBL adminBL;
 	
+	@Autowired
+	private ServletContext context;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView iniciar(ModelMap modelMap) {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
@@ -58,7 +63,9 @@ public class MonitoreoController {
 	@ResponseBody
 	public List<EstadoPedido> verEstadosPedidosPorBodega(Bodega bodega) {
 		logger.info("codigoBodega:" + bodega.getCodigo());
-		return this.monitoreoBL.getEstadoPedidosPorBodega(bodega.getCodigo());
+		List<EstadoPedido> estadoTotal = this.monitoreoBL.getEstadoPedidosPorBodega(bodega.getCodigo());
+		context.setAttribute("estadoTotal", estadoTotal);
+		return estadoTotal;
 	}
 	
 	
@@ -74,18 +81,6 @@ public class MonitoreoController {
 	public List<DetallePedidoRuta> verDetallePedidosAtendidos(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
 		List<DetallePedidoRuta> pedidosAtendidos = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "ATEN");
-		
-//		if(pedidosAtendidos.isEmpty()) {
-//			DetallePedidoRuta mock = new DetallePedidoRuta();
-//			mock.setCodigoPedido("PED0000024");
-//			mock.setHoraInicioVentana("8:00");
-//			mock.setHoraFinVentana("10:00");
-//			mock.setFechaPactadaDespacho(new Date());
-//			mock.setDireccionCliente("Calle Doña Ester 216");
-//			mock.setDistritoCliente("Surco");
-//			pedidosAtendidos.add(mock);
-//		}
-		
 		return pedidosAtendidos;
 	}
 	
@@ -94,20 +89,6 @@ public class MonitoreoController {
 	public List<DetallePedidoRuta> verDetallePedidosNoAtendidos(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
 		List<DetallePedidoRuta> pedidosNoAtendidos = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "NATE");
-//		if(pedidosNoAtendidos.isEmpty()) {
-//			DetallePedidoRuta mock = new DetallePedidoRuta();
-//			mock.setCodigoPedido("PED0000024");
-//			mock.setHoraInicioVentana("8:00");
-//			mock.setHoraFinVentana("10:00");
-//			mock.setFechaPactadaDespacho(new Date());
-//			mock.setDireccionCliente("Calle Doña Ester 216");
-//			mock.setDistritoCliente("Surco");
-//			mock.setFechaNoCumplimientoDespacho(new Date());
-//			mock.setDescripcionMotivoPedido("Sin motivo");
-//			mock.setLatitudGpsDespacho(-12.136258);
-//			mock.setLongitudGpsDespacho(-76.996071);
-//			pedidosNoAtendidos.add(mock);
-//		}
 		return pedidosNoAtendidos;
 	}
 	
@@ -116,16 +97,6 @@ public class MonitoreoController {
 	public List<DetallePedidoRuta> verDetallePedidosPendientes(String codigoHojaRuta) {
 		logger.info("codigoHojaRuta:" + codigoHojaRuta);
 		List<DetallePedidoRuta> detallePedidosPendientesRuta = this.monitoreoBL.getDetallePedidosRuta(codigoHojaRuta, "PEND");
-		if(detallePedidosPendientesRuta.isEmpty()) {
-			DetallePedidoRuta mockItem = new DetallePedidoRuta();
-			/*
-			 * codigo hoja ruta: 89be9b4f
-			 * placa: A7V-510
-			 */
-			mockItem.setCodigoPedido("PED0000004");
-			mockItem.setHoraInicioVentana("8:00");
-			detallePedidosPendientesRuta.add(mockItem);
-		}
 		return detallePedidosPendientesRuta;
 	}
 	
@@ -147,11 +118,13 @@ public class MonitoreoController {
 	@RequestMapping(path = "/reload",method = RequestMethod.POST)
 	@ResponseBody
 	public boolean doReload(PedStatus pedStatus) {
-		System.out.println("Atendidos: " + pedStatus.getAtendidos());
-		System.out.println("No Atendidos: " + pedStatus.getNoAtendidos());
-		System.out.println("Pendientes: " + pedStatus.getPendientes());
-		System.out.println("Reprogramados: " + pedStatus.getReprogramados());
-		System.out.println("Cancelados: " + pedStatus.getCancelados());
-		return this.monitoreoBL.detectarCambios(pedStatus);
+		@SuppressWarnings("unchecked")
+		List<EstadoPedido> estadoTotal = (List<EstadoPedido>) context.getAttribute("estadoTotal");
+		System.out.println("Atendidos: " + estadoTotal.get(0).getPorcentaje());
+		System.out.println("No Atendidos: " + estadoTotal.get(1).getPorcentaje());
+		System.out.println("Pendientes: " + estadoTotal.get(2).getPorcentaje());
+		System.out.println("Reprogramados: " + estadoTotal.get(3).getPorcentaje());
+		System.out.println("Cancelados: " + estadoTotal.get(4).getPorcentaje());
+		return this.monitoreoBL.detectarCambios(estadoTotal,pedStatus.getCodigoBodega());
 	}
 }

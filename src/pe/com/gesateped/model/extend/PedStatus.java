@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class PedStatus {
 
+	private String codigoBodega;
 	private String codigoHojaRuta;
 	private int atendidos;
 	private int noAtendidos;
@@ -48,6 +49,12 @@ public class PedStatus {
 	}
 	public void setCodigoHojaRuta(String codigoHojaRuta) {
 		this.codigoHojaRuta = codigoHojaRuta;
+	}
+	public String getCodigoBodega() {
+		return codigoBodega;
+	}
+	public void setCodigoBodega(String codigoBodega) {
+		this.codigoBodega = codigoBodega;
 	}
 	
 	

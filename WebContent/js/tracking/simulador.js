@@ -14,7 +14,7 @@ function establecerParadasRuta() {
 					var directionsService = new google.maps.DirectionsService();
 					 var request = {
 						origin: new google.maps.LatLng(origen.lat,origen.lng),
-						destination: destino.destino,
+						destination: destino.destino + " Peru",
 						travelMode: 'DRIVING'
 					 };
 					 const tripPoints = [];
@@ -194,8 +194,8 @@ function aumentarResolucion(step, tripPoints, placa, contador) {
 			
 			tripPoints.push({
 				placa: placa,
-				timeleft: formatTime(contador.demoraPendiente),
-				distanceleft: formatDistance(contador.distanciaPendiente),
+				timeleft: contador.demoraPendiente,
+				distanceleft: contador.distanciaPendiente,
 				locations: {
 					lat : latitud,
 					lng : longitud
@@ -212,8 +212,8 @@ function aumentarResolucion(step, tripPoints, placa, contador) {
 			
 			tripPoints.push({
 				placa: placa,
-				timeleft: formatTime(contador.demoraPendiente),
-				distanceleft: formatDistance(contador.distanciaPendiente),
+				timeleft: contador.demoraPendiente,
+				distanceleft: contador.distanciaPendiente,
 				locations: {
 					lat : latitud,
 					lng : longitud
@@ -227,8 +227,8 @@ function aumentarResolucion(step, tripPoints, placa, contador) {
 		
 		tripPoints.push({
 			placa: placa,
-			timeleft: formatTime(contador.demoraPendiente),
-			distanceleft: formatDistance(contador.distanciaPendiente),
+			timeleft: contador.demoraPendiente,
+			distanceleft: contador.distanciaPendiente,
 			locations: {
 				lat : step.start_location.lat(),
 				lng : step.start_location.lng()

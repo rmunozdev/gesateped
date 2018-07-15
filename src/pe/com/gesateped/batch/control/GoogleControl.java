@@ -62,8 +62,8 @@ public class GoogleControl implements Controlador {
 		
 		try {
 			DirectionsResult directionsResult = DirectionsApi.newRequest(context)
-					.origin(this.origen)
-					.destination(this.destino)
+					.origin(this.origen + " Peru")
+					.destination(this.destino + " Peru")
 					.waypoints(waypoints.toArray(new String[1]))
 					.optimizeWaypoints(true).await();
 			

@@ -11,7 +11,6 @@ import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
 import pe.com.gesateped.model.extend.DetallePedidoRuta;
-import pe.com.gesateped.model.extend.PedStatus;
 
 @Service
 public class MonitoreoBLImpl  implements MonitoreoBL {
@@ -45,18 +44,15 @@ public class MonitoreoBLImpl  implements MonitoreoBL {
 	}
 
 	@Override
-	public boolean detectarCambios(PedStatus pedStatus) {
-		int atendidos = this.monitoreoDao.getDetallePedidoRuta(pedStatus.getCodigoHojaRuta(), "ATEN").size();
-		int noAtendidos = this.monitoreoDao.getDetallePedidoRuta(pedStatus.getCodigoHojaRuta(), "NATE").size();
-		int pendientes = this.monitoreoDao.getDetallePedidoRuta(pedStatus.getCodigoHojaRuta(), "PEND").size();
-		int reprogramados = this.monitoreoDao.getDetallePedidoRuta(pedStatus.getCodigoHojaRuta(), "REPR").size();
-		int cancelados = this.monitoreoDao.getDetallePedidoRuta(pedStatus.getCodigoHojaRuta(), "CANC").size();
+	public boolean detectarCambios(List<EstadoPedido> estadoTotal, String codigoBodega) {
+		List<EstadoPedido> estadoTotalActual = this.monitoreoDao.getEstadoPorBodega(codigoBodega);
+		boolean atendidosOk = (estadoTotalActual.get(0).getPorcentaje() == estadoTotal.get(0).getPorcentaje());
+		boolean noAtendidosOk = (estadoTotalActual.get(1).getPorcentaje() == estadoTotal.get(1).getPorcentaje());
+		boolean pendientesOk = (estadoTotalActual.get(2).getPorcentaje() == estadoTotal.get(2).getPorcentaje());
+		boolean reprogramadosOk = (estadoTotalActual.get(3).getPorcentaje() == estadoTotal.get(3).getPorcentaje());
+		boolean canceladosOk = (estadoTotalActual.get(4).getPorcentaje() == estadoTotal.get(4).getPorcentaje());
 		
-		return (pedStatus.getAtendidos() != atendidos) ||
-				(pedStatus.getNoAtendidos() != noAtendidos) || 
-				(pedStatus.getPendientes() != pendientes) || 
-				(pedStatus.getReprogramados() != reprogramados) || 
-				(pedStatus.getCancelados() != cancelados);
+		return !atendidosOk || !noAtendidosOk || !pendientesOk || !reprogramadosOk || !canceladosOk ;
 	}
 
 }

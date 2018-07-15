@@ -64,10 +64,10 @@ function iniciarMonitoreo(aData) {
 	//TODO rmunozdev Actualizar lógica
 	if(aData.direccionCliente && aData.distritoCliente) {
 		console.log("Se usara direccion de cliente");
-		direccion = aData.direccionCliente +" "+ aData.distritoCliente + " Peru";
+		direccion = aData.direccionCliente +" "+ aData.distritoCliente;
 	} else if(aData.direccionTienda && aData.distritoTienda){
 		console.log("Se usara direccion de tienda");
-		direccion = aData.direccionTienda +" "+ aData.distritoTienda + " Peru";
+		direccion = aData.direccionTienda +" "+ aData.distritoTienda;
 	}
 	
 	//Requerido por simulador.js
@@ -76,7 +76,7 @@ function iniciarMonitoreo(aData) {
 		destino: direccion
 	}).then(()=>{
 		const geocoder = new google.maps.Geocoder();
-		geocoder.geocode({address: direccion}, (results, status) =>{
+		geocoder.geocode({address: direccion + " Peru"}, (results, status) =>{
 			if (status === 'OK') {
 				const map = new google.maps.Map(document.getElementById('monitoreoMap'), {
 					zoom: 16,

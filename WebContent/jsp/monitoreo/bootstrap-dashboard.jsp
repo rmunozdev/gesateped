@@ -102,8 +102,10 @@
 			        <jsp:useBean id="now" class="java.util.Date"/> 
 					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></label>
 			    </div>
+			    <input type="hidden" id="codigoHojaRutaField">
+			    <input type="hidden" id="unidadSeleccionadaField">
 				<form:form id="frmBodega" commandName="bodega" method="post" action="${pageContext.request.contextPath}/monitoreo/verUnidades">
-					<form:select path="codigo" class="selectpicker" onchange="actualizarUnidadesPorBodega()" >
+					<form:select path="codigo" class="selectpicker" onchange="onBodegaChange()" >
 						<form:option value="0" label="-- Por favor seleccione --" />
 						<form:options items="${bodegas}" itemValue="codigo" itemLabel="nombre" />
 					</form:select>
@@ -158,10 +160,10 @@
 		</div>
 		<div id="controlPanel" class="row">
 			<div id="infoPanel" class="col-sm-10 info-panel">
-				<label>Inicio:</label>
+				<label>Origen:</label>
 				<label id="initLbl"></label>
 				<br>
-				<label>Fin:</label>
+				<label>Destino:</label>
 				<label id="endLbl"></label>
 				<br>
 				<label>Distancia restante:</label>

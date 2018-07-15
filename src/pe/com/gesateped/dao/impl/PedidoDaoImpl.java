@@ -62,9 +62,9 @@ public class PedidoDaoImpl implements PedidoDao {
 				pedido.setCliente(cliente);
 				
 				//Se adaptan direcciones a lo requerido por apis externas (google)
-				String domicilioCliente = String.valueOf(resultado.get("clienteDireccion")) + " " + String.valueOf(resultado.get("clienteDireccionDist")) + " Peru";
-				String domicilioTiendaDesp = String.valueOf(resultado.get("tieDespacho")) + " " + String.valueOf(resultado.get("tieDespachoDist")) + " Peru";
-				String domicilioTiendaDevol = String.valueOf(resultado.get("tieDevol"))+ " " + String.valueOf(resultado.get("tieDevolDist")) + " Peru";
+				String domicilioCliente = String.valueOf(resultado.get("clienteDireccion")) + " " + String.valueOf(resultado.get("clienteDireccionDist"));
+				String domicilioTiendaDesp = String.valueOf(resultado.get("tieDespacho")) + " " + String.valueOf(resultado.get("tieDespachoDist"));
+				String domicilioTiendaDevol = String.valueOf(resultado.get("tieDevol"))+ " " + String.valueOf(resultado.get("tieDevolDist"));
 				
 				setDomicilioObjetivo(pedido, domicilioCliente, domicilioTiendaDesp, domicilioTiendaDevol);
 			}
@@ -194,9 +194,9 @@ public class PedidoDaoImpl implements PedidoDao {
 				pedido.setTipoPedido(identificarTipoPedido(codigoCliente, codigoTiendaDesp, codigoTiendaDevo, fechaRetiroTiend));
 				
 				//Se adaptan direcciones a lo requerido por apis externas (google)
-				String domicilioCliente = String.valueOf(detalleMap.get("dir_cli")) + " " + String.valueOf(detalleMap.get("dir_cli")) + " Peru";
-				String domicilioTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoDir")) + " " + String.valueOf(detalleMap.get("tiendaDespachoDistNom")) + " Peru";
-				String domicilioTiendaDevol = String.valueOf(detalleMap.get("tiendaDevolucionDir"))+ " " + String.valueOf(detalleMap.get("tiendaDevolucionDistNom")) + " Peru";
+				String domicilioCliente = String.valueOf(detalleMap.get("dir_cli")) + " " + String.valueOf(detalleMap.get("dist_cli"));
+				String domicilioTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoDir")) + " " + String.valueOf(detalleMap.get("tiendaDespachoDistNom"));
+				String domicilioTiendaDevol = String.valueOf(detalleMap.get("tiendaDevolucionDir"))+ " " + String.valueOf(detalleMap.get("tiendaDevolucionDistNom"));
 				
 				setDomicilioObjetivo(pedido, domicilioCliente, domicilioTiendaDesp, domicilioTiendaDevol);
 				
@@ -242,7 +242,7 @@ public class PedidoDaoImpl implements PedidoDao {
 		Bodega bodega = new Bodega();
 		bodega.setCodigo(codigoBodega);
 		bodega.setCodigoDistrito(String.valueOf(resultMap.get("cod_dist")));
-		bodega.setDireccion(String.valueOf(resultMap.get("dir_bod")) + " " + String.valueOf(resultMap.get("nom_dist") + " Peru"));
+		bodega.setDireccion(String.valueOf(resultMap.get("dir_bod")) + " " + String.valueOf(resultMap.get("nom_dist")));
 		return bodega;
 	}
 

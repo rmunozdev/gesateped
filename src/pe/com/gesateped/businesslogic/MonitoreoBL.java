@@ -6,7 +6,6 @@ import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
 import pe.com.gesateped.model.extend.DetallePedidoRuta;
-import pe.com.gesateped.model.extend.PedStatus;
 
 public interface MonitoreoBL {
 
@@ -15,6 +14,6 @@ public interface MonitoreoBL {
 	public List<EstadoPedido> getEstadoPedidos(String codigoHojaRuta);
 	public List<DetallePedidoRuta> getDetallePedidosRuta(String codigoHojaRuta,String estadoPedido);
 	public List<EstadoPedido> getEstadoPedidosPorBodega(String codigoBodega);
-	public boolean detectarCambios(PedStatus pedStatus);
+	public boolean detectarCambios(List<EstadoPedido> estadoTotal, String codigoBodega);
 	
 }

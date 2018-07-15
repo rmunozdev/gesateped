@@ -67,14 +67,14 @@ function localizarNoAtendido(aData) {
 	//TODO rmunozdev Actualizar lógica
 	if(aData.direccionCliente && aData.distritoCliente) {
 		console.log("Se usara direccion de cliente");
-		direccion = aData.direccionCliente +" "+ aData.distritoCliente + " Peru";
+		direccion = aData.direccionCliente +" "+ aData.distritoCliente;
 	} else if(aData.direccionTienda && aData.distritoTienda){
 		console.log("Se usara direccion de tienda");
-		direccion = aData.direccionTienda +" "+ aData.distritoTienda + " Peru";
+		direccion = aData.direccionTienda +" "+ aData.distritoTienda;
 	}
 	console.log("direccion",direccion);
 	const geocoder = new google.maps.Geocoder();
-	geocoder.geocode({address: direccion}, (results, status) =>{
+	geocoder.geocode({address: direccion + " Peru"}, (results, status) =>{
 		if (status === 'OK') {
 			const url = _globalContextPath + colorToUnidadMarker('FFAD00');
 			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
