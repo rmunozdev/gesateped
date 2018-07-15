@@ -245,6 +245,6 @@ function formatDistance(meters) {
 		return meters + " m";
 	} else {
 		var kilometros = meters/1000;
-		return kilometros.toFixed(2) + " km"
+		return kilometros.toFixed(0) + " km"
 	}
 }
