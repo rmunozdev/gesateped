@@ -53,7 +53,7 @@
 				<staticText>
 					<reportElement x="70" y="200" width="170" height="30" uuid="65827fd0-75d1-4062-a67a-8de2378cf50b"/>
 					<textElement textAlignment="Center"/>
-					<text><![CDATA[Nombre y Apellido]]></text>
+					<text><![CDATA[Destinatario]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="240" y="200" width="293" height="30" uuid="1d4660ad-3b71-4ace-91bd-985c44d51e9d"/>
