@@ -34,6 +34,7 @@ import pe.com.gesateped.batch.filter.FiltroBodega;
 import pe.com.gesateped.batch.filter.FiltroCapacidad;
 import pe.com.gesateped.batch.filter.FiltroTipoPedido;
 import pe.com.gesateped.businesslogic.AdminBL;
+import pe.com.gesateped.businesslogic.AuditoriaBL;
 import pe.com.gesateped.common.Parametros;
 import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.VentanaHoraria;
@@ -58,6 +59,9 @@ public class HojaRutaBatch {
 	@Autowired
 	private PedidoReport pedidoReport;
 	
+	@Autowired
+	private AuditoriaBL auditoriaBL;
+	
 	private ServletContext context;
 	
 	@Autowired
@@ -72,21 +76,26 @@ public class HojaRutaBatch {
 
 	public void generarHojaRuta() {
 		List<Ruta> rutasGeneradas = new ArrayList<>();
-
+		
+		int numeroProceso = this.auditoriaBL.registrarInicioProceso("GEN_HOJ_RUT");
+		int actividadSeleccion = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Selección de pedidos a procesar");
 		List<PedidoNormalizado> pedidosNormalizado = adminBL.obtenerPedidosNormalizados();
 		List<UnidadNormalizada> unidadesNormalizadas = adminBL.obtenerUnidadesNormalizadas();
 		System.out.println("Total pedidos originales: " + pedidosNormalizado.size());
-
+		this.auditoriaBL.registrarFinActividad(actividadSeleccion);
 		// Filtros
 		List<PedidoNormalizado> pedidosValidos = new FiltroCapacidad(unidadesNormalizadas).filtrar(pedidosNormalizado);
 
 		// Se separan los pedidosValidos agrupandolos por bodegas
+		int actividadAgrupacion = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Agrupación de pedidos por bodega");
 		FiltroBodega filtroBodega = new FiltroBodega();
 		Map<String, List<PedidoNormalizado>> pedidosPorBodega = filtroBodega.separar(pedidosValidos);
-
+		this.auditoriaBL.registrarFinActividad(actividadAgrupacion);
+		
 		// Cada grupo por bodega es separado por tipo de pedido
 		FiltroTipoPedido filtroTipoPedido = new FiltroTipoPedido();
 		List<UnidadNormalizada> unidades = new ArrayList<>(unidadesNormalizadas);
+		int actividadDistribucion = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Distribución de pedidos a unidades");
 		for (String codigoBodega : pedidosPorBodega.keySet()) {
 			Map<String, List<PedidoNormalizado>> pedidosPorTipo = filtroTipoPedido
 					.separar(pedidosPorBodega.get(codigoBodega));
@@ -102,7 +111,8 @@ public class HojaRutaBatch {
 				unidades = filtrarUnidades(unidades, despachador.getRutas());
 			}
 		}
-
+		this.auditoriaBL.registrarFinActividad(actividadDistribucion);
+		
 		System.out.println("\nResultado final: ");
 		System.out.println("******************");
 		if (rutasGeneradas.isEmpty()) {
@@ -111,6 +121,7 @@ public class HojaRutaBatch {
 			asignarHorarios(rutasGeneradas);
 			DecimalFormat df = new DecimalFormat("#.##");
 			df.setRoundingMode(RoundingMode.CEILING);
+			int actividadReporte = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Generación de reporte hoja de ruta");
 			for (Ruta ruta : rutasGeneradas) {
 				System.out.print("Placa: " + ruta.getUnidad().getNumeroPlaca());
 				System.out.print("(");
@@ -127,8 +138,9 @@ public class HojaRutaBatch {
 				System.out.println("");
 				adminBL.registrarHojaRuta(ruta);
 			}
-
+			this.auditoriaBL.registrarFinActividad(actividadReporte);
 		}
+		this.auditoriaBL.registrarFinProceso(numeroProceso, true);
 	}
 
 	private void asignarHorarios(List<Ruta> rutas) {

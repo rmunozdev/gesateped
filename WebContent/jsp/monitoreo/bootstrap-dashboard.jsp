@@ -73,11 +73,9 @@
 </style>
 
 <div>
-	<div class="jumbotron">
+	<div class="jumbotron cabecera-narrow">
         <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
       </div>
-
-      
      <c:choose>
      	<c:when test="${empty rutas}">
      		<div class="alert alert-danger">
@@ -95,8 +93,8 @@
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosReprogramados.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosCancelados.js"></script>
      		<div class="row-fluid marketing">
-	        <div class="span6 panel panel-default">
-	          <h4 class="panel-heading">Bodega</h4>
+	        <div class="span5 panel panel-default">
+	          <h4 class="panel-heading panel-narrow">Bodega</h4>
 	         <div class="panel-body">
 	         	<div class="left-text">
 			        <jsp:useBean id="now" class="java.util.Date"/> 
@@ -113,10 +111,10 @@
 			</div>
 	        </div>
 	
-	        <div id="graficaTotalBodega" class="span6" style="display:none">
-				<p class="alert alert-info">Monitoreo del Total de Pedidos</p>
-		         <div style="width:300px;height:200px">
-					<canvas id="chartPedidosPorBodega" width="320px" height="200px"></canvas>
+	        <div id="graficaTotalBodega" class="span7" style="display:none">
+				<p class="alert-info">Monitoreo del Total de Pedidos</p>
+		         <div style="width:300px;height:180px">
+					<canvas id="chartPedidosPorBodega" width="340px" height="180px"></canvas>
 				</div>
 	        </div>
 	        <div id="noHayPedidosMsg" class="span6" style="display:none">
@@ -126,7 +124,7 @@
 	        </div>
 	        
 	        <div id="panelUnidades" class="span12" style="display:none">
-	        	<div class="alert alert-warning">
+	        	<div class="alert-warning">
 					<p>Lista de Unidades activas para el 
 					<fmt:formatDate value="${now}" pattern="yyyy/MM/dd" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
@@ -146,9 +144,9 @@
 	        </div>
 	        
 	        <div id="graficaTotalUnidad" class="span12" style="display:none">
-	        	<p class="alert alert-info">Monitoreo de Despacho de Pedidos</p>
-	        	<div style="width:300px;height:200px">
-					<canvas id="myChart" width="320px" height="200px"></canvas>
+	        	<p class="alert-info">Monitoreo de Despacho de Pedidos</p>
+	        	<div style="width:300px;height:180px">
+					<canvas id="myChart" width="340px" height="180px"></canvas>
 				</div>
 	        </div>
 	        <hr>

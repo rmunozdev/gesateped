@@ -14,5 +14,6 @@
     <mappers>
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />
         <mapper resource="pe/com/gesateped/dao/mapper/MonitoreoDao.xml" />
+        <mapper resource="pe/com/gesateped/dao/mapper/AuditoriaDao.xml" />
     </mappers>
 </configuration>

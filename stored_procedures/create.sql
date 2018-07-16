@@ -44,39 +44,27 @@ proc_label:BEGIN
     AND hr.fec_desp_hoj_rut = CURDATE()
     AND dhr.fec_pact_desp IS NULL
     AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
+    AND ((ped.fec_desp_ped = CURDATE() AND ped.fec_repro_ped IS NULL AND ped.fec_canc_ped IS NULL) OR
+         (ped.fec_repro_ped = CURDATE() AND ped.fec_canc_ped IS NULL) OR
+         (ped.fec_canc_ped IS NOT NULL AND ped.fec_devo_ped = CURDATE() AND ped.cod_tiend_devo IS NULL))
   UNION
   SELECT 'Atendidos' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
   FROM bd_gesateped.tb_hoja_ruta hr
   INNER JOIN bd_gesateped.tb_detalle_hoja_ruta dhr
     ON (hr.cod_hoj_rut = dhr.cod_hoj_rut)
-  INNER JOIN bd_gesateped.tb_pedido ped
-    ON (dhr.cod_ped = ped.cod_ped)
   WHERE hr.cod_bod = pi_cod_bod
     AND hr.fec_desp_hoj_rut = CURDATE()
     AND dhr.fec_pact_desp IS NOT NULL
-    AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
   UNION
   SELECT 'No Atendidos' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
   FROM bd_gesateped.tb_hoja_ruta hr
   INNER JOIN bd_gesateped.tb_detalle_hoja_ruta dhr
     ON (hr.cod_hoj_rut = dhr.cod_hoj_rut)
-  INNER JOIN bd_gesateped.tb_pedido ped
-    ON (dhr.cod_ped = ped.cod_ped)
   WHERE hr.cod_bod = pi_cod_bod
     AND hr.fec_desp_hoj_rut = CURDATE()
-    AND dhr.fec_pact_desp IS NULL
     AND dhr.fec_no_cump_desp IS NOT NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
   UNION
   SELECT 'Reprogramados' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
@@ -87,11 +75,7 @@ proc_label:BEGIN
     ON (dhr.cod_ped = ped.cod_ped)
   WHERE hr.cod_bod = pi_cod_bod
     AND hr.fec_desp_hoj_rut = CURDATE()
-    AND dhr.fec_pact_desp IS NULL
-    AND dhr.fec_no_cump_desp IS NULL
     AND ped.fec_repro_ped > CURDATE()
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE())
   UNION
   SELECT 'Cancelados' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
@@ -102,11 +86,7 @@ proc_label:BEGIN
     ON (dhr.cod_ped = ped.cod_ped)
   WHERE hr.cod_bod = pi_cod_bod
     AND hr.fec_desp_hoj_rut = CURDATE()
-    AND dhr.fec_pact_desp IS NULL
-    AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NOT NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE());
+    AND DATE(ped.fec_canc_ped) = CURDATE();
 END$$
 DELIMITER ;
 
@@ -141,33 +121,21 @@ proc_label:BEGIN
   WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
     AND dhr.fec_pact_desp IS NULL
     AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
+    AND ((ped.fec_desp_ped = CURDATE() AND ped.fec_repro_ped IS NULL AND ped.fec_canc_ped IS NULL) OR
+         (ped.fec_repro_ped = CURDATE() AND ped.fec_canc_ped IS NULL) OR
+         (ped.fec_canc_ped IS NOT NULL AND ped.fec_devo_ped = CURDATE() AND ped.cod_tiend_devo IS NULL))
   UNION
   SELECT 'Atendidos' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
   FROM bd_gesateped.tb_detalle_hoja_ruta dhr
-  INNER JOIN bd_gesateped.tb_pedido ped
-    ON (dhr.cod_ped = ped.cod_ped)
   WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
     AND dhr.fec_pact_desp IS NOT NULL
-    AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
   UNION
   SELECT 'No Atendidos' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
   FROM bd_gesateped.tb_detalle_hoja_ruta dhr
-  INNER JOIN bd_gesateped.tb_pedido ped
-    ON (dhr.cod_ped = ped.cod_ped)
   WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-    AND dhr.fec_pact_desp IS NULL
     AND dhr.fec_no_cump_desp IS NOT NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
   UNION
   SELECT 'Reprogramados' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
@@ -175,11 +143,7 @@ proc_label:BEGIN
   INNER JOIN bd_gesateped.tb_pedido ped
     ON (dhr.cod_ped = ped.cod_ped)
   WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-    AND dhr.fec_pact_desp IS NULL
-    AND dhr.fec_no_cump_desp IS NULL
     AND ped.fec_repro_ped > CURDATE()
-    AND ped.fec_canc_ped IS NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE())
   UNION
   SELECT 'Cancelados' AS est_ped,
          ROUND(COUNT(dhr.cod_ped) / v_tot_ped, v_num_dec) AS porc_est_ped
@@ -187,11 +151,7 @@ proc_label:BEGIN
   INNER JOIN bd_gesateped.tb_pedido ped
     ON (dhr.cod_ped = ped.cod_ped)
   WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-    AND dhr.fec_pact_desp IS NULL
-    AND dhr.fec_no_cump_desp IS NULL
-    AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-    AND ped.fec_canc_ped IS NOT NULL
-    AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE());
+    AND DATE(ped.fec_canc_ped) = CURDATE();
 END$$
 DELIMITER ;
 
@@ -237,9 +197,9 @@ BEGIN
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND dhr.fec_pact_desp IS NULL
       AND dhr.fec_no_cump_desp IS NULL
-      AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-      AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
+      AND ((ped.fec_desp_ped = CURDATE() AND ped.fec_repro_ped IS NULL AND ped.fec_canc_ped IS NULL) OR
+           (ped.fec_repro_ped = CURDATE() AND ped.fec_canc_ped IS NULL) OR
+           (ped.fec_canc_ped IS NOT NULL AND ped.fec_devo_ped = CURDATE() AND ped.cod_tiend_devo IS NULL))
 	ORDER BY dhr.ord_desp_ped ASC;
 
   ELSEIF pi_est_ped = 'ATEN' THEN -- Pedidos Atendidos
@@ -278,10 +238,6 @@ BEGIN
 	  ON (dhr.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND dhr.fec_pact_desp IS NOT NULL
-      AND dhr.fec_no_cump_desp IS NULL
-      AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-      AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
     ORDER BY dhr.ord_desp_ped ASC;
 
   ELSEIF pi_est_ped = 'NATE' THEN -- Pedidos No Atendidos
@@ -319,11 +275,7 @@ BEGIN
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mpp
 	  ON (dhr.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-      AND dhr.fec_pact_desp IS NULL
       AND dhr.fec_no_cump_desp IS NOT NULL
-      AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-      AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())
     ORDER BY dhr.ord_desp_ped ASC;
 
   ELSEIF pi_est_ped = 'REPR' THEN -- Pedidos Reprogramados
@@ -361,11 +313,7 @@ BEGIN
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mpp
 	  ON (ped.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-      AND dhr.fec_pact_desp IS NULL
-      AND dhr.fec_no_cump_desp IS NULL
-      AND ped.fec_repro_ped > CURDATE()
-      AND ped.fec_canc_ped IS NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE());
+      AND ped.fec_repro_ped > CURDATE();
 
   ELSEIF pi_est_ped = 'CANC' THEN -- Pedidos Cancelados
     SELECT dhr.cod_ped,
@@ -402,11 +350,7 @@ BEGIN
 	LEFT JOIN bd_gesateped.tb_motivo_pedido mpp
 	  ON (ped.cod_mot_ped = mpp.cod_mot_ped)
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
-      AND dhr.fec_pact_desp IS NULL
-      AND dhr.fec_no_cump_desp IS NULL
-      AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-      AND ped.fec_canc_ped IS NOT NULL
-      AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped > CURDATE());
+      AND DATE(ped.fec_canc_ped) = CURDATE();
   END IF;
 END$$
 DELIMITER ;
@@ -424,11 +368,7 @@ BEGIN
           INNER JOIN bd_gesateped.tb_pedido ped
             ON (dhr.cod_ped = ped.cod_ped)
 		  WHERE dhr.cod_hoj_rut = hr.cod_hoj_rut
-            AND dhr.fec_pact_desp IS NOT NULL
-            AND dhr.fec_no_cump_desp IS NULL
-            AND (ped.fec_repro_ped IS NULL OR ped.fec_repro_ped = CURDATE())
-            AND ped.fec_canc_ped IS NULL
-            AND (ped.fec_devo_ped IS NULL OR ped.fec_devo_ped = CURDATE())) AS tot_ped_aten_unid,
+            AND dhr.fec_pact_desp IS NOT NULL) AS tot_ped_aten_unid,
 		 (SELECT COUNT(dhr.cod_ped)
           FROM bd_gesateped.tb_detalle_hoja_ruta dhr
           WHERE dhr.cod_hoj_rut = hr.cod_hoj_rut) AS tot_ped_unid
@@ -631,6 +571,41 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_fin_actividad`(
+	IN _NUM_ACTIV INT(11),
+    IN _ERR_TEC_ACTIV VARCHAR(250),
+    IN _EST_ACTIV VARCHAR(7)
+)
+BEGIN
+
+	UPDATE tb_actividad 
+    SET
+		fec_fin_ejec_activ = NOW(),
+        err_tec_activ = _ERR_TEC_ACTIV,
+        est_activ = _EST_ACTIV
+	WHERE
+		num_activ = _NUM_ACTIV;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_fin_proceso`(
+	IN _NUM_PROC INT(11),
+    IN _EST_PROC VARCHAR(7)
+)
+BEGIN
+	UPDATE tb_proceso 
+    SET 
+		fec_fin_ejec_proc = NOW(),
+        est_proc = _EST_PROC
+	WHERE
+		num_proc = _NUM_PROC
+	;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_hoja_ruta`(
 	IN _fec_desp_hoj_rut date,
     IN _cod_unid_chof varchar(10),
@@ -660,6 +635,43 @@ BEGIN
         _cod_unid_chof,
         null
     );
+	
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_inicio_actividad`(
+	IN _num_proc INT(11),
+    IN _nom_activ VARCHAR(100),
+    OUT GENERATED_NUM_ACTIV INT(11)
+)
+BEGIN
+	DECLARE cantidad INT(11);
+	select count(num_activ)+1 from tb_actividad into cantidad;
+    
+    SET GENERATED_NUM_ACTIV = cantidad;
+    
+	INSERT INTO tb_actividad (num_proc,num_activ,nom_activ,fec_ini_ejec_activ)
+    VALUES (_num_proc,GENERATED_NUM_ACTIV,_nom_activ,NOW())
+    ;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_registrar_inicio_proceso`(
+	IN _nom_proc varchar(20),
+    OUT GENERATED_NUM_PROC INT(11)
+)
+BEGIN
+	DECLARE cantidad INT(11);
+	select count(num_proc)+1 from tb_proceso into cantidad;
+	
+    SET GENERATED_NUM_PROC = cantidad;
+    
+	INSERT INTO tb_proceso (num_proc,nom_proc,fec_ini_ejec_proc)
+    VALUES (GENERATED_NUM_PROC,_nom_proc,NOW());
+	
 	
 END$$
 DELIMITER ;
