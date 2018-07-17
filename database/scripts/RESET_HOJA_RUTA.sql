@@ -1,3 +1,5 @@
+DELETE FROM `tb_actividad` WHERE num_proc > 0;
+DELETE FROM `tb_proceso` WHERE num_proc > 0;
 DELETE FROM `tb_detalle_hoja_ruta` WHERE cod_hoj_rut <> 'X';
 DELETE FROM `tb_hoja_ruta` WHERE cod_hoj_rut <> 'X';
 DELETE FROM `tb_detalle_pedido` WHERE cod_ped <> 'X';

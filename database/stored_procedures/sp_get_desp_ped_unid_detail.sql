@@ -1,14 +1,22 @@
--- --------------------------------------------------------------------------------
--- Routine DDL
--- Note: comments before and after the routine body will not be stored by the server
--- --------------------------------------------------------------------------------
-DELIMITER $$
-
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_get_desp_ped_unid_detail` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_desp_ped_unid_detail`(
   IN pi_cod_hoj_rut VARCHAR(10),
   IN pi_est_ped VARCHAR(4))
 BEGIN
-  IF pi_est_ped = 'PEND' THEN -- Pedidos Pendientes
+  IF pi_est_ped = 'PEND' THEN 
     SELECT dhr.cod_ped,
 		   vh.hor_ini_vent_hor,
 		   vh.hor_fin_vent_hor,
@@ -50,7 +58,7 @@ BEGIN
            (ped.fec_canc_ped IS NOT NULL AND ped.fec_devo_ped = CURDATE() AND ped.cod_tiend_devo IS NULL))
 	ORDER BY dhr.ord_desp_ped ASC;
 
-  ELSEIF pi_est_ped = 'ATEN' THEN -- Pedidos Atendidos
+  ELSEIF pi_est_ped = 'ATEN' THEN 
     SELECT dhr.cod_ped,
 		   vh.hor_ini_vent_hor,
 		   vh.hor_fin_vent_hor,
@@ -88,7 +96,7 @@ BEGIN
       AND dhr.fec_pact_desp IS NOT NULL
     ORDER BY dhr.ord_desp_ped ASC;
 
-  ELSEIF pi_est_ped = 'NATE' THEN -- Pedidos No Atendidos
+  ELSEIF pi_est_ped = 'NATE' THEN 
     SELECT dhr.cod_ped,
 		   vh.hor_ini_vent_hor,
 		   vh.hor_fin_vent_hor,
@@ -126,7 +134,7 @@ BEGIN
       AND dhr.fec_no_cump_desp IS NOT NULL
     ORDER BY dhr.ord_desp_ped ASC;
 
-  ELSEIF pi_est_ped = 'REPR' THEN -- Pedidos Reprogramados
+  ELSEIF pi_est_ped = 'REPR' THEN 
     SELECT dhr.cod_ped,
 		   vh.hor_ini_vent_hor,
 		   vh.hor_fin_vent_hor,
@@ -163,7 +171,7 @@ BEGIN
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND ped.fec_repro_ped > CURDATE();
 
-  ELSEIF pi_est_ped = 'CANC' THEN -- Pedidos Cancelados
+  ELSEIF pi_est_ped = 'CANC' THEN 
     SELECT dhr.cod_ped,
 		   vh.hor_ini_vent_hor,
 		   vh.hor_fin_vent_hor,
@@ -200,4 +208,5 @@ BEGIN
 	WHERE dhr.cod_hoj_rut = pi_cod_hoj_rut
       AND DATE(ped.fec_canc_ped) = CURDATE();
   END IF;
-END
+END ;;
+DELIMITER ;

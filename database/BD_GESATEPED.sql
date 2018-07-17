@@ -205,8 +205,8 @@ CREATE TABLE `tb_detalle_hoja_ruta` (
   `fec_estim_lleg` datetime DEFAULT NULL COMMENT 'Fecha estimada de llegada en formato dd/mm/yyyy hh24:mi:ss.',
   `fec_pact_desp` datetime DEFAULT NULL COMMENT 'Fecha pactada de despacho en formato dd/mm/yyyy hh24:mi:ss.',
   `fec_no_cump_desp` datetime DEFAULT NULL COMMENT 'Fecha de no cumplimiento de despacho en formato dd/mm/yyyy hh24:mi:ss.',
-  `lat_gps_desp_ped` decimal(10,6) DEFAULT NULL COMMENT 'Latitud GPS de despacho de pedido.',
-  `long_gps_desp_ped` decimal(10,6) DEFAULT NULL COMMENT 'Longitud GPS de despacho de pedido.',
+  `lat_gps_desp_ped` decimal(10,7) DEFAULT NULL COMMENT 'Latitud GPS de despacho de pedido.',
+  `long_gps_desp_ped` decimal(10,7) DEFAULT NULL COMMENT 'Longitud GPS de despacho de pedido.',
   `fot_desp_ped` mediumblob COMMENT 'Foto de despacho del pedido.',
   `cod_vent_hor` varchar(10) DEFAULT NULL COMMENT 'Codigo de ventana horaria.',
   `cod_mot_ped` varchar(10) DEFAULT NULL COMMENT 'Codigo de motivo de pedido en caso de no cumplimiento de despacho de pedido.',
@@ -628,4 +628,4 @@ CREATE TABLE `tb_zona` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-15 23:45:12
+-- Dump completed on 2018-07-16 16:08:58

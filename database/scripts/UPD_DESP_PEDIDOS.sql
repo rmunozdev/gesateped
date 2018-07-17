@@ -9,11 +9,11 @@ WHERE dhr.cod_hoj_rut = 'HRU0000002'
 -- Pedido no atendido
 UPDATE bd_gesateped.tb_detalle_hoja_ruta dhr
 SET dhr.fec_no_cump_desp = dhr.fec_estim_lleg,
-    dhr.lat_gps_desp_ped = -12.0659396,
-    dhr.long_gps_desp_ped = -77.0979698,
+    dhr.lat_gps_desp_ped = -12.0721231,
+    dhr.long_gps_desp_ped = -77.0802653,
     dhr.cod_mot_ped = 'MPE0000007'
 WHERE dhr.cod_hoj_rut = 'HRU0000002'
-  AND dhr.cod_ped = 'PED0000001';
+  AND dhr.cod_ped = 'PED0000006';
 
 -- Pedido reprogramado
 UPDATE bd_gesateped.tb_pedido ped
