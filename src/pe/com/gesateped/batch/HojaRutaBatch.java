@@ -46,9 +46,7 @@ import pe.com.gesateped.util.GesatepedUtil;
 
 /**
  * Clase para ejecución de proceso generador de hoja de rutas.
- * Test for branch refactory.
  * @author rmunozdev
- *
  */
 @Service("hojaRutaBach")
 public class HojaRutaBatch {
