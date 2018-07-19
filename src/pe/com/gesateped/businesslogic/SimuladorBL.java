@@ -7,4 +7,5 @@ import pe.com.gesateped.model.PuntoPartida;
 public interface SimuladorBL {
 
 	public List<PuntoPartida> getPartidas(String codigoHojaRuta);
+	public List<PuntoPartida> getParadas(String codigoHojaRuta);
 }

@@ -148,6 +148,9 @@
 	        	<div style="width:300px;height:180px">
 					<canvas id="myChart" width="340px" height="180px"></canvas>
 				</div>
+				<div>
+					<a id="rutaCompleta">Ver ruta completa</a>
+				</div>
 	        </div>
 	        <hr>
 	        
@@ -193,6 +196,7 @@
 	<div id="pedidoMap"
 			style="display: none;border: 1px solid black; width:512px; height:480px">
 	</div>
+	
 	<div id="accordion" data-collapse style="display:none">
 		<h4 class="tbl-descripcion open">Pedidos Atendidos</h4>
 		<div class="tbl-contenedor">

@@ -27,4 +27,11 @@ public class SimuladorController {
 		logger.info("Buscando partidas para ruta: " + codigoRuta);
 		return this.simuladorBL.getPartidas(codigoRuta);
 	}
+	
+	@RequestMapping("/paradas")
+	@ResponseBody
+	public List<PuntoPartida> getParadas(String codigoRuta) {
+		logger.info("Buscando paradas para ruta: " + codigoRuta);
+		return this.simuladorBL.getParadas(codigoRuta);
+	}
 }

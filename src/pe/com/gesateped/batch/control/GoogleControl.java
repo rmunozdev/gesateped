@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
 import pe.com.gesateped.batch.algorithm.Controlador;
 import pe.com.gesateped.common.Parametros;
@@ -56,6 +58,11 @@ public class GoogleControl implements Controlador {
 		GeoApiContext context = new GeoApiContext.Builder().apiKey(MAPS_API_KEY).build();
 		List<String> waypoints = new ArrayList<>();
 		
+		List<String> direccionesOriginal = new ArrayList<>();
+		for (PedidoNormalizado pedido : pedidos) {
+			direccionesOriginal.add(pedido.getDomicilio());
+		}
+		
 		for(PedidoNormalizado pedido : pedidos) {
 			waypoints.add(pedido.getDomicilio());
 		}
@@ -65,6 +72,7 @@ public class GoogleControl implements Controlador {
 					.origin(this.origen + " Peru")
 					.destination(this.destino + " Peru")
 					.waypoints(waypoints.toArray(new String[1]))
+					.mode(TravelMode.DRIVING)
 					.optimizeWaypoints(true).await();
 			
 			int[] waypointOrder = directionsResult.routes[0].waypointOrder;
@@ -86,10 +94,12 @@ public class GoogleControl implements Controlador {
 			
 			
 			long previousLeg = 0;
+			
+			List<String> direccionesOrdenadas = new ArrayList<>();
 			for(int orden : waypointOrder) {
 				//Solo el primer pedido no considera tiempo de despacho
 				tiempoCronometrico += (index==0)?0:(legs[index].duration.inSeconds + Long.valueOf(Parametros.getTiempoPromedioDespacho())*60);
-				PedidoNormalizado pedidoActual = pedidos.get(waypointOrder[orden]);
+				PedidoNormalizado pedidoActual = pedidos.get(orden);
 				pedidoActual.setOrden(index + 1);
 				pedidoActual.setTiempoCronometrico(tiempoCronometrico);
 				pedidoActual.setTiempoEstimadoLlegada((int)legs[index].duration.inSeconds/60);
@@ -102,12 +112,19 @@ public class GoogleControl implements Controlador {
 				pedidoActual.setFechaEstimadaPartida(fechaPartida.getTime());
 				previousLeg = legs[index].duration.inSeconds;
 				index++;
+				direccionesOrdenadas.add(pedidoActual.getDomicilio());
 			}
 			if(tiempoCronometrico > tiempoAcumuladoMaximo) {
 				//Exceso en conteo, rechazar!
 				//TODO Se deberia hacer rollback de establecimientos?
 				return false;
-			} 
+			} else {
+				System.out.println("Waypoint order from: " + this.origen + " to " + this.destino);;
+				System.out.println(">>" + Arrays.toString(waypointOrder));
+				System.out.println(direccionesOrdenadas);
+				System.out.println("Original");
+				System.out.println(direccionesOriginal);
+			}
 		} catch (ApiException | InterruptedException | IOException | ParseException e) {
 			e.printStackTrace();
 		}

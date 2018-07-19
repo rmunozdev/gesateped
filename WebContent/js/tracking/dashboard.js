@@ -30,6 +30,10 @@ function iniciar() {
 	crearTablaPedidosPendientes(paths);
 	crearTablaPedidosReprogramados();
 	crearTablaPedidosCancelados();
+	
+	$("#rutaCompleta").click(function(){
+		verRutaCompleta();
+	});
 }
 
 function onBodegaChange() {
@@ -82,7 +86,7 @@ function actualizarUnidadesPorBodega(){
 }
 
 function verDashBoardUnidad(codigoHojaRuta) {
-	//stopAutoRefresh();
+	
 	$.ajax({
 		url: _globalContextPath+'/monitoreo/verEstadoPedidos',
 		type: 'POST',
@@ -320,4 +324,143 @@ function stopAutoRefresh() {
 	}
 }
 
+
+function verRutaCompleta() {
+	$.ajax({
+		url: _globalContextPath+'/sim/paradas',
+		type: 'POST',
+		data: {codigoRuta: $("#codigoHojaRutaField").val()},
+		Accept: "application/json", 
+		success: function(paradas) {
+			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
+				zoom: 16,
+				disableDefaultUI: true,
+				disableDoubleClickZoom: true,
+				styles: [
+			          {
+			            featureType: "transit.station.bus",
+			            stylers: [
+			              { visibility: "off" }
+			            ]
+			          },
+			          {
+			        	  featureType: "poi.business",
+			        	  stylers: [
+			        		  { visibility: "off" }
+			        		  ]
+			          }
+			    ]
+			});
+			
+			var directionsDisplay = new google.maps.DirectionsRenderer({
+				preserveViewport : false,
+				suppressMarkers : true
+			});
+			
+			let waypointsDetail = [];
+			paradas.forEach((parada,index)=>{
+				if(index!=0) {
+					waypointsDetail.push({location: parada.direccion,codigo: parada.codigoPedido});
+				}
+			});
+			
+			//Los waypoitns deben ordenarse por codigo de pedido
+			waypointsDetail.sort((waypointA,waypointB)=>{
+				return waypointA.codigo > waypointB.codigo;
+			});
+			
+			let waypoints = [];
+			waypointsDetail.forEach((waypoint,index)=>{
+				waypoints.push({location: waypoint.location});
+			});
+			
+			let geocoder = new google.maps.Geocoder();
+			geocoder.geocode({address:paradas[0].direccion},(results,status)=>{
+				const marker = new google.maps.Marker({
+		  			  position: {
+		  				  lat: results[0].geometry.location.lat(),
+		  				  lng: results[0].geometry.location.lng()
+		  			  },
+		  			  map: map,
+		  			  title: `${paradas[0].codigoPedido}\n${paradas[0].direccion}`,
+		  			  optimized: false,
+		  			  label: {
+		  				  color: 'black',
+		  				  fontWeight: 'bold',
+		  				  text: paradas[0].codigoPedido
+		  			  },
+		  			  icon: {
+		  				  labelOrigin: new google.maps.Point(11, 50),
+		  				  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+		  				  size: new google.maps.Size(32, 40),
+		  				  origin: new google.maps.Point(0, 0),
+		  				  anchor: new google.maps.Point(11, 40)
+		  			  }
+		  		  });
+			});
+			
+			
+			var directionsService = new google.maps.DirectionsService();
+			  var request = {
+					    origin: paradas[0].direccion + " Peru",
+					    destination: paradas[0].direccion + " Peru",
+					    waypoints: waypoints,
+					    optimizeWaypoints: true,
+					    travelMode: 'DRIVING'
+				};
+			  
+			  
+				
+			  directionsDisplay.setMap(map);
+			  directionsService.route(request, function(result, status) {
+				    if (status == 'OK') {
+				      directionsDisplay.setDirections(result);
+				      
+				      const ruta = result.routes[0];
+				      const waypointsOrdenados = ruta.waypoint_order;
+				      const pasos = ruta.legs;
+				      
+				      pasos.forEach((paso,index)=>{
+				    	  
+				    	  if(index<(pasos.length-1)) {
+				    		  let address = paso.end_address;
+				    		  let location = paso.end_location;
+				    		  let nextdistance = paso.distance.text;
+				    		  let waypointPedidoCode = waypointsDetail[waypointsOrdenados[index]].codigo;
+				    		  console.log("waypoint params",index,waypointsOrdenados[index],waypointPedidoCode);
+				    		  const marker = new google.maps.Marker({
+				    			  position: location,
+				    			  map: map,
+				    			  title: `${waypointPedidoCode}\n${address} ${nextdistance}`,
+				    			  optimized: false,
+				    			  label: {
+				    				  color: 'black',
+				    				  fontWeight: 'bold',
+				    				  text: (index+1)+ ". " + waypointPedidoCode
+				    			  },
+				    			  icon: {
+				    				  labelOrigin: new google.maps.Point(11, 50),
+				    				  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+				    				  size: new google.maps.Size(32, 40),
+				    				  origin: new google.maps.Point(0, 0),
+				    				  anchor: new google.maps.Point(11, 40)
+				    			  }
+				    		  });
+				    	  }
+				      });
+				      
+				      
+				      $('div#pedidoMap').dialog({
+							title: "Ruta completa",
+							maxWidth:600,
+					        maxHeight: 500,
+							width: 600,
+					        height: 500,
+					        modal: true
+					    });
+				    }
+			  })
+		}
+	});
+}
 

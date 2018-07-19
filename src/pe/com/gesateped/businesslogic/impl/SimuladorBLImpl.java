@@ -59,4 +59,27 @@ public class SimuladorBLImpl implements SimuladorBL {
 				"No se encontro ruta con codigo: " 
 						+ codigoHojaRuta);
 	}
+
+	@Override
+	public List<PuntoPartida> getParadas(String codigoHojaRuta) {
+		List<PuntoPartida> paradas = new ArrayList<>();
+		
+		//Punto base de partida direccion de bodega
+		Ruta ruta = this.obtenerRuta(codigoHojaRuta);
+		Bodega bodega = this.adminBL.obtenerBodega(ruta.getCodigoBodega());
+		PuntoPartida inicio = new PuntoPartida();
+		inicio.setCodigoPedido(bodega.getCodigo());
+		inicio.setDireccion(bodega.getDireccion());
+		paradas.add(inicio);
+		
+		for (int i = 0; i < ruta.getPedidos().size(); i++) {
+			PedidoNormalizado pedidoActual = ruta.getPedidos().get(i);
+			PuntoPartida partida = new PuntoPartida();
+			partida.setCodigoPedido(pedidoActual.getCodigoPedido());
+			partida.setDireccion(pedidoActual.getDomicilio());
+			paradas.add(partida);
+		}
+		
+		return paradas;
+	}
 }
