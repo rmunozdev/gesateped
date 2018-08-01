@@ -104,6 +104,10 @@ public class GoogleControl implements Controlador {
 				pedidoActual.setTiempoCronometrico(tiempoCronometrico);
 				pedidoActual.setTiempoEstimadoLlegada((int)legs[index].duration.inSeconds/60);
 				
+				//Distancia aprox
+				pedidoActual.setDistanciaMetros(legs[index].distance.inMeters);
+				
+				
 				if(index==0) {
 					fechaPartida.add(Calendar.SECOND, ((int)legs[0].duration.inSeconds)*(-1));
 				} else {

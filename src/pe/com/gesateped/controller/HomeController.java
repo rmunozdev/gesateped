@@ -47,6 +47,13 @@ public class HomeController {
 		
 		return new ModelAndView("starter");
 	}
+	
+	@RequestMapping("/limpiar")
+	@ResponseBody
+	public String eliminarResultadosPrevios() {
+		this.adminBL.eliminarRutas();
+		return "Success";
+	}
 
 	@RequestMapping("/construir")
 	@ResponseBody

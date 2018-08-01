@@ -1,6 +1,5 @@
 package pe.com.gesateped.businesslogic.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import pe.com.gesateped.model.VentanaHoraria;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.model.extend.Ruta;
 import pe.com.gesateped.model.extend.UnidadNormalizada;
+import pe.com.gesateped.util.GesatepedUtil;
 
 @Service
 public class AdminBLImpl implements AdminBL {
@@ -30,10 +30,7 @@ public class AdminBLImpl implements AdminBL {
 
 	@Override
 	public List<PedidoNormalizado> obtenerPedidosNormalizados() {
-		Calendar tomarrow = Calendar.getInstance();
-		tomarrow.add(Calendar.DATE, 1);
-		System.out.println("Buscando pedidos a despachar el: " + tomarrow.getTime());
-		return pedidoDao.obtenerPedidosNormalizados(tomarrow.getTime());
+		return pedidoDao.obtenerPedidosNormalizados(GesatepedUtil.getDiaSiguiente());
 	}
 
 	@Override
@@ -64,6 +61,16 @@ public class AdminBLImpl implements AdminBL {
 	@Override
 	public List<Parametro> listarParametros() {
 		return pedidoDao.listarParametros();
+	}
+
+	@Override
+	public List<UnidadNormalizada> obtenerUnidadesNormalizadas(String codigoBodega) {
+		return pedidoDao.obtenerUnidadesNormalizadas(codigoBodega);
+	}
+
+	@Override
+	public void eliminarRutas() {
+		pedidoDao.eliminarRutas(GesatepedUtil.getDiaSiguiente());
 	}
 	
 }

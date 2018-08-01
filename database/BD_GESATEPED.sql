@@ -30,6 +30,7 @@ CREATE TABLE `tb_actividad` (
   `nom_activ` varchar(100) NOT NULL COMMENT 'Nombre de actividad.',
   `fec_ini_ejec_activ` datetime NOT NULL COMMENT 'Fecha inicio de ejecucion de actividad en formato dd/mm/yyyy hh24:mi:ss.',
   `fec_fin_ejec_activ` datetime DEFAULT NULL COMMENT 'Fecha fin de ejecucion de actividad en formato dd/mm/yyyy hh24:mi:ss.',
+  `msg_inf_activ` varchar(300) DEFAULT NULL COMMENT 'Mensaje informativo de la actividad.',
   `err_tec_activ` varchar(250) DEFAULT NULL COMMENT 'Error tecnico de actividad.',
   `est_activ` varchar(7) DEFAULT NULL COMMENT 'Estado de actividad (SUCCESS: Satisfactorio, ERROR: Error).',
   PRIMARY KEY (`num_proc`,`num_activ`),
@@ -48,6 +49,7 @@ CREATE TABLE `tb_bodega` (
   `cod_bod` varchar(10) NOT NULL COMMENT 'Codigo de bodega.',
   `nom_bod` varchar(80) NOT NULL COMMENT 'Nombre de bodega.',
   `dir_bod` varchar(100) NOT NULL COMMENT 'Direccion de bodega.',
+  `email_bod` varchar(50) NOT NULL COMMENT 'Correo electronico de bodega o nodo.',
   `cod_dist` varchar(10) NOT NULL COMMENT 'Codigo de distrito.',
   PRIMARY KEY (`cod_bod`),
   UNIQUE KEY `nom_bod_UNIQUE` (`nom_bod`),
@@ -203,6 +205,7 @@ CREATE TABLE `tb_detalle_hoja_ruta` (
   `fec_estim_part` datetime DEFAULT NULL COMMENT 'Fecha estimada de partida en formato dd/mm/yyyy hh24:mi:ss.',
   `tiemp_estim_lleg` int(11) DEFAULT NULL COMMENT 'Tiempo estimado de llegada en minutos.',
   `fec_estim_lleg` datetime DEFAULT NULL COMMENT 'Fecha estimada de llegada en formato dd/mm/yyyy hh24:mi:ss.',
+  `distancia_estim` int(11) DEFAULT NULL COMMENT 'Distancia estimada en metros.',
   `fec_pact_desp` datetime DEFAULT NULL COMMENT 'Fecha pactada de despacho en formato dd/mm/yyyy hh24:mi:ss.',
   `fec_no_cump_desp` datetime DEFAULT NULL COMMENT 'Fecha de no cumplimiento de despacho en formato dd/mm/yyyy hh24:mi:ss.',
   `lat_gps_desp_ped` decimal(10,7) DEFAULT NULL COMMENT 'Latitud GPS de despacho de pedido.',
@@ -315,7 +318,7 @@ CREATE TABLE `tb_kardex` (
   `cod_prod` varchar(15) NOT NULL COMMENT 'Codigo de producto.',
   `stk_min` int(11) NOT NULL COMMENT 'Stock minimo del producto.',
   `stk_act` int(11) NOT NULL COMMENT 'Stock actual del producto.',
-  `cant_abast` int(11) NOT NULL COMMENT 'Cantidad de abastecimiento de producto.',
+  `fec_act_reg` datetime NOT NULL COMMENT 'Fecha actual de registro en formato dd/mm/yyyy hh24:mi:ss.',
   PRIMARY KEY (`cod_bod`,`cod_prod`),
   KEY `fk_kard_prod_idx` (`cod_prod`),
   CONSTRAINT `fk_kard_bod` FOREIGN KEY (`cod_bod`) REFERENCES `tb_bodega` (`cod_bod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -336,6 +339,33 @@ CREATE TABLE `tb_motivo_pedido` (
   `cat_mot_ped` varchar(4) NOT NULL COMMENT 'Categoria de motivo de pedido (NATE: No atendido, REPR: Reprogramacion, CANC: Cancelacion).',
   PRIMARY KEY (`cod_mot_ped`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena la informacion del motivo de pedido.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tb_movimiento_producto`
+--
+
+DROP TABLE IF EXISTS `tb_movimiento_producto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tb_movimiento_producto` (
+  `fec_mov_prod` datetime NOT NULL COMMENT 'Fecha de movimiento de producto en formato dd/mm/yyyy hh24:mi:ss.',
+  `cod_prv` varchar(10) DEFAULT NULL COMMENT 'Codigo de proveedor que abastece de productos a bodega.',
+  `cod_bod_abast` varchar(10) DEFAULT NULL COMMENT 'Codigo de bodega que abastece de productos a nodos.',
+  `cod_bod_recep` varchar(10) NOT NULL COMMENT 'Codigo de bodega o nodo que recibe los productos.',
+  `cod_prod` varchar(10) NOT NULL COMMENT 'Codigo de producto.',
+  `oper_mov_prod` varchar(3) NOT NULL COMMENT 'Operacion de movimiento de producto (+: adiciona producto, -: substrae producto, +/-: adiciona y substrae producto).',
+  `cant_mov_prod` int(11) NOT NULL COMMENT 'Cantidad de movimiento de producto.',
+  PRIMARY KEY (`fec_mov_prod`),
+  KEY `fk_mov_comp_prod_prv_idx` (`cod_prv`),
+  KEY `fk_mov_comp_prod_bod_idx` (`cod_bod_recep`),
+  KEY `fk_mov_comp_prod_prod_idx` (`cod_prod`),
+  KEY `fk_mov_prod_bod_abast_idx` (`cod_bod_abast`),
+  CONSTRAINT `fk_mov_prod_bod_abast` FOREIGN KEY (`cod_bod_abast`) REFERENCES `tb_bodega` (`cod_bod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mov_prod_bod_recep` FOREIGN KEY (`cod_bod_recep`) REFERENCES `tb_bodega` (`cod_bod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mov_prod_prod` FOREIGN KEY (`cod_prod`) REFERENCES `tb_producto` (`cod_prod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mov_prod_prv` FOREIGN KEY (`cod_prv`) REFERENCES `tb_proveedor` (`cod_prv`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena informacion del movimiento de productos.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -370,6 +400,8 @@ CREATE TABLE `tb_pedido` (
   `fec_vent_ped` datetime DEFAULT NULL COMMENT 'Fecha de venta del pedido en formato dd/mm/yyyy.',
   `num_verif_ped` int(11) NOT NULL COMMENT 'Numero de verificacion del pedido es usado para confirmar que el pedido se ha despachado en el domicilio del cliente o en la tienda.',
   `fec_desp_ped` date NOT NULL COMMENT 'Fecha de despacho del pedido a domicilio del cliente o tienda en formato dd/mm/yyyy.',
+  `dir_desp_ped` varchar(100) NOT NULL COMMENT 'Dirección de despacho del pedido.',
+  `cod_dist_desp_ped` varchar(10) NOT NULL COMMENT 'Codigo de distrito de despacho de pedido.',
   `fec_ret_tiend` date DEFAULT NULL COMMENT 'Fecha de retiro en tienda del pedido por parte del cliente en formato dd/mm/yyyy.',
   `fec_recoj_tiend` datetime DEFAULT NULL COMMENT 'Fecha de recojo en tienda del pedido por parte del cliente en formato dd/mm/yyyy hh24:mi:ss.',
   `fec_repro_ped` date DEFAULT NULL COMMENT 'Fecha de reprogramacion del pedido en formato dd/mm/yyyy.',
@@ -386,7 +418,9 @@ CREATE TABLE `tb_pedido` (
   KEY `fk_ped_mot_ped_idx` (`cod_mot_ped`),
   KEY `fk_ped_pick_idx` (`cod_pick`),
   KEY `fk_ped_tiend_desp_idx` (`cod_tiend_desp`),
+  KEY `fk_ped_dist_idx` (`cod_dist_desp_ped`),
   CONSTRAINT `fk_ped_cli` FOREIGN KEY (`cod_cli`) REFERENCES `tb_cliente` (`cod_cli`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ped_dist` FOREIGN KEY (`cod_dist_desp_ped`) REFERENCES `tb_distrito` (`cod_dist`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ped_mot_ped` FOREIGN KEY (`cod_mot_ped`) REFERENCES `tb_motivo_pedido` (`cod_mot_ped`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ped_pick` FOREIGN KEY (`cod_pick`) REFERENCES `tb_pickeador` (`cod_pick`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ped_tiend_desp` FOREIGN KEY (`cod_tiend_desp`) REFERENCES `tb_tienda` (`cod_tiend`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -465,6 +499,7 @@ CREATE TABLE `tb_proveedor` (
   `num_ruc_prv` varchar(11) NOT NULL COMMENT 'Numero de RUC del proveedor.',
   `telf_prv` varchar(10) NOT NULL COMMENT 'Telefono del proveedor.',
   `email_prv` varchar(50) NOT NULL COMMENT 'Email del proveedor.',
+  `tip_prv` varchar(4) NOT NULL COMMENT 'Tipo de Proveedor (UNID: Proveedor de unidades, MERC: Proveedor de mercaderia)',
   PRIMARY KEY (`cod_prv`),
   UNIQUE KEY `num_ruc_UNIQUE` (`num_ruc_prv`),
   UNIQUE KEY `raz_soc_prv_UNIQUE` (`raz_soc_prv`)
@@ -577,12 +612,15 @@ DROP TABLE IF EXISTS `tb_unidad_chofer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tb_unidad_chofer` (
   `cod_unid_chof` varchar(10) NOT NULL,
+  `cod_bod` varchar(10) NOT NULL COMMENT 'Codigo de bodega.',
   `num_placa_unid` varchar(10) NOT NULL COMMENT 'Numero de placa de la unidad.',
   `num_brev_chof` varchar(10) NOT NULL COMMENT 'Numero de brevete del chofer.',
   `fec_asig_unid_chof` datetime NOT NULL COMMENT 'Fecha de asignacion de unidad con chofer en formato dd/mm/yyyy hh24:mi:ss.',
   PRIMARY KEY (`cod_unid_chof`),
   KEY `fk_unid_chof_unid_idx` (`num_placa_unid`),
   KEY `fk_unid_chof_chof_idx` (`num_brev_chof`),
+  KEY `fk_unid_chof_bod_idx` (`cod_bod`),
+  CONSTRAINT `fk_unid_chof_bod` FOREIGN KEY (`cod_bod`) REFERENCES `tb_bodega` (`cod_bod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_unid_chof_chof` FOREIGN KEY (`num_brev_chof`) REFERENCES `tb_chofer` (`num_brev_chof`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_unid_chof_unid` FOREIGN KEY (`num_placa_unid`) REFERENCES `tb_unidad` (`num_plac_unid`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena la informacion de asignacion de unidad co';
@@ -600,6 +638,7 @@ CREATE TABLE `tb_ventana_horaria` (
   `hor_ini_vent_hor` varchar(5) NOT NULL COMMENT 'Hora inicio de ventana horaria en formato hh24:mi.',
   `hor_fin_vent_hor` varchar(5) NOT NULL COMMENT 'Hora fin de ventana horaria en formato hh24:mi.',
   `tip_vent_hor` varchar(4) NOT NULL COMMENT 'Tipo de ventana horaria. (LOC: Local, PROV: Provinicial).',
+  `flag_activ_vent_hor` tinyint(4) NOT NULL COMMENT 'Flag de activacion de ventana horaria.',
   PRIMARY KEY (`cod_vent_hor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena informacion de la ventana horaria.';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -628,4 +667,4 @@ CREATE TABLE `tb_zona` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-16 16:08:58
+-- Dump completed on 2018-07-28 20:52:21

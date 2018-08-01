@@ -119,6 +119,14 @@ function verDashBoardUnidad(codigoHojaRuta) {
 	});
 }
 
+var colores = {
+    pendientes : '#b7afab',
+    atendidos : '#9ccedc',
+    noAtendidos : '#dc6f33',
+    reprogramados : '#e4c583',
+    cancelados : '#005dff'
+};
+
 function mostrarGraficaUnitaria(estadoPedidos) {
 	var ctx = document.getElementById("myChart").getContext('2d');
 	var myDoughnutChart = new Chart(ctx, {
@@ -133,11 +141,11 @@ function mostrarGraficaUnitaria(estadoPedidos) {
 	            	(estadoPedidos[4].porcentaje  * 100).toFixed(2)
 	            	],
 	            backgroundColor: [
-	                '#b7afab',
-	                '#9ccedc',
-	                '#dc6f33',
-	                '#e4c583',
-	                '#005dff'
+	                colores.pendientes,
+	                colores.atendidos,
+	                colores.noAtendidos,
+	                colores.reprogramados,
+	                colores.cancelados,
 	            ]
 	        }],
 	        labels: [
@@ -177,13 +185,13 @@ function mostrarGraficaTotal(estadoPedidos) {
 	            	(estadoPedidos[3].porcentaje  * 100).toFixed(2), 
 	            	(estadoPedidos[4].porcentaje  * 100).toFixed(2)
 	            	],
-	            backgroundColor: [
-	            	'#dc0e40',
-	                '#156f15',
-	                '#f19f2a',
-	                '#dff369',
-	                '#36a2eb'
-	            ]
+	            	backgroundColor: [
+		                colores.pendientes,
+		                colores.atendidos,
+		                colores.noAtendidos,
+		                colores.reprogramados,
+		                colores.cancelados,
+		            ]
 	        }],
 	        labels: [
 	        	estadoPedidos[0].nombre,
@@ -336,6 +344,7 @@ function verRutaCompleta() {
 				zoom: 16,
 				disableDefaultUI: true,
 				disableDoubleClickZoom: true,
+				zoomControl: true,
 				styles: [
 			          {
 			            featureType: "transit.station.bus",
@@ -354,7 +363,12 @@ function verRutaCompleta() {
 			
 			var directionsDisplay = new google.maps.DirectionsRenderer({
 				preserveViewport : false,
-				suppressMarkers : true
+				suppressMarkers : true,
+				polylineOptions: {
+					strokeColor: "blue",
+					strokeWeight : 3,
+					strokeOpacity: 0.6
+				}
 			});
 			
 			let waypointsDetail = [];
@@ -376,7 +390,7 @@ function verRutaCompleta() {
 			
 			let geocoder = new google.maps.Geocoder();
 			geocoder.geocode({address:paradas[0].direccion},(results,status)=>{
-				const marker = new google.maps.Marker({
+				var marker = new google.maps.Marker({
 		  			  position: {
 		  				  lat: results[0].geometry.location.lat(),
 		  				  lng: results[0].geometry.location.lng()
@@ -386,12 +400,12 @@ function verRutaCompleta() {
 		  			  optimized: false,
 		  			  label: {
 		  				  color: 'black',
-		  				  fontWeight: 'bold',
+		  				  fontWeight: 'normal',
 		  				  text: paradas[0].codigoPedido
 		  			  },
 		  			  icon: {
 		  				  labelOrigin: new google.maps.Point(11, 50),
-		  				  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+		  				  url: _globalContextPath+'/images/dashboard/map-markers/location-inicio.png',
 		  				  size: new google.maps.Size(32, 40),
 		  				  origin: new google.maps.Point(0, 0),
 		  				  anchor: new google.maps.Point(11, 40)
@@ -399,7 +413,10 @@ function verRutaCompleta() {
 		  		  });
 			});
 			
-			
+			//Panel
+		    var stepDisplay = new google.maps.InfoWindow({
+		    	disableAutoPan: true
+		    });
 			var directionsService = new google.maps.DirectionsService();
 			  var request = {
 					    origin: paradas[0].direccion + " Peru",
@@ -419,48 +436,55 @@ function verRutaCompleta() {
 				      const ruta = result.routes[0];
 				      const waypointsOrdenados = ruta.waypoint_order;
 				      const pasos = ruta.legs;
-				      
 				      pasos.forEach((paso,index)=>{
-				    	  
 				    	  if(index<(pasos.length-1)) {
 				    		  let address = paso.end_address;
 				    		  let location = paso.end_location;
 				    		  let nextdistance = paso.distance.text;
 				    		  let waypointPedidoCode = waypointsDetail[waypointsOrdenados[index]].codigo;
 				    		  console.log("waypoint params",index,waypointsOrdenados[index],waypointPedidoCode);
-				    		  const marker = new google.maps.Marker({
+				    		  var locationMarker = new google.maps.Marker({
 				    			  position: location,
 				    			  map: map,
 				    			  title: `${waypointPedidoCode}\n${address} ${nextdistance}`,
 				    			  optimized: false,
 				    			  label: {
-				    				  color: 'black',
-				    				  fontWeight: 'bold',
-				    				  text: (index+1)+ ". " + waypointPedidoCode
+				    				  color: 'red',
+				    				  fontWeight: 'normal',
+				    				  text: waypointPedidoCode
 				    			  },
 				    			  icon: {
 				    				  labelOrigin: new google.maps.Point(11, 50),
-				    				  url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless2.png',
+				    				  url: _globalContextPath+'/images/dashboard/map-markers/location-' +  (index+1) +'.png',
 				    				  size: new google.maps.Size(32, 40),
 				    				  origin: new google.maps.Point(0, 0),
 				    				  anchor: new google.maps.Point(11, 40)
 				    			  }
 				    		  });
+				    		  attachInstructionText(stepDisplay,locationMarker,`${waypointPedidoCode}<br>${address}<br>Distancia desde parada previa: ${nextdistance}`);
 				    	  }
+				    	  
 				      });
 				      
 				      
 				      $('div#pedidoMap').dialog({
 							title: "Ruta completa",
-							maxWidth:600,
-					        maxHeight: 500,
-							width: 600,
-					        height: 500,
+							width: $(window).width(),
+					        height: $(window).height(),
 					        modal: true
 					    });
 				    }
 			  })
 		}
 	});
+}
+
+function attachInstructionText(stepDisplay, marker, text, map) {
+	google.maps.event.addListener(marker, 'click', function() {
+        // Open an info window when the marker is clicked on, containing the text
+        // of the step.
+        stepDisplay.setContent(text);
+        stepDisplay.open(map, marker);
+   });
 }
 

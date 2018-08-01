@@ -67,9 +67,17 @@ public class HojaRutaBatch {
 		this.context = context;
 	}
 	
+	/**
+	 * Se ejecuta desde batch (Limpia despacho equivalentes previos)
+	 */
 	public void ejecutar() {
+		this.eliminarRutas();
 		this.generarHojaRuta();
 		this.generarReporte(GesatepedUtil.getDiaSiguiente());
+	}
+	
+	public void eliminarRutas() {
+		this.adminBL.eliminarRutas();
 	}
 
 	public void generarHojaRuta() {
@@ -78,6 +86,8 @@ public class HojaRutaBatch {
 		int numeroProceso = this.auditoriaBL.registrarInicioProceso("GEN_HOJ_RUT");
 		int actividadSeleccion = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Selección de pedidos a procesar");
 		List<PedidoNormalizado> pedidosNormalizado = adminBL.obtenerPedidosNormalizados();
+		
+		//Se mantiene la adquisición total para descartar pedidos imposibles
 		List<UnidadNormalizada> unidadesNormalizadas = adminBL.obtenerUnidadesNormalizadas();
 		System.out.println("Total pedidos originales: " + pedidosNormalizado.size());
 		this.auditoriaBL.registrarFinActividad(actividadSeleccion);
@@ -92,21 +102,23 @@ public class HojaRutaBatch {
 		
 		// Cada grupo por bodega es separado por tipo de pedido
 		FiltroTipoPedido filtroTipoPedido = new FiltroTipoPedido();
-		List<UnidadNormalizada> unidades = new ArrayList<>(unidadesNormalizadas);
+		
 		int actividadDistribucion = this.auditoriaBL.registrarInicioActividad(numeroProceso, "Distribución de pedidos a unidades");
 		for (String codigoBodega : pedidosPorBodega.keySet()) {
 			Map<String, List<PedidoNormalizado>> pedidosPorTipo = filtroTipoPedido
 					.separar(pedidosPorBodega.get(codigoBodega));
 			// Cada subgrupo de pedidoPorTipo debe procesarse
+			List<UnidadNormalizada> unidadesBodega = this.adminBL.obtenerUnidadesNormalizadas(codigoBodega);
 			for (String tipoPedido : pedidosPorTipo.keySet()) {
 				Bodega bodega = adminBL.obtenerBodega(codigoBodega);
-				Despachador despachador = new Despachador(pedidosPorTipo.get(tipoPedido), unidades);
+				//Update: Las unidades se eligen por bodega
+				
+				Despachador despachador = new Despachador(pedidosPorTipo.get(tipoPedido), unidadesBodega);
 				System.out.println(String.format("Despacho para bodega %s, tipoPedido %s y numero pedidos: %s",
 						codigoBodega, tipoPedido, pedidosPorTipo.get(tipoPedido).size()));
 				despachador.despachar(bodega);
 				rutasGeneradas.addAll(despachador.getRutas());
-				// TODO rmunoz Descartar las unidades ya usadas
-				unidades = filtrarUnidades(unidades, despachador.getRutas());
+				unidadesBodega = filtrarUnidades(unidadesBodega, despachador.getRutas());
 			}
 		}
 		this.auditoriaBL.registrarFinActividad(actividadDistribucion);

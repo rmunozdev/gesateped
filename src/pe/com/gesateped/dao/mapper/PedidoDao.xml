@@ -12,10 +12,11 @@
 		<result property="fechaDespacho" column="fec_desp_ped" />
 	</resultMap>
 
-	<select id="listar" resultMap="pedidoResult" parameterType="java.util.Map">
+	<select id="listar" resultMap="pedidoResult"
+		parameterType="java.util.Map">
 		SELECT * FROM tb_pedido
 	</select>
-	
+
 	<resultMap id="pedidoMapResult" type="java.util.Map">
 		<result property="cod_ped" column="cod_ped" />
 		<result property="cod_bod" column="cod_bod" />
@@ -24,104 +25,137 @@
 		<result property="vol_prod" column="vol_prod" />
 		<result property="pes_prod" column="pes_prod" />
 	</resultMap>
-	
-	<select id="obtenerPedidos"
-		parameterType="java.util.Map"
+
+	<select id="obtenerPedidos" parameterType="java.util.Map"
 		resultMap="pedidoMapResult" statementType="CALLABLE">
-		call sp_obtener_pedidos( 
+		call sp_obtener_pedidos(
 		#{_fecha_despacho,javaType=java.util.Date,jdbcType=DATE,mode=IN}
 		)
 	</select>
-	
+
 	<resultMap id="unidadMapResult" type="java.util.Map">
-		
+
 	</resultMap>
-	
-	<select id="obtenerUnidades"
-		parameterType="java.util.Map"
+
+	<select id="obtenerUnidades" parameterType="java.util.Map"
 		resultMap="unidadMapResult" statementType="CALLABLE">
 		call sp_obtener_unidades()
 	</select>
-	
-	
-	<insert  id="registrarHojaRuta" parameterType="java.util.Map" statementType="CALLABLE">
-    { call sp_registrar_hoja_ruta(
-        #{_fec_desp_hoj_rut,javaType=java.util.Date,jdbcType=DATE,mode=IN},
-        #{_cod_unid_chof,javaType=String,jdbcType=VARCHAR,mode=IN},
-        #{_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN},
-        #{GENERATED_HR_KEY,javaType=String,jdbcType=VARCHAR,mode=OUT}
-    )}
+
+
+	<insert id="registrarHojaRuta" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{ call sp_registrar_hoja_ruta(
+		#{_fec_desp_hoj_rut,javaType=java.util.Date,jdbcType=DATE,mode=IN},
+		#{_cod_unid_chof,javaType=String,jdbcType=VARCHAR,mode=IN},
+		#{_cod_bod,javaType=String,jdbcType=VARCHAR,mode=IN},
+		#{GENERATED_HR_KEY,javaType=String,jdbcType=VARCHAR,mode=OUT}
+		)}
 	</insert>
-	
-	<insert id="registrarDetallePedidoList" parameterType="java.util.List">
-	    INSERT INTO tb_detalle_hoja_ruta 
-	    	(cod_hoj_rut,cod_ped,ord_desp_ped,cod_vent_hor,fec_estim_lleg,tiemp_prom_desp,tiemp_estim_lleg,fec_estim_part) 
-	    	values
-	    <foreach collection="list" item="detallePedido" index="index" open="(" separator="),("  close=")">
-	      #{detallePedido.codigoHojaRuta,javaType=String,jdbcType=VARCHAR},
-	      #{detallePedido.codigoPedido,javaType=String,jdbcType=VARCHAR},
-	      #{detallePedido.orden,javaType=java.lang.Integer,jdbcType=INTEGER},
-	      #{detallePedido.codigoVentanaHoraria,javaType=String,jdbcType=VARCHAR},
-	      #{detallePedido.fechaEstimadaLlegada,javaType=java.util.Date,jdbcType=DATETIMEOFFSET},
-	      #{detallePedido.tiempoPromedioDespacho,javaType=java.lang.Integer,jdbcType=INTEGER},
-	      #{detallePedido.tiempoEstimadoLlegada,javaType=java.lang.Integer,jdbcType=INTEGER},
-	      #{detallePedido.fechaEstimadaPartida,javaType=java.util.Date,jdbcType=DATETIMEOFFSET}
-	    </foreach>
- 	</insert>
-	
+
+	<insert id="registrarDetallePedidoList"
+		parameterType="java.util.List">
+		INSERT INTO tb_detalle_hoja_ruta
+		(cod_hoj_rut,
+		cod_ped,
+		ord_desp_ped,
+		cod_vent_hor,
+		fec_estim_lleg,
+		tiemp_prom_desp,
+		tiemp_estim_lleg,
+		fec_estim_part,
+		distancia_estim
+		)
+		values
+		<foreach collection="list" item="detallePedido" index="index"
+			open="(" separator="),(" close=")">
+			#{detallePedido.codigoHojaRuta,javaType=String,jdbcType=VARCHAR},
+			#{detallePedido.codigoPedido,javaType=String,jdbcType=VARCHAR},
+			#{detallePedido.orden,javaType=java.lang.Integer,jdbcType=INTEGER},
+			#{detallePedido.codigoVentanaHoraria,javaType=String,jdbcType=VARCHAR},
+			#{detallePedido.fechaEstimadaLlegada,javaType=java.util.Date,jdbcType=DATETIMEOFFSET},
+			#{detallePedido.tiempoPromedioDespacho,javaType=java.lang.Integer,jdbcType=INTEGER},
+			#{detallePedido.tiempoEstimadoLlegada,javaType=java.lang.Integer,jdbcType=INTEGER},
+			#{detallePedido.fechaEstimadaPartida,javaType=java.util.Date,jdbcType=DATETIMEOFFSET},
+			#{detallePedido.distanciaMetros,javaType=java.lang.Long,jdbcType=INTEGER}
+		</foreach>
+	</insert>
+
 	<resultMap id="rutaMapResult" type="java.util.Map">
-		
+
 	</resultMap>
-	
-	<select id="obtenerRutas"
-		parameterType="java.util.Map"
+
+	<select id="obtenerRutas" parameterType="java.util.Map"
 		resultMap="rutaMapResult" statementType="CALLABLE">
 		call sp_obtener_rutas(
-		 	#{_fecha_despacho,javaType=java.util.Date,jdbcType=DATE,mode=IN}
+		#{_fecha_despacho,javaType=java.util.Date,jdbcType=DATE,mode=IN}
 		)
 	</select>
-	
+
 	<resultMap id="detalleRutaMapResult" type="java.util.Map">
-		
+
 	</resultMap>
-	
-	<select id="obtenerDetalleRuta"
-		parameterType="java.util.Map"
+
+	<select id="obtenerDetalleRuta" parameterType="java.util.Map"
 		resultMap="detalleRutaMapResult" statementType="CALLABLE">
 		call sp_obtener_detalle_ruta(
-		 #{_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN}
-		 )
+		#{_cod_hoj_rut,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
 	</select>
 	<resultMap id="obtenerBodegaMapResult" type="java.util.Map">
-		
+
 	</resultMap>
-	
-	<select id="obtenerBodegaCliente"
-		parameterType="java.util.Map"
+
+	<select id="obtenerBodegaCliente" parameterType="java.util.Map"
 		resultMap="obtenerBodegaMapResult" statementType="CALLABLE">
 		call sp_obtener_bodega(
-		 #{_codigo_bodega,javaType=String,jdbcType=VARCHAR,mode=IN}
-		 )
+		#{_codigo_bodega,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
 	</select>
-	
-	<resultMap id="obtenerVentanasHorariasMapResult" type="java.util.Map">
-		
+
+	<resultMap id="obtenerVentanasHorariasMapResult"
+		type="java.util.Map">
+
 	</resultMap>
-	
+
 	<select id="obtenerVentanasHorarias"
 		parameterType="java.util.Map"
 		resultMap="obtenerVentanasHorariasMapResult" statementType="CALLABLE">
 		call sp_obtener_ventanas_horarias()
 	</select>
-	
-	<resultMap id="listarParametrosMapResult" type="java.util.Map">
-		
+
+	<resultMap id="listarParametrosMapResult"
+		type="java.util.Map">
+
 	</resultMap>
-	
-	<select id="listarParametros"
-		parameterType="java.util.Map"
+
+	<select id="listarParametros" parameterType="java.util.Map"
 		resultMap="listarParametrosMapResult" statementType="CALLABLE">
 		call sp_obtener_parametros()
 	</select>
+
+
+	<resultMap id="unidadNormalizadaRM" type="UnidadNormalizada">
+		<result property="numeroPlaca" column="placa_unidad" />
+		<result property="soat" column="soat_unidad" />
+		<result property="nombreChofer" column="nombre_chofer" />
+		<result property="breveteChofer" column="brevete_chofer" />
+		<result property="pesoCargaMaxima" column="peso_maximo_carga" />
+		<result property="volumenCargaMaxima"
+			column="volumen_maximo_carga" />
+		<result property="codigoUnidadChofer"
+			column="codigo_unidad_chofer" />
+	</resultMap>
+
+	<select id="listarUnidadesBodega" resultMap="unidadNormalizadaRM" statementType="CALLABLE">
+		call sp_obtener_unidades_bodega(
+		#{codigoBodega,javaType=String,jdbcType=VARCHAR,mode=IN}
+		)
+	</select>
 	
+	<delete id="eliminarRutas">
+	    call sp_eliminar_rutas(
+	    #{_fecha_despacho,javaType=java.util.Date,jdbcType=DATE,mode=IN}
+	    );
+	</delete>
 </mapper>

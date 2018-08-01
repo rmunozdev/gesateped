@@ -101,7 +101,7 @@ function localizarAtendido(aData) {
 					  lng: results[0].geometry.location.lng()
 				  },
 				  map: map,
-				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}`,
+				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}\n${aData.fechaPactadaDespacho}`,
 				  optimized: false,
 				  label: {
 					    color: 'blue',

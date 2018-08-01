@@ -33,7 +33,12 @@
 				event.preventDefault();
 				window.location = _globalContextPath+'/monitoreo';
 			}
-		}	
+		}
+		if($("#limpiarBtn")) {
+			$("#limpiarBtn").click((event)=>{
+				limpiar();
+			});
+		}
 		
 		
 		document.getElementById("descargarBtn").onclick = descargarReporte;
@@ -74,13 +79,19 @@
 	    	alert('File download failed!'); 
 	    });
 	}
+	
+	function limpiar() {
+		fetch('starter/limpiar').then((response)=>{
+			location.reload(true);
+		});
+	}
 
 </script>
 <c:choose>
 	<c:when test="${empty pedidos}">
 		<div id="step2" class="jumbotron">
 	        <p class="lead">No se encontraron pedidos para despachar mañana.</p>
-	        <a class="btn btn-large btn-success" id="monitoreoBtn">Ir a monitoreo</a>
+	        <a class="btn btn-large btn-success" id="monitoreoBtn">Ir a monitoreo</a><br>
       	</div>
 	</c:when>
 	<c:when test="${empty bodegas}">
@@ -127,6 +138,9 @@
 	        <select id="bodegasList"  class="selectpicker">
 	        </select>
 	        <a class="btn btn-large btn-success" id="descargarBtn">Descargar</a>
+	        <br>
+	        <hr>
+	        <a id="limpiarBtn">Limpiar la data (para volver a generar rutas)</a>
       	</div>
 	</c:when>
 	<c:otherwise>
@@ -138,6 +152,9 @@
 	        	</c:forEach>
 	        </select>
 	        <a class="btn btn-large btn-success" href="#" id="descargarBtn">Descargar</a>
+	        <br>
+	        <hr>
+	        <a id="limpiarBtn">Limpiar la data (para volver a generar rutas)</a>
       	</div>
 	</c:otherwise>
 </c:choose>

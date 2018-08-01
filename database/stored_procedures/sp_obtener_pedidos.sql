@@ -1,17 +1,3 @@
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `sp_obtener_pedidos` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = cp850 */ ;
-/*!50003 SET character_set_results = cp850 */ ;
-/*!50003 SET collation_connection  = cp850_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtener_pedidos`(
 	_fecha_despacho DATE
 )
@@ -25,6 +11,9 @@ BEGIN
         ped.fec_repro_ped,
         ped.fec_canc_ped,
         ped.fec_devo_ped,
+        
+        concat(ped.dir_desp_ped," ",distrito.nom_dist) as domicilio,
+        
 		det.cod_bod,
 		det.cant_prod,
 		pro.cod_prod,
@@ -57,10 +46,11 @@ BEGIN
         as cliente on cliente.cod_cli = ped.cod_cli
 	inner join tb_detalle_pedido det on det.cod_ped = ped.cod_ped 
     inner join tb_producto pro on pro.cod_prod = det.cod_prod 
+    inner join tb_distrito distrito on ped.cod_dist_desp_ped = distrito.cod_dist
+    inner join tb_provincia provincia on provincia.cod_prov = distrito.cod_prov
     where 
 		(ped.fec_desp_ped = _fecha_despacho AND ped.fec_repro_ped IS NULL AND ped.fec_canc_ped IS NULL)
 		OR (ped.fec_repro_ped = _fecha_despacho AND ped.fec_canc_ped IS NULL)
 		OR (ped.fec_repro_ped IS NULL AND ped.fec_devo_ped = _fecha_despacho AND ped.cod_tiend_devo IS NULL)
     order by ped.cod_ped;
-END ;;
-DELIMITER ;
+END

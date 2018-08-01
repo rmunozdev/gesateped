@@ -61,12 +61,8 @@ public class PedidoDaoImpl implements PedidoDao {
 				String cliente = String.valueOf(resultado.get("clienteNombres")) + " " + String.valueOf(resultado.get("clienteApellidos"));
 				pedido.setCliente(cliente);
 				
-				//Se adaptan direcciones a lo requerido por apis externas (google)
-				String domicilioCliente = String.valueOf(resultado.get("clienteDireccion")) + " " + String.valueOf(resultado.get("clienteDireccionDist"));
-				String domicilioTiendaDesp = String.valueOf(resultado.get("tieDespacho")) + " " + String.valueOf(resultado.get("tieDespachoDist"));
-				String domicilioTiendaDevol = String.valueOf(resultado.get("tieDevol"))+ " " + String.valueOf(resultado.get("tieDevolDist"));
+				pedido.setDomicilio(String.valueOf(resultado.get("domicilio")));
 				
-				setDomicilioObjetivo(pedido, domicilioCliente, domicilioTiendaDesp, domicilioTiendaDevol);
 			}
 			double peso = pedido.getPeso()+Double.valueOf(String.valueOf(resultado.get("pes_prod")));
 			double volumen = pedido.getVolumen()+Double.valueOf(String.valueOf(resultado.get("vol_prod")));
@@ -91,25 +87,6 @@ public class PedidoDaoImpl implements PedidoDao {
 		return TipoPedido.DEVOLUCION_A_TIENDA;
 	}
 	
-	private void setDomicilioObjetivo(PedidoNormalizado pedido, String domicilioCliente, String domicilioTiendaDesp, String domicilioTiendaDevol) {
-		switch(pedido.getTipoPedido()) {
-		case DEVOLUCION_A_TIENDA:
-			pedido.setDomicilio(domicilioCliente);
-			break;
-		case RECOJO_EN_TIENDA:
-			pedido.setDomicilio(domicilioTiendaDesp);
-			break;
-		case REPOSICION_TIENDA:
-			pedido.setDomicilio(domicilioTiendaDesp);
-			break;
-		case SERVICIO_A_CLIENTE:
-			pedido.setDomicilio(domicilioCliente);
-			break;
-		default:
-			break;
-		
-		}
-	}
 
 	@Override
 	public List<UnidadNormalizada> obtenerUnidadesNormalizadas() {
@@ -193,12 +170,7 @@ public class PedidoDaoImpl implements PedidoDao {
 				String fechaRetiroTiend = String.valueOf(detalleMap.get("fec_ret_tiend"));
 				pedido.setTipoPedido(identificarTipoPedido(codigoCliente, codigoTiendaDesp, codigoTiendaDevo, fechaRetiroTiend));
 				
-				//Se adaptan direcciones a lo requerido por apis externas (google)
-				String domicilioCliente = String.valueOf(detalleMap.get("dir_cli")) + " " + String.valueOf(detalleMap.get("dist_cli"));
-				String domicilioTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoDir")) + " " + String.valueOf(detalleMap.get("tiendaDespachoDistNom"));
-				String domicilioTiendaDevol = String.valueOf(detalleMap.get("tiendaDevolucionDir"))+ " " + String.valueOf(detalleMap.get("tiendaDevolucionDistNom"));
-				
-				setDomicilioObjetivo(pedido, domicilioCliente, domicilioTiendaDesp, domicilioTiendaDevol);
+				pedido.setDomicilio(String.valueOf(detalleMap.get("domicilio")));
 				
 				switch(pedido.getTipoPedido()) {
 				case DEVOLUCION_A_TIENDA:
@@ -277,6 +249,16 @@ public class PedidoDaoImpl implements PedidoDao {
 		}
 		
 		return parametros;
+	}
+
+	@Override
+	public List<UnidadNormalizada> obtenerUnidadesNormalizadas(String codigoBodega) {
+		return gesatepedSession.selectList("pedidoDao.listarUnidadesBodega",codigoBodega);
+	}
+
+	@Override
+	public void eliminarRutas(Date fechaDespacho) {
+		this.gesatepedSession.delete("pedidoDao.eliminarRutas",fechaDespacho);
 	}
 	
 	

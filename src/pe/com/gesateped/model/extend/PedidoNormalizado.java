@@ -27,6 +27,7 @@ public class PedidoNormalizado implements Medible {
 	
 	//Requerido al usar google maps directions
 	private long tiempoCronometrico; //Tiempo (segundos) transcurrido basado en el orden
+	private long distanciaMetros;
 	
 	private Integer tiempoPromedioDespacho;
 	private Date fechaEstimadaPartida;
@@ -304,5 +305,13 @@ public class PedidoNormalizado implements Medible {
 	public boolean equals(Object obj) {
 		PedidoNormalizado comparable = (PedidoNormalizado) obj;
 		return this.codigoPedido.equals(comparable.getCodigoPedido());
+	}
+
+	public long getDistanciaMetros() {
+		return distanciaMetros;
+	}
+
+	public void setDistanciaMetros(long distanciaMetros) {
+		this.distanciaMetros = distanciaMetros;
 	}
 }

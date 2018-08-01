@@ -16,7 +16,9 @@ public interface PedidoDao {
 	List<Pedido> listar();
 	List<PedidoNormalizado> obtenerPedidosNormalizados(Date fechaDespacho);
 	List<UnidadNormalizada> obtenerUnidadesNormalizadas();
+	List<UnidadNormalizada> obtenerUnidadesNormalizadas(String codigoBodega);
 	void registrarHojaRuta(Ruta ruta);
+	void eliminarRutas(Date fechaDespacho);
 	List<Ruta> obtenerRutas(Date fechaDespacho);
 	Bodega obtenerBodega(String codigoBodega);
 	List<VentanaHoraria> obtenerVentanasHorarias();

@@ -1,5 +1,5 @@
 UPDATE bd_gesateped.tb_parametro par
-SET par.val_param = '20:53'
+SET par.val_param = '20:37'
 WHERE par.cod_param = 1;
 
 COMMIT;

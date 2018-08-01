@@ -10,6 +10,7 @@
         <typeAlias alias="estadoPedido" type="pe.com.gesateped.model.EstadoPedido" />
         <typeAlias alias="detallePedidoRuta" type="pe.com.gesateped.model.extend.DetallePedidoRuta" />
         <typeAlias alias="pedidoNormalizado" type="pe.com.gesateped.model.extend.PedidoNormalizado" />
+        <typeAlias alias="UnidadNormalizada" type="pe.com.gesateped.model.extend.UnidadNormalizada" />
     </typeAliases>
     <mappers>
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />

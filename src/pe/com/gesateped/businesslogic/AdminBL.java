@@ -16,8 +16,10 @@ public interface AdminBL {
 	List<Pedido> listarPedidos();
 	List<PedidoNormalizado> obtenerPedidosNormalizados();
 	List<UnidadNormalizada> obtenerUnidadesNormalizadas();
+	List<UnidadNormalizada> obtenerUnidadesNormalizadas(String codigoBodega);
 	void registrarHojaRuta(Ruta ruta);
 	List<Ruta> obtenerRutas(Date fechaDespacho);
+	void eliminarRutas();
 	Bodega obtenerBodega(String codigoBodega);
 	List<VentanaHoraria> obtenerVentanas();
 	List<Parametro> listarParametros();
