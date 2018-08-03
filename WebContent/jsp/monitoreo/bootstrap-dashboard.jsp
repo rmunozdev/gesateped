@@ -15,7 +15,7 @@
 
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.7.2/localforage.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
-<script async defer
+<script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
 </script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@mapbox/polyline@1.0.0/src/polyline.min.js"></script>
@@ -68,7 +68,21 @@
 		font-weight: bold;
 		text-decoration: underline
 	}
-	
+	.km-label-container {
+		
+		padding: 1px;
+		margin: 1px !important;
+		
+	}
+	.km-label{
+		font-size: 9px;
+		background-color: black;
+		color: white;
+		line-height: 10px;
+		text-align: center;
+		border-radius: 4px;
+		z-index: 99;
+	}
 	
 </style>
 

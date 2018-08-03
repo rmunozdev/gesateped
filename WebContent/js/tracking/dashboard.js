@@ -333,6 +333,7 @@ function stopAutoRefresh() {
 }
 
 
+
 function verRutaCompleta() {
 	$.ajax({
 		url: _globalContextPath+'/sim/paradas',
@@ -342,7 +343,7 @@ function verRutaCompleta() {
 		success: function(paradas) {
 			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
 				zoom: 16,
-				disableDefaultUI: true,
+				disableDefaultUI: false,
 				disableDoubleClickZoom: true,
 				zoomControl: true,
 				styles: [
@@ -461,9 +462,10 @@ function verRutaCompleta() {
 				    				  anchor: new google.maps.Point(11, 40)
 				    			  }
 				    		  });
-				    		  attachInstructionText(stepDisplay,locationMarker,`${waypointPedidoCode}<br>${address}<br>Distancia desde parada previa: ${nextdistance}`);
+				    		  //attachInstructionText(stepDisplay,locationMarker,`${waypointPedidoCode}<br>${address}<br>Distancia desde parada previa: ${nextdistance}`);
+				    		  
 				    	  }
-				    	  
+				    	  attachDistanceLabel(paso,map);
 				      });
 				      
 				      
@@ -474,7 +476,22 @@ function verRutaCompleta() {
 					        modal: true
 					    });
 				    }
-			  })
+			  });
+			  
+			  
+			  google.maps.event.addListener(map, 'zoom_changed', function(e) {
+	        	  if(map.zoom >= 12) {
+	        		  overlays.forEach(function(overlay,index){
+	        			  overlay.setMap(map);
+	        		  });
+	        	  }
+	        	  else {
+	        		  overlays.forEach(function(overlay,index){
+	        			  overlay.setMap(null);
+	        		  });
+	        	  }
+	        });
+			  
 		}
 	});
 }
@@ -488,3 +505,98 @@ function attachInstructionText(stepDisplay, marker, text, map) {
    });
 }
 
+/*
+ * Distance text label instructions
+ */
+USGSOverlay.prototype = new google.maps.OverlayView();
+var overlays = [];
+function attachDistanceLabel(leg,map) {
+	overlays.push(new USGSOverlay(
+			  leg,
+			  map));
+}
+
+
+function USGSOverlay(leg, map) {
+    // Initialize all properties.
+    this.leg = leg;
+    this.text = leg.distance.text;
+    this.map_ = map;
+
+    // Define a property to hold the image's div. We'll
+    // actually create this div upon receipt of the onAdd()
+    // method so we'll leave it null for now.
+    this.div_ = null;
+
+    // Explicitly call setMap on this overlay.
+    this.setMap(map);
+}
+
+USGSOverlay.prototype.onAdd = function() {
+    var div = document.createElement('div');
+    div.style.borderStyle = 'none';
+    div.style.borderWidth = '0px';
+    div.style.position = 'absolute';
+    div.className = 'km-label-container';
+    
+    var myMsg = document.createElement('p');
+    div.className = 'km-label';
+    myMsg.innerHTML = this.text;
+    
+    div.appendChild(myMsg);
+
+    this.div_ = div;
+
+    // Add the element to the "overlayLayer" pane.
+    var panes = this.getPanes();
+    panes.overlayLayer.appendChild(div);
+  };
+  
+  USGSOverlay.prototype.draw = function() {
+
+      var overlayProjection = this.getProjection();
+
+      var points = [];
+      var legDistance = this.leg.distance.value;
+      var targetDistance = parseInt(legDistance/2);
+      
+      var acumulated = 0;
+      var targetPoint;
+      this.leg.steps.forEach(function(step,index){
+    	  if(targetPoint) {
+    		  return;
+    	  }
+    	acumulated += step.distance.value;
+    	if(acumulated >= targetDistance) {
+    		var stepPoints = polyline.decode(step.polyline.points);
+    		targetPoint = stepPoints[parseInt(stepPoints.length/2)];
+    		
+    	}
+      });
+      
+      if(targetPoint) {
+      	var position = overlayProjection.fromLatLngToDivPixel(
+              	new google.maps.LatLng(
+              			targetPoint[0],
+              			targetPoint[1]
+              	)
+              );
+
+              // Resize the image's div to fit the indicated dimensions.
+              var div = this.div_;
+              div.style.left = position.x + 'px';
+              div.style.top = position.y + 'px';
+              div.style.width = '35px';
+      	
+      	
+      } else {
+      	window.alert("Fail by no targetPoint adquired");
+      }
+    };
+    
+ // The onRemove() method will be called automatically from the API if
+    // we ever set the overlay's map property to 'null'.
+    USGSOverlay.prototype.onRemove = function() {
+      this.div_.parentNode.removeChild(this.div_);
+      this.div_ = null;
+    };
