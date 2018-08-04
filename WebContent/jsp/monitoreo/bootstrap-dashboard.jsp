@@ -70,11 +70,10 @@
 	}
 	.km-label-container {
 		
-		padding: 1px;
-		margin: 1px !important;
 		
 	}
 	.km-label{
+		padding-top: 5px;
 		font-size: 9px;
 		background-color: black;
 		color: white;

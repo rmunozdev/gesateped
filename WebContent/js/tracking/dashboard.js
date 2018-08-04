@@ -541,7 +541,7 @@ USGSOverlay.prototype.onAdd = function() {
     
     var myMsg = document.createElement('p');
     div.className = 'km-label';
-    myMsg.innerHTML = this.text;
+    myMsg.innerHTML = `${this.text}<br>${this.leg.duration.text}`;
     
     div.appendChild(myMsg);
 
