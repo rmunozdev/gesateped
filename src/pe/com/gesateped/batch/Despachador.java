@@ -49,7 +49,7 @@ public class Despachador {
 		buscador.addControlador(ctrlGoogle);
 
 		// Las unidades deben ordenarse segun tipo de pedido
-		Collections.sort(unidades, new ComparadorPeso(false));
+		Collections.sort(unidades, new ComparadorPeso(true));
 
 		System.out.println("Unidades");
 		System.out.println("Placa\tCarga\tVolumen");
