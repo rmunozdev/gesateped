@@ -1,7 +1,6 @@
 firebase.initializeApp(firebaseConfig);
 const firebaseDB = firebase.database();
 (()=>{
-	
 	window.addEventListener('load',iniciar);
 })();
 
@@ -118,10 +117,13 @@ var colores = {
     reprogramados : '#e4c583',
     cancelados : '#005dff'
 };
-
+var graficaUnidad;
 function mostrarGraficaUnitaria(estadoPedidos) {
 	var ctx = document.getElementById("myChart").getContext('2d');
-	var myDoughnutChart = new Chart(ctx, {
+	if(graficaUnidad) {
+		graficaUnidad.destroy();
+	}
+	graficaUnidad = new Chart(ctx, {
 	    type: 'doughnut',
 	    data: {
 	        datasets: [{
@@ -164,9 +166,13 @@ function mostrarGraficaUnitaria(estadoPedidos) {
 	});
 }
 
+var graficaTotal;
 function mostrarGraficaTotal(estadoPedidos) {
 	var ctx = document.getElementById("chartPedidosPorBodega").getContext('2d');
-	var myDoughnutChart = new Chart(ctx, {
+	if(graficaTotal) {
+		graficaTotal.destroy();
+	}
+	graficaTotal = new Chart(ctx, {
 	    type: 'doughnut',
 	    data: {
 	        datasets: [{
@@ -459,10 +465,13 @@ function verRutaCompleta() {
 				    	  }
 				    	  attachDistanceLabel(paso,map);
 				      });
-				      
+				      var title = `<div>
+							<img src="${_globalContextPath}/images/sodimaclogo-title.jpg" class="dialog-sodimac">
+								<span class="dialog-sodimac-title" style="left: 400px;">RUTA COMPLETA</span>
+								</div>`;
 				      
 				      $('div#pedidoMap').dialog({
-							title: "Ruta completa",
+							title: title,
 							width: $(window).width(),
 					        height: $(window).height(),
 					        modal: true

@@ -112,7 +112,7 @@
 	         <div class="panel-body">
 	         	<div class="left-text">
 			        <jsp:useBean id="now" class="java.util.Date"/> 
-					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></label>
+					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></label>
 			    </div>
 			    <input type="hidden" id="codigoHojaRutaField">
 			    <input type="hidden" id="unidadSeleccionadaField">
@@ -140,7 +140,7 @@
 	        <div id="panelUnidades" class="span12" style="display:none">
 	        	<div class="alert-warning">
 					<p>Lista de Unidades activas para el 
-					<fmt:formatDate value="${now}" pattern="yyyy/MM/dd" />, por favor seleccione la unidad a monitorear. </p>
+					<fmt:formatDate value="${now}" pattern="dd/MM/yyyy" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
 	        	<table id="tblUnidades" class="table">
 					<thead>
