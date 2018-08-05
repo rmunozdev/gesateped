@@ -597,6 +597,8 @@ USGSOverlay.prototype.onAdd = function() {
  // The onRemove() method will be called automatically from the API if
     // we ever set the overlay's map property to 'null'.
     USGSOverlay.prototype.onRemove = function() {
-      this.div_.parentNode.removeChild(this.div_);
-      this.div_ = null;
+    	if(this.div_) {
+    		this.div_.parentNode.removeChild(this.div_);
+    	      this.div_ = null;
+    	}
     };
