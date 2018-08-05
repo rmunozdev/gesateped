@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><tiles:getAsString name="title" /></title>
-	<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/favicon.png">
+	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/favicon.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
@@ -60,6 +60,10 @@
       }
       .marketing p + h4 {
         margin-top: 28px;
+      }
+      
+      a {
+      	cursor: pointer;
       }
     </style>
 <!-- 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css"/> -->
