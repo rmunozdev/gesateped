@@ -40,7 +40,6 @@ public class GoogleControl implements Controlador {
 	@Override
 	public boolean verificar(List<PedidoNormalizado> pedidos) {
 		boolean resultado = false;
-		System.out.println("Usando control google: " + useCounter);
 		if(pedidos.size()<MAX_WAYPOINTS && useCounter < MAX_USES) {
 			resultado = completarData(pedidos);
 			useCounter++;
@@ -58,23 +57,22 @@ public class GoogleControl implements Controlador {
 		GeoApiContext context = new GeoApiContext.Builder().apiKey(MAPS_API_KEY).build();
 		List<String> waypoints = new ArrayList<>();
 		
-		List<String> direccionesOriginal = new ArrayList<>();
-		for (PedidoNormalizado pedido : pedidos) {
-			direccionesOriginal.add(pedido.getDomicilio());
-		}
-		
 		for(PedidoNormalizado pedido : pedidos) {
-			waypoints.add(pedido.getDomicilio());
+			waypoints.add(pedido.getDomicilio() + " Peru");
 		}
+		List<String> direccionesOriginal = new ArrayList<>(waypoints);
 		
 		try {
+			System.out.println("Waypoint size: " + waypoints.size());
 			DirectionsResult directionsResult = DirectionsApi.newRequest(context)
 					.origin(this.origen + " Peru")
 					.destination(this.destino + " Peru")
-					.waypoints(waypoints.toArray(new String[1]))
+					.waypoints(waypoints.toArray(new String[waypoints.size()]))
 					.mode(TravelMode.DRIVING)
 					.optimizeWaypoints(true).await();
-			
+			if(directionsResult.routes.length == 0) {
+				return false;
+			}
 			int[] waypointOrder = directionsResult.routes[0].waypointOrder;
 			/*
 			 * Cada leg es un punto de paso por pedido (ordenado), 

@@ -7,6 +7,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css"> -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dashboard.css">
 
+<script type='text/javascript' src='${pageContext.request.contextPath}/js/config.js'></script>
 <!-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script> -->
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery/collapse/jquery.collapse.js"></script>

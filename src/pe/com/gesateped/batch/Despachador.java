@@ -106,10 +106,10 @@ public class Despachador {
 		System.out.println("Pedidos Huerfanos: " + pedidosAProcesar.size());
 		System.out.println("*****************");
 		if(!pedidosAProcesar.isEmpty()) {
-			System.out.println("Codigo\tPeso\tVolumen\tDemora\tbodega");
+			System.out.println("Codigo\tPeso\tVolumen\tDemora\tbodega\tDomicilio");
 			for (PedidoNormalizado pedido : pedidosAProcesar) {
-				System.out.println(String.format("%s\t%s\t%s\t%s\t%s", pedido.getCodigoPedido(), pedido.getPeso(),
-						pedido.getVolumen(), pedido.getDemora(), pedido.getCodigoBodega()));
+				System.out.println(String.format("%s\t%s\t%s\t%s\t%s\t%s", pedido.getCodigoPedido(), pedido.getPeso(),
+						pedido.getVolumen(), pedido.getDemora(), pedido.getCodigoBodega(),pedido.getDomicilio()));
 			}
 		}
 	}
