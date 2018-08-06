@@ -333,6 +333,8 @@ function stopAutoRefresh() {
 
 
 function verRutaCompleta() {
+	//Se limpian overlays previos
+	overlays = [];
 	$.ajax({
 		url: _globalContextPath+'/sim/paradas',
 		type: 'POST',
