@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.gesateped.dao.AuditoriaDao;
+import pe.com.gesateped.model.Actividad;
 
 @Repository
 public class AuditoriaDaoImpl implements AuditoriaDao {
@@ -35,24 +36,14 @@ public class AuditoriaDaoImpl implements AuditoriaDao {
 	}
 
 	@Override
-	public int registrarInicioActividad(int numeroProceso, String nombreActividad) {
-		Map<String,Object> parameters = new HashMap<>();
-		parameters.put("_num_proc", numeroProceso);
-		parameters.put("_nom_activ", nombreActividad);
-		parameters.put("GENERATED_NUM_ACTIV", null);
-		gesatepedSession.insert("auditoriaDao.registrarInicioActividad", parameters);
-		Integer insertedKey = (Integer)parameters.get("GENERATED_NUM_ACTIV");
-		return insertedKey;
+	public Actividad registrarInicioActividad(Actividad actividad) {
+		gesatepedSession.insert("auditoriaDao.registrarInicioActividad", actividad);
+		return actividad;
 	}
 
 	@Override
-	public void registrarFinActividad(int numeroActividad, boolean isSuccess, String descripcionError) {
-		String estado = isSuccess?"SUCCESS":"ERROR";
-		Map<String,Object> parameters = new HashMap<>();
-		parameters.put("_NUM_ACTIV", numeroActividad);
-		parameters.put("_ERR_TEC_ACTIV", descripcionError);
-		parameters.put("_EST_ACTIV", estado);
-		gesatepedSession.update("auditoriaDao.registrarFinActividad", parameters);
+	public void registrarFinActividad(Actividad actividad) {
+		gesatepedSession.update("auditoriaDao.registrarFinActividad", actividad);
 	}
 
 }

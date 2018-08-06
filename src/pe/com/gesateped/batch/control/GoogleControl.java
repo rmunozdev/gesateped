@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,16 +22,21 @@ public class GoogleControl implements Controlador {
 
 	private static final String MAPS_API_KEY = "AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI";
 
+	private static final String LOG_PATTERN_USOS = "GOOGLE: Query número %s para origen %s";
+	private static final String LOG_PATTERN_SUCCESS = "GOOGLE: Query exitoso para %s pedidos, con demora total: %s \n\tDetalle: %s";
+	private static final String LOG_PATTERN_FAIL = "GOOGLE: Query fallo para %s pedidos, con demora total: %s \\n\\tDetalle: %s";
+	
 	private static final int MAX_WAYPOINTS = 23;
+	private static final int MAX_USES = 100;
 	
 	private String origen;
 	private String destino;
 	
 	private int useCounter = 1;
-	private static final int MAX_USES = 100;
-	private long tiempoAcumuladoMaximo = 12 * 60 * 60;
+	
 	
 	public GoogleControl(String origen, String destino) {
+		System.out.println("Lapso Laborable: " + Parametros.getLapsoLaborable());
 		this.origen = origen;
 		this.destino = destino;
 	}
@@ -40,11 +44,11 @@ public class GoogleControl implements Controlador {
 	@Override
 	public boolean verificar(List<PedidoNormalizado> pedidos) {
 		boolean resultado = false;
+		System.out.println(String.format(LOG_PATTERN_USOS, useCounter,this.origen));
 		if(pedidos.size()<MAX_WAYPOINTS && useCounter < MAX_USES) {
-			resultado = completarData(pedidos);
+			resultado = queryGoogleDirections(pedidos);
 			useCounter++;
 		}
-		System.out.println("GOOGLE CONTROL USES: " + useCounter);
 		return resultado;
 	}
 
@@ -53,17 +57,14 @@ public class GoogleControl implements Controlador {
 		return false;
 	}
 	
-	private boolean completarData(List<PedidoNormalizado> pedidos) {
+	private boolean queryGoogleDirections(List<PedidoNormalizado> pedidos) {
 		GeoApiContext context = new GeoApiContext.Builder().apiKey(MAPS_API_KEY).build();
 		List<String> waypoints = new ArrayList<>();
 		
 		for(PedidoNormalizado pedido : pedidos) {
 			waypoints.add(pedido.getDomicilio() + " Peru");
 		}
-		List<String> direccionesOriginal = new ArrayList<>(waypoints);
-		
 		try {
-			System.out.println("Waypoint size: " + waypoints.size());
 			DirectionsResult directionsResult = DirectionsApi.newRequest(context)
 					.origin(this.origen + " Peru")
 					.destination(this.destino + " Peru")
@@ -116,16 +117,12 @@ public class GoogleControl implements Controlador {
 				index++;
 				direccionesOrdenadas.add(pedidoActual.getDomicilio());
 			}
-			if(tiempoCronometrico > tiempoAcumuladoMaximo) {
-				//Exceso en conteo, rechazar!
+			if(tiempoCronometrico > Parametros.getLapsoLaborable()) {
 				//TODO Se deberia hacer rollback de establecimientos?
+				System.out.println(String.format(LOG_PATTERN_FAIL, pedidos.size(),tiempoCronometrico ,pedidos));
 				return false;
 			} else {
-				System.out.println("Waypoint order from: " + this.origen + " to " + this.destino);;
-				System.out.println(">>" + Arrays.toString(waypointOrder));
-				System.out.println(direccionesOrdenadas);
-				System.out.println("Original");
-				System.out.println(direccionesOriginal);
+				System.out.println(String.format(LOG_PATTERN_SUCCESS, pedidos.size(),tiempoCronometrico ,pedidos));
 			}
 		} catch (ApiException | InterruptedException | IOException | ParseException e) {
 			e.printStackTrace();

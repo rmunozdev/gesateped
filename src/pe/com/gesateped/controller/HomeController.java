@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.gesateped.batch.HojaRutaBatch;
 import pe.com.gesateped.businesslogic.AdminBL;
+import pe.com.gesateped.businesslogic.AuditoriaBL;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.util.GesatepedUtil;
 
@@ -34,6 +35,9 @@ public class HomeController {
 	
 	@Autowired
 	private AdminBL adminBL;
+	
+	@Autowired
+	private AuditoriaBL auditoriaBL;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView inicio(ModelMap model) {
@@ -59,11 +63,14 @@ public class HomeController {
 	@ResponseBody
 	public List<String> construirHojaRutas(HttpSession session) {
 		try {
+			this.auditoriaBL.iniciarProceso(HojaRutaBatch.PROCESO_HOJA_RUTA);
 			this.hojaRutaBatch.generarHojaRuta();
 			List<String> bodegas = this.hojaRutaBatch.generarReporte(GesatepedUtil.getDiaSiguiente());
+			this.auditoriaBL.finalizarProceso(true);
 			return bodegas;
 		} catch (Exception exception) {
 			logger.error("No se pudo generar hoja de ruta", exception);
+			this.auditoriaBL.finalizarProceso(false);
 		}
 		return Collections.emptyList();
 	}

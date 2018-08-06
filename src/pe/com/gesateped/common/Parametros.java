@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import pe.com.gesateped.businesslogic.AdminBL;
 import pe.com.gesateped.model.Parametro;
 import pe.com.gesateped.model.VentanaHoraria;
+import pe.com.gesateped.util.GesatepedUtil;
 
 @Service
 public class Parametros {
 
 	private static Map<String, String> parametrosMap;
+	private static long lapsoLaborable;
 	
 	public Parametros(@Autowired AdminBL adminBL) {
 		System.out.println("Parametros ready with: " + adminBL);
@@ -26,6 +28,12 @@ public class Parametros {
 		List<VentanaHoraria> ventanas = adminBL.obtenerVentanas();
 		if(!ventanas.isEmpty()) {
 			parametrosMap.put("INICIO_VENTANA_HORARIA", ventanas.get(0).getHoraInicio());
+		}
+		
+		//Generacion de tiempo total
+		lapsoLaborable = 0;
+		for (VentanaHoraria ventanaHoraria : ventanas) {
+			lapsoLaborable += GesatepedUtil.calcularLapsoTiempo(ventanaHoraria.getHoraInicio(), ventanaHoraria.getHoraFin());
 		}
 	}
 
@@ -61,6 +69,10 @@ public class Parametros {
 	
 	public static String getInicioVentanaHoraria() {
 		return parametrosMap.get("INICIO_VENTANA_HORARIA");
+	}
+
+	public static long getLapsoLaborable() {
+		return lapsoLaborable;
 	}
 	
 }

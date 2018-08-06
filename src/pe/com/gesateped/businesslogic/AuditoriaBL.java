@@ -2,9 +2,8 @@ package pe.com.gesateped.businesslogic;
 
 public interface AuditoriaBL {
 	
-	public int registrarInicioProceso(String nombreProceso);
-	public void registrarFinProceso(int numeroProceso, boolean isSuccess);
-	public int registrarInicioActividad(int numeroProceso, String nombreActividad);
-	public void registrarFinActividad(int numeroActividad);
-	public void registrarFinActividad(int numeroActividad, String descripcionError);
+	public void iniciarProceso(String nombreProceso);
+	public void finalizarProceso(boolean isSuccess);
+	public void iniciarActividad(String nombre);
+	public void finalizarActividad(String nombre, boolean isSuccess, String mensaje);
 }

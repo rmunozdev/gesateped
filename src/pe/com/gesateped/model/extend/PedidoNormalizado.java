@@ -302,9 +302,19 @@ public class PedidoNormalizado implements Medible {
 	}
 	
 	@Override
+	public int hashCode() {
+		return this.codigoPedido.hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
 		PedidoNormalizado comparable = (PedidoNormalizado) obj;
 		return this.codigoPedido.equals(comparable.getCodigoPedido());
+	}
+	
+	@Override
+	public String toString() {
+		return this.codigoPedido;
 	}
 
 	public long getDistanciaMetros() {

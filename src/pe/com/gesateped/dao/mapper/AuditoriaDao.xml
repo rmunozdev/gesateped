@@ -18,19 +18,20 @@
     )}
 	</update>
 	
-    <insert  id="registrarInicioActividad" parameterType="java.util.Map" statementType="CALLABLE">
+    <insert  id="registrarInicioActividad" parameterType="actividad" statementType="CALLABLE">
     { call sp_registrar_inicio_actividad(
-        #{_num_proc,javaType=java.lang.Integer,jdbcType=INTEGER,mode=IN},
-        #{_nom_activ,javaType=String,jdbcType=VARCHAR,mode=IN},
-        #{GENERATED_NUM_ACTIV,javaType=java.lang.Integer,jdbcType=INTEGER,mode=OUT}
+        #{proceso.numero,javaType=java.lang.Integer,jdbcType=INTEGER,mode=IN},
+        #{nombre,javaType=String,jdbcType=VARCHAR,mode=IN},
+        #{numero,javaType=java.lang.Integer,jdbcType=INTEGER,mode=OUT}
     )}
 	</insert>
 	
-    <update  id="registrarFinActividad" parameterType="java.util.Map" statementType="CALLABLE">
+    <update  id="registrarFinActividad" parameterType="actividad" statementType="CALLABLE">
     { call sp_registrar_fin_actividad(
-        #{_NUM_ACTIV,javaType=java.lang.Integer,jdbcType=INTEGER,mode=IN},
-        #{_ERR_TEC_ACTIV,javaType=String,jdbcType=VARCHAR,mode=IN},
-        #{_EST_ACTIV,javaType=String,jdbcType=VARCHAR,mode=IN}
+        #{numero,javaType=java.lang.Integer,jdbcType=INTEGER,mode=IN},
+        #{mensaje,javaType=String,jdbcType=VARCHAR,mode=IN},
+        #{error,javaType=String,jdbcType=VARCHAR,mode=IN},
+        #{estado,javaType=String,jdbcType=VARCHAR,mode=IN}
     )}
 	</update>
     
