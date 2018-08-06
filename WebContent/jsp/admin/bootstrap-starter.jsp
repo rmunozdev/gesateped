@@ -112,10 +112,10 @@
         		<table class="table">
         			<thead>
         				<tr>
-						<th>#</th>
-						<th>Codigo</th>
-						<th>Tipo</th>
-						<th>Fecha</th>
+						<th style="text-align: center">#</th>
+						<th style="text-align: center">PEDIDO</th>
+						<th style="text-align: center">TIPO DE ATENCIÓN</th>
+						<th style="text-align: center">TIPO DE DESPACHO</th>
 						</tr>
         			</thead>
 	        		<tbody>
