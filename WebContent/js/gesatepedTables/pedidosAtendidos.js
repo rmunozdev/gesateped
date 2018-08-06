@@ -141,6 +141,9 @@ function localizarAtendido(aData) {
         maxHeight: 500,
 		width: 600,
         height: 500,
-        modal: true
+        modal: true,
+        close: function(event,ui) {
+        	$('div#pedidoMap').html("");
+        }
     });
 }

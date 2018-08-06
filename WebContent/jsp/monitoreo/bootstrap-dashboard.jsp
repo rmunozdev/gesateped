@@ -210,6 +210,12 @@
 	<div id="pedidoMap"
 			style="display: none;border: 1px solid black; width:512px; height:480px">
 	</div>
+	<div id="noAtendidoMap"
+			style="display: none;border: 1px solid black; width:512px; height:480px">
+	</div>
+	<div id="rutaCompletaMap"
+			style="display: none;border: 1px solid black; width:512px; height:480px">
+	</div>
 	
 	<div id="accordion" data-collapse style="display:none">
 		<h4 class="tbl-descripcion open">Pedidos Atendidos</h4>

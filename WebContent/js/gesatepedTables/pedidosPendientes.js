@@ -187,6 +187,7 @@ function iniciarMonitoreo(aData) {
 		        	localforage.getItem("unidadSeleccionada").then(unidadSeleccionada=>{
 		        		startAutoRefresh(unidadSeleccionada.codigoHojaRuta);
 		        	});
+		        	$('div#dialogMap#monitoreoMap').html("");
 		        }
 		    });
 		});

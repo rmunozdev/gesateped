@@ -339,7 +339,7 @@ function verRutaCompleta() {
 		data: {codigoRuta: $("#codigoHojaRutaField").val()},
 		Accept: "application/json", 
 		success: function(paradas) {
-			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
+			const map = new google.maps.Map(document.getElementById('rutaCompletaMap'), {
 				zoom: 16,
 				disableDefaultUI: false,
 				disableDoubleClickZoom: true,
@@ -470,11 +470,14 @@ function verRutaCompleta() {
 								<span class="dialog-sodimac-title" style="left: 400px;">RUTA COMPLETA</span>
 								</div>`;
 				      
-				      $('div#pedidoMap').dialog({
+				      $('div#rutaCompletaMap').dialog({
 							title: title,
 							width: $(window).width(),
 					        height: $(window).height(),
-					        modal: true
+					        modal: true,
+					        close: function(event,ui) {
+					        	$('div#rutaCompletaMap').html("");
+					        }
 					    });
 				    }
 			  });

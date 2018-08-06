@@ -77,7 +77,7 @@ function localizarNoAtendido(aData) {
 	geocoder.geocode({address: direccion + " Peru"}, (results, status) =>{
 		if (status === 'OK') {
 			const url = _globalContextPath + colorToUnidadMarker('FFAD00');
-			const map = new google.maps.Map(document.getElementById('pedidoMap'), {
+			const map = new google.maps.Map(document.getElementById('noAtendidoMap'), {
 				zoom: 15,
 				disableDefaultUI: true,
 				disableDoubleClickZoom: true,
@@ -122,7 +122,7 @@ function localizarNoAtendido(aData) {
 			 
 			//Label div
 			 /*
-			 $("#pedidoMap").append(`<div class='map-panel'>
+			 $("#noAtendidoMap").append(`<div class='map-panel'>
 			 	<span class="map-panel-title">${aData.codigoPedido}</span><br>
 			 	${direccion}</div>`);
 			 */
@@ -158,13 +158,16 @@ function localizarNoAtendido(aData) {
 			<span class="dialog-sodimac-title">UBICACIÓN ACTUAL DE PEDIDO ${aData.codigoPedido}</span>
 			</div>`;
 	
-	$('div#pedidoMap').dialog({
+	$('div#noAtendidoMap').dialog({
 		title : title,
 		maxWidth:600,
         maxHeight: 500,
 		width: 600,
         height: 500,
-        modal: true
+        modal: true,
+        close: function(event,ui) {
+        	$('div#noAtendidoMap').html("");
+        }
     });
 	
 	
