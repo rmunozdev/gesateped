@@ -57,7 +57,7 @@ function establecerParadasRuta() {
 }
 var refreshIntervalId;
 function simularMovimiento(control) {
-	console.log("Se inicia simulacion");
+	console.log("Se inicia simulación");
 	localforage.getItem("tripLocations").then(tripPoints=>{
 		console.log("Simulando movimiento desde: " + control.step);
 		let index = control.step;

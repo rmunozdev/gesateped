@@ -133,22 +133,22 @@
 	        </div>
 	        <div id="noHayPedidosMsg" class="span6" style="display:none">
 	        	<p class="alert alert-danger">No hay pedidos asignados a esta bodega.
-	        		Para visualizar grafica, por favor elegir bodega con pedidos asignados
+	        		Para visualizar gráfica, por favor elegir bodega con pedidos asignados
 	        	</p>
 	        </div>
 	        
 	        <div id="panelUnidades" class="span12" style="display:none">
 	        	<div class="alert-warning">
-					<p>Lista de Unidades activas para el 
+					<p>Lista de unidades activas para el 
 					<fmt:formatDate value="${now}" pattern="dd/MM/yyyy" />, por favor seleccione la unidad a monitorear. </p>
 				</div>
 	        	<table id="tblUnidades" class="table">
 					<thead>
 						<tr>
 							<th><label></label></th>
-							<th><label>Numero de Placa</label></th>
+							<th><label>Número de Placa</label></th>
 							<th><label>Chofer</label></th>
-							<th><label>Telefono</label></th>
+							<th><label>Teléfono</label></th>
 							<th><label>Porcentaje de Atención</label></th>
 						</tr>
 					</thead>

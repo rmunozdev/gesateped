@@ -5,6 +5,7 @@ BEGIN
 	select pedido.cod_ped,
 	pedido.cod_tiend_desp,
     pedido.fec_ret_tiend,
+    pedido.fec_devo_ped,
     detalle.ord_desp_ped,
     detalle.cod_hoj_rut,
     concat(pedido.dir_desp_ped," ",distrito.nom_dist) as domicilio,

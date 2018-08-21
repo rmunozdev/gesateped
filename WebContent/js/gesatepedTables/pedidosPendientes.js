@@ -60,15 +60,7 @@ function actualizarTablaPedidosPendientes(data,codigoHojaRuta) {
 }
 
 function iniciarMonitoreo(aData) {
-	var direccion;
-	//TODO rmunozdev Actualizar lógica
-	if(aData.direccionCliente && aData.distritoCliente) {
-		console.log("Se usara direccion de cliente");
-		direccion = aData.direccionCliente +" "+ aData.distritoCliente;
-	} else if(aData.direccionTienda && aData.distritoTienda){
-		console.log("Se usara direccion de tienda");
-		direccion = aData.direccionTienda +" "+ aData.distritoTienda;
-	}
+	var direccion = aData.direccionDespacho + ' ' + aData.distritoDespacho;
 	
 	//Requerido por simulador.js
 	localforage.setItem("destinoSeleccionado",{
@@ -181,7 +173,7 @@ function iniciarMonitoreo(aData) {
 		        modal: true,
 		        closeOnEscape: false,
 		        close: function() {
-		        	console.log("Se detiene simulacion(si se inicio)");
+		        	console.log("Se detiene simulación(si se inicio)");
 		        	simulador.cancelar();
 		        	//Se inicia autorefresh al cerrar
 		        	localforage.getItem("unidadSeleccionada").then(unidadSeleccionada=>{

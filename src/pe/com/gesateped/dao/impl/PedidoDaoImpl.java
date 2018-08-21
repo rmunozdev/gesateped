@@ -168,6 +168,7 @@ public class PedidoDaoImpl implements PedidoDao {
 				String codigoTiendaDesp = String.valueOf(detalleMap.get("tiendaDespachoCod"));
 				String codigoTiendaDevo = String.valueOf(detalleMap.get("tiendaDevolucionCod"));
 				String fechaRetiroTiend = String.valueOf(detalleMap.get("fec_ret_tiend"));
+				pedido.setFechaDevolucion((Date)detalleMap.get("fec_devo_ped"));
 				pedido.setTipoPedido(identificarTipoPedido(codigoCliente, codigoTiendaDesp, codigoTiendaDevo, fechaRetiroTiend));
 				
 				pedido.setDomicilio(String.valueOf(detalleMap.get("domicilio")));

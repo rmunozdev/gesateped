@@ -21,13 +21,11 @@ public class DetallePedidoRuta {
 	private String descripcionMotivoPedidoPE;
 	private String nombresCliente;
 	private String apellidosCliente;
-	private String direccionCliente;
-	private String distritoCliente;
 	private String nombreTienda;
-	private String direccionTienda;
-	private String distritoTienda;
 	private double latitudGpsDespacho;
 	private double longitudGpsDespacho;
+	private String direccionDespacho;
+	private String distritoDespacho;
 	
 	public String getCodigoPedido() {
 		return codigoPedido;
@@ -64,30 +62,7 @@ public class DetallePedidoRuta {
 		this.fechaNoCumplimientoDespacho = fechaNoCumplimientoDespacho;
 	}
 	
-	public String getDireccionCliente() {
-		return direccionCliente;
-	}
-	public void setDireccionCliente(String direccionCliente) {
-		this.direccionCliente = direccionCliente;
-	}
-	public String getDistritoCliente() {
-		return distritoCliente;
-	}
-	public void setDistritoCliente(String distritoCliente) {
-		this.distritoCliente = distritoCliente;
-	}
-	public String getDireccionTienda() {
-		return direccionTienda;
-	}
-	public void setDireccionTienda(String direccionTienda) {
-		this.direccionTienda = direccionTienda;
-	}
-	public String getDistritoTienda() {
-		return distritoTienda;
-	}
-	public void setDistritoTienda(String distritoTienda) {
-		this.distritoTienda = distritoTienda;
-	}
+	
 	public double getLatitudGpsDespacho() {
 		return latitudGpsDespacho;
 	}
@@ -129,6 +104,18 @@ public class DetallePedidoRuta {
 	}
 	public void setDescripcionMotivoPedidoPE(String descripcionMotivoPedidoPE) {
 		this.descripcionMotivoPedidoPE = descripcionMotivoPedidoPE;
+	}
+	public String getDireccionDespacho() {
+		return direccionDespacho;
+	}
+	public void setDireccionDespacho(String direccionDespacho) {
+		this.direccionDespacho = direccionDespacho;
+	}
+	public String getDistritoDespacho() {
+		return distritoDespacho;
+	}
+	public void setDistritoDespacho(String distritoDespacho) {
+		this.distritoDespacho = distritoDespacho;
 	}
 	
 }

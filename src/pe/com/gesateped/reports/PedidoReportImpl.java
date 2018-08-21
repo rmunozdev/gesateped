@@ -19,34 +19,6 @@ public class PedidoReportImpl implements PedidoReport {
 	@Autowired
 	private PedidoDao pedidoDao;
 	
-	@Override
-	public List<Map<String, ?>> prepareData(Date fechaDespacho) {
-		List<Map<String,?>> maps = new ArrayList<>();
-		for (Ruta ruta : pedidoDao.obtenerRutas(fechaDespacho)) {
-			for (PedidoNormalizado pedido : ruta.getPedidos()) {
-				Map<String,Object> map = new HashMap<>();
-				map.put("orden", pedido.getOrden());
-				map.put("nombre_apellido", pedido.getCliente());
-				map.put("direccion", pedido.getDomicilio());
-				map.put("pedido", pedido.getCodigoPedido());
-				map.put("ventana", pedido.getVentana());
-				
-				//campos agrupados
-				map.put("cod_hoj_rut", ruta.getCodigoRuta());
-				map.put("chofer", ruta.getUnidad().getNombreChofer());
-				map.put("brevete", ruta.getUnidad().getBreveteChofer());
-				map.put("placa", ruta.getUnidad().getNumeroPlaca());
-				map.put("soat", ruta.getUnidad().getSoat());
-				map.put("peso", String.valueOf(ruta.getUnidad().getPesoCargaMaxima()));
-				map.put("volumen", String.valueOf(ruta.getUnidad().getVolumenCargaMaxima()));
-				map.put("fec_generacion", ruta.getFechaGeneracion());
-				map.put("fec_desp", ruta.getFechaDespacho());
-				map.put("bodega", ruta.getNombreBodega());
-				maps.add(map);
-			}
-		}
-		return maps;
-	}
 	
 	public Map<String,List<Map<String,?>>> getGruposPorBodega(Date fechaDespacho) {
 		Map<String,List<Map<String, ?>>> grupos = new HashMap<>();
@@ -60,12 +32,6 @@ public class PedidoReportImpl implements PedidoReport {
 			}
 			for (PedidoNormalizado pedido : ruta.getPedidos()) {
 				Map<String,Object> map = new HashMap<>();
-				map.put("orden", pedido.getOrden());
-				map.put("nombre_apellido", pedido.getCliente());
-				map.put("direccion", pedido.getDomicilio());
-				map.put("pedido", pedido.getCodigoPedido());
-				map.put("ventana", pedido.getVentana());
-				
 				//campos agrupados
 				map.put("cod_hoj_rut", ruta.getCodigoRuta());
 				map.put("chofer", ruta.getUnidad().getNombreChofer());
@@ -77,9 +43,24 @@ public class PedidoReportImpl implements PedidoReport {
 				map.put("fec_generacion", ruta.getFechaGeneracion());
 				map.put("fec_desp", ruta.getFechaDespacho());
 				map.put("bodega", ruta.getNombreBodega());
+				
+				//Campos por pedido (fila)
+				map.put("orden", pedido.getOrden());
+				map.put("nombre_apellido", pedido.getCliente());
+				map.put("direccion", pedido.getDomicilio());
+				map.put("pedido", pedido.getCodigoPedido());
+				map.put("modalidad",getModalidad(pedido));
+				map.put("ventana", pedido.getVentana());
 				grupo.add(map);
 			}
 		}
 		return grupos;
+	}
+	
+	private String getModalidad(PedidoNormalizado pedido) {
+		if(pedido.getFechaDevolucion() != null) {
+			return "Recojo";
+		}
+		return "Entrega";
 	}
 }

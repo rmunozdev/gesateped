@@ -61,17 +61,7 @@ function actualizarTablaPedidosNoAtendidos(data) {
 }
 
 function localizarNoAtendido(aData) {
-	console.log("Localizando..",aData);
-	var direccion;
-	
-	//TODO rmunozdev Actualizar lógica
-	if(aData.direccionCliente && aData.distritoCliente) {
-		console.log("Se usara direccion de cliente");
-		direccion = aData.direccionCliente +" "+ aData.distritoCliente;
-	} else if(aData.direccionTienda && aData.distritoTienda){
-		console.log("Se usara direccion de tienda");
-		direccion = aData.direccionTienda +" "+ aData.distritoTienda;
-	}
+	var direccion = aData.direccionDespacho + ' ' + aData.distritoDespacho;
 	console.log("direccion",direccion);
 	const geocoder = new google.maps.Geocoder();
 	geocoder.geocode({address: direccion + " Peru"}, (results, status) =>{
@@ -130,7 +120,7 @@ function localizarNoAtendido(aData) {
 				 var unidadMarker = new google.maps.Marker({
 				        position:  new google.maps.LatLng(aData.latitudGpsDespacho, aData.longitudGpsDespacho),
 				        map: map,
-				        title: 'Posicion de unidad',
+				        title: 'Posición de unidad',
 				        label: {
 						    color: 'blue',
 						    fontWeight: 'bold',

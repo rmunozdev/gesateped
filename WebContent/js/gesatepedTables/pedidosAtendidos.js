@@ -58,18 +58,7 @@ function actualizarTablaPedidosAtendidos(data) {
 }
 
 function localizarAtendido(aData) {
-	console.log("Localizando..",aData);
-	var direccion;
-	
-	//TODO rmunozdev Actualizar lógica
-	if(aData.direccionCliente && aData.distritoCliente) {
-		console.log("Se usara direccion de cliente");
-		direccion = aData.direccionCliente +" "+ aData.distritoCliente;
-	} else if(aData.direccionTienda && aData.distritoTienda){
-		console.log("Se usara direccion de tienda");
-		direccion = aData.direccionTienda +" "+ aData.distritoTienda;
-	}
-	console.log("direccion",direccion);
+	var direccion = aData.direccionDespacho + ' ' + aData.distritoDespacho;
 	const geocoder = new google.maps.Geocoder();
 	geocoder.geocode({address: direccion + " Peru"}, (results, status) =>{
 		if (status === 'OK') {
