@@ -75,4 +75,13 @@ public class Parametros {
 		return lapsoLaborable;
 	}
 	
+	/**
+	 * Minutos antes de la finalización de una ventana horaria,
+	 * para la ejecución de alertas.
+	 * @return
+	 */
+	public static String getLapsoCritico() {
+		return parametrosMap.get("MIN_ADVERT_VENT_HOR");
+	}
+	
 }

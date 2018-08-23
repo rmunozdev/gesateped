@@ -15,6 +15,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery/collapse/jquery.collapse_cookie_storage.js"></script>
 
 <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.7.2/localforage.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
 <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI&libraries=geometry">
@@ -87,6 +88,15 @@
 </style>
 
 <div>
+	<div id="alertZone" class="top-msg" style="display:none">
+		<div style="position: relative">
+			<div class="top-msg-close" style="cursor: pointer;">&#10005;</div>
+		</div>
+		<div class="top-msg-ico">!</div>
+		<div class="top-msg-inner">
+		</div>
+		
+	</div>
 	<div class="jumbotron cabecera-narrow">
         <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
       </div>
@@ -100,6 +110,7 @@
      		<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/dashboard.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/simulador.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/unidad.js"></script>
+			<script type="text/javascript" src="${pageContext.request.contextPath}/js/tracking/alerts.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/unidades.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosAtendidos.js"></script>
 			<script type="text/javascript" src="${pageContext.request.contextPath}/js/gesatepedTables/pedidosNoAtendidos.js"></script>

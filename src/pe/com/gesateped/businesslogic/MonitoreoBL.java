@@ -1,5 +1,6 @@
 package pe.com.gesateped.businesslogic;
 
+import java.util.Date;
 import java.util.List;
 
 import pe.com.gesateped.model.Bodega;
@@ -15,5 +16,8 @@ public interface MonitoreoBL {
 	public List<DetallePedidoRuta> getDetallePedidosRuta(String codigoHojaRuta,String estadoPedido);
 	public List<EstadoPedido> getEstadoPedidosPorBodega(String codigoBodega);
 	public boolean detectarCambios(List<EstadoPedido> estadoTotal, String codigoBodega);
+	public List<String> getInfoParaAlerta();
+	public List<Date> getAlertTimes();
+	
 	
 }

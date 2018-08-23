@@ -127,4 +127,16 @@ public class MonitoreoController {
 		System.out.println("Cancelados: " + estadoTotal.get(4).getPorcentaje());
 		return this.monitoreoBL.detectarCambios(estadoTotal,pedStatus.getCodigoBodega());
 	}
+	
+	@RequestMapping(path="/alerta" , method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> getAlerta() {
+		return this.monitoreoBL.getInfoParaAlerta();
+	}
+	
+	@RequestMapping(path="/tiemposAlerta", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Date> getAlertTimes() {
+		return this.monitoreoBL.getAlertTimes();
+	}
 }
