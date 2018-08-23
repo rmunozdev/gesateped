@@ -372,17 +372,28 @@ function verRutaCompleta() {
 				}
 			});
 			
+			//Creación de waypoints exclusiva para vista
 			let waypointsDetail = [];
 			paradas.forEach((parada,index)=>{
-				if(index!=0) {
+				var matchIndex = -1;
+				for(var i=0;i<waypointsDetail.length;i++) {
+					if(waypointsDetail[i].location == parada.direccion) {
+						matchIndex = i;
+						break;
+					}
+				}
+				
+				if(matchIndex >= 0) {
+					waypointsDetail[matchIndex].codigo = waypointsDetail[matchIndex].codigo + "," +  parada.codigoPedido;
+				} else {
 					waypointsDetail.push({location: parada.direccion,codigo: parada.codigoPedido});
 				}
-			});
+			}); 
 			
-			//Los waypoitns deben ordenarse por codigo de pedido
-			waypointsDetail.sort((waypointA,waypointB)=>{
-				return waypointA.codigo > waypointB.codigo;
-			});
+			//Los waypoints deben ordenarse por codigo de pedido
+//			waypointsDetail.sort((waypointA,waypointB)=>{
+//				return waypointA.codigo > waypointB.codigo;
+//			});
 			
 			let waypoints = [];
 			waypointsDetail.forEach((waypoint,index)=>{
