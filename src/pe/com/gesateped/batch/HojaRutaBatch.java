@@ -134,7 +134,7 @@ public class HojaRutaBatch {
 		System.out.println("\nResultado final: ");
 		System.out.println("******************");
 		if (rutasGeneradas.isEmpty()) {
-			this.auditoriaBL.finalizarActividad(ACTIVIDAD_DISTRIBUCION,false,"No genero ninguna rutas");
+			this.auditoriaBL.finalizarActividad(ACTIVIDAD_DISTRIBUCION,false,"No se generó ninguna ruta");
 		} else {
 			this.auditoriaBL.finalizarActividad(ACTIVIDAD_DISTRIBUCION,true,"Rutas generadas " + rutasGeneradas.size());
 			this.auditoriaBL.iniciarActividad(ACTIVIDAD_REGISTRO);
