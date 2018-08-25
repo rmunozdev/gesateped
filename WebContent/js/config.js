@@ -2,10 +2,10 @@
  * 
  */
 const firebaseConfig = {
-		apiKey: "AIzaSyBiFvJ6Uvz7Hg54xc2VIEhlIZiMrFXl7ps",
-	    authDomain: "sodimacmonitor.firebaseapp.com",
-	    databaseURL: "https://sodimacmonitor.firebaseio.com",
-	    projectId: "sodimacmonitor",
-	    storageBucket: "sodimacmonitor.appspot.com",
-	    messagingSenderId: "756903087303"
+		apiKey: "AIzaSyBOdqMoSBA7XyrjyRCrcWkqNGJvLuG5nu0",
+	    authDomain: "gesatepedproject-1535006921209.firebaseapp.com",
+	    databaseURL: "https://gesatepedproject-1535006921209.firebaseio.com",
+	    projectId: "gesatepedproject-1535006921209",
+	    storageBucket: "gesatepedproject-1535006921209.appspot.com",
+	    messagingSenderId: "807719392606"
 };
