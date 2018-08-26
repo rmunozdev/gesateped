@@ -460,11 +460,12 @@ function verRutaCompleta() {
 				    		  let location = paso.end_location;
 				    		  let nextdistance = paso.distance.text;
 				    		  let waypointPedidoCode = waypointsDetail[waypointsOrdenados[index]].codigo;
+				    		  let direccionActual = waypointsDetail[waypointsOrdenados[index]].location;
 				    		  console.log("waypoint params",index,waypointsOrdenados[index],waypointPedidoCode);
 				    		  var locationMarker = new google.maps.Marker({
 				    			  position: location,
 				    			  map: map,
-				    			  title: `${waypointPedidoCode}\n${address} ${nextdistance}`,
+				    			  title: `${waypointPedidoCode}\n${direccionActual}`,
 				    			  optimized: false,
 				    			  label: {
 				    				  color: 'red',
