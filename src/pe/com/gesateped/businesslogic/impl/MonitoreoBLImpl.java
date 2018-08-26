@@ -90,7 +90,7 @@ public class MonitoreoBLImpl  implements MonitoreoBL {
 		
 		for(String bodega : map.keySet()) {
 			StringBuilder builder = new StringBuilder();
-			builder.append("En la bodega " + bodega + ", ");
+			builder.append("En " + bodega + ", ");
 			List<String> unidades = map.get(bodega);
 			builder.append((unidades.size()==1)?"la unidad ":"las unidades ");
 			int counter = unidades.size();
