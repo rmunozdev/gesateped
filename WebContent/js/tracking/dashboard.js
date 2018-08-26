@@ -374,7 +374,9 @@ function verRutaCompleta() {
 			
 			//Creación de waypoints exclusiva para vista
 			let waypointsDetail = [];
-			paradas.forEach((parada,index)=>{
+			
+			for(var j = 1; j < paradas.length; j++) {
+				var parada = paradas[j];
 				var matchIndex = -1;
 				for(var i=0;i<waypointsDetail.length;i++) {
 					if(waypointsDetail[i].location == parada.direccion) {
@@ -388,6 +390,10 @@ function verRutaCompleta() {
 				} else {
 					waypointsDetail.push({location: parada.direccion,codigo: parada.codigoPedido});
 				}
+			}
+			
+			paradas.forEach((parada,index)=>{
+				
 			}); 
 			
 			//Los waypoints deben ordenarse por codigo de pedido

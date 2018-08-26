@@ -76,7 +76,7 @@ public class MonitoreoBLImpl  implements MonitoreoBL {
 
 		Map<String,List<String>> map = new HashMap<>();
 		for (Ruta ruta : rutas) {
-			String bodega = ruta.getCodigoBodega();
+			String bodega = ruta.getNombreBodega();
 			String unidad = ruta.getUnidad().getNumeroPlaca();
 			List<DetallePedidoRuta> detallePedidoRuta = this.monitoreoDao.getDetallePedidoRuta(ruta.getCodigoRuta(), "PEND");
 			
