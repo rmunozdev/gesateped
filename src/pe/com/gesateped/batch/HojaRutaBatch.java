@@ -41,6 +41,7 @@ import pe.com.gesateped.model.VentanaHoraria;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.model.extend.Ruta;
 import pe.com.gesateped.model.extend.UnidadNormalizada;
+import pe.com.gesateped.notificacion.service.NotificacionService;
 import pe.com.gesateped.reports.PedidoReport;
 import pe.com.gesateped.util.GesatepedUtil;
 
@@ -66,6 +67,9 @@ public class HojaRutaBatch {
 	
 	@Autowired
 	private AuditoriaBL auditoriaBL;
+	
+	@Autowired
+	private NotificacionService notificacionService;
 	
 	private ServletContext context;
 	
@@ -158,6 +162,7 @@ public class HojaRutaBatch {
 				adminBL.registrarHojaRuta(ruta);
 			}
 			this.auditoriaBL.finalizarActividad(ACTIVIDAD_REGISTRO,true,"Reporte finalizado");
+			this.notificacionService.notificarVentanasHorarias();
 		}
 		
 	}
