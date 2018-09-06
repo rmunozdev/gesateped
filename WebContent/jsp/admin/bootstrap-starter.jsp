@@ -90,7 +90,7 @@
 <c:choose>
 	<c:when test="${empty pedidos}">
 		<div id="step2" class="jumbotron">
-	        <p class="lead">No se encontraron pedidos para despachar mañana.</p>
+	        <p class="lead">No existen pedidos para despachar mañana.</p>
 	        <a class="btn btn-large btn-success" id="monitoreoBtn">Ir a monitoreo</a><br>
       	</div>
 	</c:when>

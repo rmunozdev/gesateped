@@ -98,12 +98,12 @@
 		
 	</div>
 	<div class="jumbotron cabecera-narrow">
-        <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS.</p>
+        <p class="lead">MONITOREO DE DESPACHO DE PEDIDOS</p>
       </div>
      <c:choose>
      	<c:when test="${empty rutas}">
      		<div class="alert alert-danger">
-     			No hay rutas para despachar hoy.
+     			No existen pedidos para despachar hoy.
      		</div>
      	</c:when>
      	<c:otherwise>
@@ -123,7 +123,7 @@
 	         <div class="panel-body">
 	         	<div class="left-text">
 			        <jsp:useBean id="now" class="java.util.Date"/> 
-					<label>Fecha de despacho: <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></label>
+					<label>Fecha de Despacho: <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></label>
 			    </div>
 			    <input type="hidden" id="codigoHojaRutaField">
 			    <input type="hidden" id="unidadSeleccionadaField">
@@ -143,8 +143,7 @@
 				</div>
 	        </div>
 	        <div id="noHayPedidosMsg" class="span6" style="display:none">
-	        	<p class="alert alert-danger">No hay pedidos asignados a esta bodega.
-	        		Para visualizar gráfica, por favor elegir bodega con pedidos asignados
+	        	<p class="alert alert-danger">Esta bodega no tiene pedidos para ser despachados hoy.
 	        	</p>
 	        </div>
 	        
@@ -234,8 +233,8 @@
 			<table id="tblPedidosAtendidos" class="table" >
 					<thead>
 						<tr>
-							<th><label>Código de pedido</label></th>
-							<th><label>Ventana Horaria</label></th>
+							<th><label>Código de Pedido</label></th>
+							<th><label>Rango Horario</label></th>
 							<th><label>Hora Pactada</label></th>
 							<th><label>Ubicación</label></th>
 						</tr>
@@ -249,8 +248,8 @@
 			<table id="tblPedidosNoAtendidos" class="table">
 					<thead>
 						<tr>
-							<th><label>Código de pedido</label></th>
-							<th><label>Ventana Horaria</label></th>
+							<th><label>Código de Pedido</label></th>
+							<th><label>Rango Horario</label></th>
 							<th><label>Hora No Atención</label></th>
 							<th><label>Motivo</label></th>
 							<th><label>Ubicación</label></th>
@@ -265,8 +264,8 @@
 			<table id="tblPedidosPendientes" class="table">
 					<thead>
 						<tr>
-							<th><label>Código de pedido</label></th>
-							<th><label>Ventana Horaria</label></th>
+							<th><label>Código de Pedido</label></th>
+							<th><label>Rango Horario</label></th>
 							<th><label>Ubicación</label></th>
 						</tr>
 					</thead>
@@ -279,7 +278,7 @@
 			<table id="tblPedidosReprogramados" class="table">
 					<thead>
 						<tr>
-							<th><label>Código de pedido</label></th>
+							<th><label>Código de Pedido</label></th>
 							<th><label>Motivo</label></th>
 						</tr>
 					</thead>
@@ -292,7 +291,7 @@
 			<table id="tblPedidosCancelados" class="table">
 					<thead>
 						<tr>
-							<th><label>Código de pedido</label></th>
+							<th><label>Código de Pedido</label></th>
 							<th><label>Motivo</label></th>
 						</tr>
 					</thead>

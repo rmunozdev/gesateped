@@ -34,7 +34,7 @@ function crearTablaUnidades() {
 			              'mData': null, 
 			              'mRender' : function (data, type, row) {
 			            	  if(type === 'display'){
-			            		  return data.nombreChofer + " " + data.apellidoChofer;
+			            		  return data.apellidoChofer + ", " + data.nombreChofer;
 			                   }
 			            	  return data;
 			              }

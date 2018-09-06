@@ -16,21 +16,32 @@ function crearTablaPedidosNoAtendidos(paths) {
 		              'mRender' : function (data, type, row) {
 		            	  var cadenaBoton = "&nbsp;<img src='"+
 		            	  	paths.marker +
-		            	  	"' title='Editar' class='location-marker'>";
+		            	  	"' title='Abrir Popup' class='location-marker'>";
 		                  return cadenaBoton;
 		              }
 		          	}, {
 		          		'aTargets' : [1],
 		          		'mData': null,
 		          		'mRender': function (data,type,row) {
-		          			return data.horaInicioVentana + " a " + data.horaFinVentana;
+		          			return tConvert(data.horaInicioVentana) + " a " + tConvert(data.horaFinVentana);
+		          		}
+		          	}, {
+		          		'aTargets' : [2],
+		          		'mData': null,
+		          		'mRender': function (data,type,row) {
+		          			if(data.fechaNoCumplimientoDespacho) {
+		          				return tConvert(data.fechaNoCumplimientoDespacho);
+		          			} else {
+		          				return "<i>--</i>";
+		          			}
+		          			
 		          		}
 		          	}
 		         ],
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
 			        {},
-			        { 'mData': 'fechaNoCumplimientoDespacho',"defaultContent":"<i>--</i>"},
+			        {},
 			        { 'mData': 'descripcionMotivoPedidoHR',"defaultContent":"<i>--</i>"},
 			        {}
 				],
@@ -94,7 +105,7 @@ function localizarNoAtendido(aData) {
 					  lng: results[0].geometry.location.lng()
 				  },
 				  map: map,
-				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}\n${aData.fechaNoCumplimientoDespacho}`,
+				  title: `${aData.apellidosCliente}, ${aData.nombresCliente}  \n${direccion}\n${tConvert(aData.fechaNoCumplimientoDespacho)}`,
 				  optimized: false,
 				  label: {
 					    color: 'blue',

@@ -190,7 +190,9 @@ public class PedidoDaoImpl implements PedidoDao {
 					break;
 				}
 				
-				pedido.setVentana("De " + String.valueOf(detalleMap.get("hor_ini_vent_hor")) + " a " + String.valueOf(detalleMap.get("hor_fin_vent_hor")));
+				pedido.setInicioVentana(String.valueOf(detalleMap.get("hor_ini_vent_hor")));
+				pedido.setFinVentana(String.valueOf(detalleMap.get("hor_fin_vent_hor")));
+				pedido.setVentana("De " + pedido.getInicioVentana() + " a " + pedido.getFinVentana());
 				pedidos.add(pedido);
 			}
 			ruta.setPedidos(pedidos);

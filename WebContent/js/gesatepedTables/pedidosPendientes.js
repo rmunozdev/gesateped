@@ -15,7 +15,7 @@ function crearTablaPedidosPendientes(paths) {
 		              'mData': null, 
 		              'mRender' : function (data, type, row,position) {
 		            	  if(position.row == 0) {
-		            		  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
+		            		  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Abrir Popup' class='location-marker'>";
 		            		  return cadenaBoton;
 		            	  } else {
 		            		  return "";
@@ -25,7 +25,7 @@ function crearTablaPedidosPendientes(paths) {
 		          		'aTargets' : [1],
 		          		'mData': null,
 		          		'mRender': function (data,type,row) {
-		          			return data.horaInicioVentana + " a " + data.horaFinVentana;
+		          			return tConvert(data.horaInicioVentana) + " a " + tConvert(data.horaFinVentana);
 		          		}
 		          	}
 		         ],

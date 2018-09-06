@@ -12,6 +12,7 @@ import java.util.Date;
 public class GesatepedUtil {
 	
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+	private static DateTimeFormatter amPmFormatter = DateTimeFormatter.ofPattern("hh:mm a");
 	public static Date getDiaSiguiente() {
 		Calendar instance = Calendar.getInstance();
 		instance.add(Calendar.DATE, 1);
@@ -44,4 +45,11 @@ public class GesatepedUtil {
 		Date time = Date.from(instant);
 		return time;
 	}
+	
+	
+	public static String getAmPmHour(String hora) {
+		LocalTime localTime = LocalTime.parse(hora, formatter);
+		return localTime.format(amPmFormatter).toLowerCase();
+	}
+	
 }

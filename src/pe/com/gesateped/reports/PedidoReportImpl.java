@@ -1,5 +1,6 @@
 package pe.com.gesateped.reports;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import pe.com.gesateped.dao.PedidoDao;
 import pe.com.gesateped.model.extend.PedidoNormalizado;
 import pe.com.gesateped.model.extend.Ruta;
+import pe.com.gesateped.util.GesatepedUtil;
 
 @Service
 public class PedidoReportImpl implements PedidoReport {
@@ -23,6 +25,7 @@ public class PedidoReportImpl implements PedidoReport {
 	public Map<String,List<Map<String,?>>> getGruposPorBodega(Date fechaDespacho) {
 		Map<String,List<Map<String, ?>>> grupos = new HashMap<>();
 		List<Map<String,?>> grupo;
+		DecimalFormat decimalFormat = new DecimalFormat("#.00"); 
 		for (Ruta ruta : pedidoDao.obtenerRutas(fechaDespacho)) {
 			if(grupos.containsKey(ruta.getNombreBodega())) {
 				grupo = grupos.get(ruta.getNombreBodega());
@@ -31,6 +34,7 @@ public class PedidoReportImpl implements PedidoReport {
 				grupos.put(ruta.getNombreBodega(), grupo);
 			}
 			for (PedidoNormalizado pedido : ruta.getPedidos()) {
+				
 				Map<String,Object> map = new HashMap<>();
 				//campos agrupados
 				map.put("cod_hoj_rut", ruta.getCodigoRuta());
@@ -38,8 +42,8 @@ public class PedidoReportImpl implements PedidoReport {
 				map.put("brevete", ruta.getUnidad().getBreveteChofer());
 				map.put("placa", ruta.getUnidad().getNumeroPlaca());
 				map.put("soat", ruta.getUnidad().getSoat());
-				map.put("peso", String.valueOf(ruta.getUnidad().getPesoCargaMaxima()));
-				map.put("volumen", String.valueOf(ruta.getUnidad().getVolumenCargaMaxima()));
+				map.put("peso", decimalFormat.format(ruta.getUnidad().getPesoCargaMaxima()));
+				map.put("volumen", decimalFormat.format(ruta.getUnidad().getVolumenCargaMaxima()));
 				map.put("fec_generacion", ruta.getFechaGeneracion());
 				map.put("fec_desp", ruta.getFechaDespacho());
 				map.put("bodega", ruta.getNombreBodega());
@@ -50,7 +54,10 @@ public class PedidoReportImpl implements PedidoReport {
 				map.put("direccion", pedido.getDomicilio());
 				map.put("pedido", pedido.getCodigoPedido());
 				map.put("modalidad",getModalidad(pedido));
-				map.put("ventana", pedido.getVentana());
+				
+				map.put("ventana", GesatepedUtil.getAmPmHour(pedido.getInicioVentana()) 
+						+ " a " 
+						+ GesatepedUtil.getAmPmHour(pedido.getFinVentana()));
 				grupo.add(map);
 			}
 		}

@@ -20,6 +20,8 @@ public class PedidoNormalizado implements Medible {
 	private String tienda;
 	private String codigoHojaRuta;
 	private String ventana;
+	private String inicioVentana;
+	private String finVentana;
 	private Date fechaDespacho;
 	private Date fechaReprogramacion;
 	private Date fechaCancelamiento;
@@ -323,5 +325,21 @@ public class PedidoNormalizado implements Medible {
 
 	public void setDistanciaMetros(long distanciaMetros) {
 		this.distanciaMetros = distanciaMetros;
+	}
+
+	public String getInicioVentana() {
+		return inicioVentana;
+	}
+
+	public void setInicioVentana(String inicioVentana) {
+		this.inicioVentana = inicioVentana;
+	}
+
+	public String getFinVentana() {
+		return finVentana;
+	}
+
+	public void setFinVentana(String finVentana) {
+		this.finVentana = finVentana;
 	}
 }

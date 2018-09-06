@@ -14,21 +14,31 @@ function crearTablaPedidosAtendidos(paths) {
 		              'aTargets': [3],
 		              'mData': null, 
 		              'mRender' : function (data, type, row) {
-		            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Editar' class='location-marker'>";
+		            	  var cadenaBoton = "&nbsp;<img src='"+paths.marker+"' title='Abrir Popup' class='location-marker'>";
 		                  return cadenaBoton;
 		              }
 		          	}, {
 		          		'aTargets' : [1],
 		          		'mData': null,
 		          		'mRender': function (data,type,row) {
-		          			return data.horaInicioVentana + " a " + data.horaFinVentana;
+		          			return tConvert(data.horaInicioVentana) + " a " + tConvert(data.horaFinVentana);
+		          		}
+		          	}, {
+		          		'aTargets' : [2],
+		          		'mData': null,
+		          		'mRender': function (data,type,row) {
+		          			if(data.fechaPactadaDespacho) {
+		          				return tConvert(data.fechaPactadaDespacho);
+		          			} else {
+		          				return "<i>--</i>";
+		          			}
 		          		}
 		          	}
 		         ],
 		        'aoColumns': [
 			        { 'mData': 'codigoPedido'},
 			        {},
-			        { 'mData': 'fechaPactadaDespacho',"defaultContent":"<i>Unset</i>"},
+			        {},
 			        {}
 				],
 				'fnRowCallback': function( nRow, aData, iDataIndex ) {
@@ -90,7 +100,7 @@ function localizarAtendido(aData) {
 					  lng: results[0].geometry.location.lng()
 				  },
 				  map: map,
-				  title: `${aData.nombresCliente}  ${aData.apellidosCliente}\n${direccion}\n${aData.fechaPactadaDespacho}`,
+				  title: `${aData.apellidosCliente}, ${aData.nombresCliente}\n${direccion}\n${tConvert(aData.fechaPactadaDespacho)}`,
 				  optimized: false,
 				  label: {
 					    color: 'blue',
