@@ -184,7 +184,7 @@ public class PedidoDaoImpl implements PedidoDao {
 					pedido.setCliente(String.valueOf(detalleMap.get("tiendaDespachoNom")));
 					break;
 				case SERVICIO_A_CLIENTE:
-					pedido.setCliente(String.valueOf(detalleMap.get("nom_cli")) + " " + String.valueOf(detalleMap.get("ape_cli")));
+					pedido.setCliente(String.valueOf(detalleMap.get("ape_cli")) + ", " + String.valueOf(detalleMap.get("nom_cli")));
 					break;
 				default:
 					break;
