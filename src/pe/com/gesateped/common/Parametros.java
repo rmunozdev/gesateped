@@ -84,4 +84,43 @@ public class Parametros {
 		return parametrosMap.get("MIN_ADVERT_VENT_HOR");
 	}
 	
+	
+	public static boolean flagNotificacionActivada() {
+		return new Boolean(parametrosMap.get("FLAG_NOTIF_VENT_HOR"));
+	}
+	
+	public static String getNotificacionWSURL() {
+		return parametrosMap.get("URL_WS_NOTIF_VENT_HOR");
+	}
+	
+	/****************** GOOGLE MAPS PARAMS ******************/
+	public static String getDirectionsAPIKEY() {
+		return parametrosMap.get("KEY_API_DIRECTIONS");
+	}
+	
+	/****************** FIREBASE PARAMS ******************/
+	public static String getFirebaseAPIKEY() {
+		return parametrosMap.get("KEY_FIREBASE");
+	}
+	
+	public static String getFirebaseAuthDomain() {
+		return parametrosMap.get("AUTH_DOMAIN");
+	}
+	
+	public static String getFirebaseDatabaseURL() {
+		return parametrosMap.get("DATABASE_URL");
+	}
+	
+	public static String getFirebaseProjectId() {
+		return parametrosMap.get("PROJECT_ID");
+	}
+	
+	public static String getFirebaseStorageBucket() {
+		return parametrosMap.get("STORAGE_BUCKET");
+	}
+	
+	public static String getFirebaseMessageSenderId() {
+		return parametrosMap.get("MESSAGING_SENDER_ID");
+	}
+	
 }

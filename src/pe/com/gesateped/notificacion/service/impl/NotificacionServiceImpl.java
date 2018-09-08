@@ -9,14 +9,18 @@ import java.net.UnknownHostException;
 
 import org.springframework.stereotype.Service;
 
+import pe.com.gesateped.common.Parametros;
 import pe.com.gesateped.notificacion.service.NotificacionService;
 
 @Service
 public class NotificacionServiceImpl  implements NotificacionService{
+	
+	public static final int RESPONSE_CODIGO_EXITO = 1;
+	public static final int RESPONSE_CODIGO_FALLA = -1;
 
 	@Override
 	public int notificarVentanasHorarias() {
-		String ws_url = "http://localhost:8080/GesatepedWS/notificacion/ejecutar";
+		String ws_url = Parametros.getNotificacionWSURL();
 		try {
 			HttpURLConnection conn = (HttpURLConnection) new URL(ws_url).openConnection();
 			
@@ -33,13 +37,13 @@ public class NotificacionServiceImpl  implements NotificacionService{
 			}
 			rd.close();
 			System.out.println(stringBuffer.toString());
-			return 1;
+			return RESPONSE_CODIGO_EXITO;
 		} catch(UnknownHostException exception) {
 			throw new IllegalStateException("No se pudo establecer comunicacion", exception);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return RESPONSE_CODIGO_FALLA;
 	}
 
 	

@@ -71,6 +71,9 @@ public class HojaRutaBatch {
 	@Autowired
 	private NotificacionService notificacionService;
 	
+	@Autowired
+	public Parametros parametros;
+	
 	private ServletContext context;
 	
 	@Autowired
@@ -162,7 +165,11 @@ public class HojaRutaBatch {
 				adminBL.registrarHojaRuta(ruta);
 			}
 			this.auditoriaBL.finalizarActividad(ACTIVIDAD_REGISTRO,true,"Reporte finalizado");
-			this.notificacionService.notificarVentanasHorarias();
+			if(Parametros.flagNotificacionActivada()) {
+				this.notificacionService.notificarVentanasHorarias();
+			} else {
+				System.out.println("La notificación de ventana horaria se encuentra desactivada");
+			}
 		}
 		
 	}

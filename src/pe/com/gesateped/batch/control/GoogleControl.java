@@ -20,8 +20,6 @@ import pe.com.gesateped.model.extend.PedidoNormalizado;
 
 public class GoogleControl implements Controlador {
 
-	private static final String MAPS_API_KEY = "AIzaSyC5zx6JgWVPftfjOPJybTKhKUwhN5zVxJI";
-
 	private static final String LOG_PATTERN_USOS = "GOOGLE: Query número %s para origen %s";
 	private static final String LOG_PATTERN_SUCCESS = "GOOGLE: Query exitoso para %s pedidos, con demora total: %s \n\tDetalle: %s";
 	private static final String LOG_PATTERN_FAIL = "GOOGLE: Query fallo para %s pedidos, con demora total: %s \\n\\tDetalle: %s";
@@ -58,7 +56,7 @@ public class GoogleControl implements Controlador {
 	}
 	
 	private boolean queryGoogleDirections(List<PedidoNormalizado> pedidos) {
-		GeoApiContext context = new GeoApiContext.Builder().apiKey(MAPS_API_KEY).build();
+		GeoApiContext context = new GeoApiContext.Builder().apiKey(Parametros.getDirectionsAPIKEY()).build();
 		List<String> waypoints = new ArrayList<>();
 		
 		for(PedidoNormalizado pedido : pedidos) {

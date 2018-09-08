@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.gesateped.businesslogic.AdminBL;
 import pe.com.gesateped.businesslogic.MonitoreoBL;
+import pe.com.gesateped.common.Parametros;
 import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.EstadoPedido;
 import pe.com.gesateped.model.Unidad;
@@ -45,6 +46,7 @@ public class MonitoreoController {
 		modelMap.put("bodegas", this.monitoreoBL.getBodegas());
 		modelMap.addAttribute("bodega", new Bodega());
 		modelMap.addAttribute("menu", "monitoreo");
+		modelMap.addAttribute("DirectionsAPIKEY",Parametros.getDirectionsAPIKEY());
 		
 		List<Ruta> rutas = this.adminBL.obtenerRutas(new Date());
 		modelMap.addAttribute("rutas", rutas);
@@ -138,5 +140,17 @@ public class MonitoreoController {
 	@ResponseBody
 	public List<Date> getAlertTimes() {
 		return this.monitoreoBL.getAlertTimes();
+	}
+	
+	@RequestMapping(path="/config.js", method = RequestMethod.GET)
+	public ModelAndView getConfig(ModelMap modelMap) {
+		modelMap.addAttribute("FirebaseAPIKEY", Parametros.getFirebaseAPIKEY());
+		modelMap.addAttribute("FirebaseAuthDomain", Parametros.getFirebaseAuthDomain());
+		modelMap.addAttribute("FirebaseDatabaseURL", Parametros.getFirebaseDatabaseURL());
+		modelMap.addAttribute("FirebaseProjectId", Parametros.getFirebaseProjectId());
+		modelMap.addAttribute("FirebaseStorageBucket", Parametros.getFirebaseStorageBucket());
+		modelMap.addAttribute("FirebaseMessageSenderId", Parametros.getFirebaseMessageSenderId());
+		
+		return new ModelAndView("config");
 	}
 }
