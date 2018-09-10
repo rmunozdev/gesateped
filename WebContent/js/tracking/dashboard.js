@@ -373,62 +373,49 @@ function verRutaCompleta() {
 			});
 			
 			//Creación de waypoints exclusiva para vista
-			let waypointsDetail = [];
+			let despachos = [];
 			
 			for(var j = 1; j < paradas.length; j++) {
 				var parada = paradas[j];
 				var matchIndex = -1;
-				for(var i=0;i<waypointsDetail.length;i++) {
-					if(waypointsDetail[i].location == parada.direccion) {
+				for(var i=0;i<despachos.length;i++) {
+					//Se busca direccion repetidas
+					if(despachos[i].location == parada.direccion) {
 						matchIndex = i;
 						break;
 					}
 				}
 				
 				if(matchIndex >= 0) {
-					waypointsDetail[matchIndex].codigo = waypointsDetail[matchIndex].codigo + "," +  parada.codigoPedido;
+					despachos[matchIndex].codigo = despachos[matchIndex].codigo + "," +  parada.codigoPedido;
 				} else {
-					waypointsDetail.push({location: parada.direccion,codigo: parada.codigoPedido});
+					despachos.push({location: parada.direccion,codigo: parada.codigoPedido});
 				}
 			}
 			
-			paradas.forEach((parada,index)=>{
-				
-			}); 
-			
-			//Los waypoints deben ordenarse por codigo de pedido
-//			waypointsDetail.sort((waypointA,waypointB)=>{
-//				return waypointA.codigo > waypointB.codigo;
-//			});
-			
 			let waypoints = [];
-			waypointsDetail.forEach((waypoint,index)=>{
-				waypoints.push({location: waypoint.location});
-			});
+			let destino = "";
 			
+			for(var i=0; i<despachos.length; i++) {
+				if(i != (despachos.length - 1)) {
+					waypoints.push({location: despachos[i].location});
+				} else {
+					destino = despachos[i].location;
+				}
+			}
+			
+			
+			console.log("Destino elegido: " + destino);
 			let geocoder = new google.maps.Geocoder();
 			geocoder.geocode({address:paradas[0].direccion},(results,status)=>{
-				var marker = new google.maps.Marker({
-		  			  position: {
-		  				  lat: results[0].geometry.location.lat(),
-		  				  lng: results[0].geometry.location.lng()
-		  			  },
-		  			  map: map,
-		  			  title: `${paradas[0].codigoPedido}\n${paradas[0].direccion}`,
-		  			  optimized: false,
-		  			  label: {
-		  				  color: 'black',
-		  				  fontWeight: 'normal',
-		  				  text: paradas[0].codigoPedido
-		  			  },
-		  			  icon: {
-		  				  labelOrigin: new google.maps.Point(11, 50),
-		  				  url: _globalContextPath+'/images/dashboard/map-markers/location-inicio.png',
-		  				  size: new google.maps.Size(32, 40),
-		  				  origin: new google.maps.Point(0, 0),
-		  				  anchor: new google.maps.Point(11, 40)
-		  			  }
-		  		  });
+				var marker = createPedidoMarker(
+						results[0].geometry.location.lat(),
+						results[0].geometry.location.lng(),
+						map,
+						paradas[0].codigoPedido,
+						paradas[0].direccion, 
+						'/images/dashboard/map-markers/location-inicio.png'
+						);
 			});
 			
 			//Panel
@@ -438,7 +425,7 @@ function verRutaCompleta() {
 			var directionsService = new google.maps.DirectionsService();
 			  var request = {
 					    origin: paradas[0].direccion + " Peru",
-					    destination: paradas[0].direccion + " Peru",
+					    destination: destino + " Peru",
 					    waypoints: waypoints,
 					    optimizeWaypoints: true,
 					    travelMode: 'DRIVING'
@@ -455,41 +442,28 @@ function verRutaCompleta() {
 				      const waypointsOrdenados = ruta.waypoint_order;
 				      const pasos = ruta.legs;
 				      pasos.forEach((paso,index)=>{
+				    	  let location = paso.end_location;
+				    	  let despacho = null;
 				    	  if(index<(pasos.length-1)) {
-				    		  let address = paso.end_address;
-				    		  let location = paso.end_location;
-				    		  let nextdistance = paso.distance.text;
-				    		  let waypointPedidoCode = waypointsDetail[waypointsOrdenados[index]].codigo;
-				    		  let direccionActual = waypointsDetail[waypointsOrdenados[index]].location;
-				    		  console.log("waypoint params",index,waypointsOrdenados[index],waypointPedidoCode);
-				    		  var locationMarker = new google.maps.Marker({
-				    			  position: location,
-				    			  map: map,
-				    			  title: `${waypointPedidoCode}\n${direccionActual}`,
-				    			  optimized: false,
-				    			  label: {
-				    				  color: 'red',
-				    				  fontWeight: 'normal',
-				    				  text: waypointPedidoCode
-				    			  },
-				    			  icon: {
-				    				  labelOrigin: new google.maps.Point(11, 50),
-				    				  url: _globalContextPath+'/images/dashboard/map-markers/location-' +  (index+1) +'.png',
-				    				  size: new google.maps.Size(32, 40),
-				    				  origin: new google.maps.Point(0, 0),
-				    				  anchor: new google.maps.Point(11, 40)
-				    			  }
-				    		  });
-				    		  //attachInstructionText(stepDisplay,locationMarker,`${waypointPedidoCode}<br>${address}<br>Distancia desde parada previa: ${nextdistance}`);
-				    		  
+				    		  despacho = despachos[waypointsOrdenados[index]];
+				    	  } else {
+				    		  despacho = despachos[despachos.length-1];
 				    	  }
+				    	  var locationMarker = createPedidoMarker(
+				    			  location.lat(),
+				    			  location.lng(),
+				    			  map,
+				    			  despacho.codigo,
+				    			  despacho.location, 
+				    			  '/images/dashboard/map-markers/location-' +  (index+1) +'.png'
+				    	  );
 				    	  attachDistanceLabel(paso,map);
 				      });
 				      var title = `<div>
 							<img src="${_globalContextPath}/images/sodimaclogo-title.jpg" class="dialog-sodimac">
 								<span class="dialog-sodimac-title" style="left: 400px;">RUTA COMPLETA</span>
 								</div>`;
-				      
+				      stopAutoRefresh();
 				      $('div#rutaCompletaMap').dialog({
 							title: title,
 							width: $(window).width(),
@@ -497,6 +471,7 @@ function verRutaCompleta() {
 					        modal: true,
 					        close: function(event,ui) {
 					        	$('div#rutaCompletaMap').html("");
+					        	startAutoRefresh();
 					        }
 					    });
 				    }
@@ -638,4 +613,28 @@ USGSOverlay.prototype.onAdd = function() {
     	    time[0] = +time[0] % 12 || 12; // Adjust hours
     	  }
     	  return time.join (''); // return adjusted time or original string
+    }
+    
+    function createPedidoMarker(lat,lng,map,codigoPedido,direccionPedido, iconUrl) {
+    	return new google.maps.Marker({
+			  position: {
+				  lat: lat,
+				  lng: lng
+			  },
+			  map: map,
+			  title: `${codigoPedido}\n${direccionPedido}`,
+			  optimized: false,
+			  label: {
+				  color: 'black',
+				  fontWeight: 'normal',
+				  text: codigoPedido
+			  },
+			  icon: {
+				  labelOrigin: new google.maps.Point(11, 50),
+				  url: _globalContextPath + iconUrl,
+				  size: new google.maps.Size(32, 40),
+				  origin: new google.maps.Point(0, 0),
+				  anchor: new google.maps.Point(11, 40)
+			  }
+		  });
     }

@@ -17,6 +17,7 @@ function establecerParadasRuta() {
 						destination: destino.destino + " Peru",
 						travelMode: 'DRIVING'
 					 };
+					 console.log("establecimiento de paradas request: ",request);
 					 const tripPoints = [];
 					 directionsService.route(request, function(result, status) {
 						    if (status == 'OK') {
@@ -153,6 +154,9 @@ function Simulador(trigger,stopper,reactivate) {
 		this.stopper.hide();
 		this.reactivate.hide();
 		this.detener();
+		this.trigger.unbind("click");
+		this.stopper.unbind("click");
+		this.reactivate.unbind("click");
 	};
 	this.reset = function() {
 		this.step = 0;
@@ -230,8 +234,8 @@ function aumentarResolucion(step, tripPoints, placa, contador) {
 			timeleft: contador.demoraPendiente,
 			distanceleft: contador.distanciaPendiente,
 			locations: {
-				lat : step.start_location.lat(),
-				lng : step.start_location.lng()
+				lat : step.end_location.lat(),
+				lng : step.end_location.lng()
 			}
 		});
 	}

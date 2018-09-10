@@ -200,9 +200,20 @@
 			<div  class="col-sm-2 botonera">
 				<label class="simLbl">Simulación</label><br>
 				<a  id="iniciarSimBtn"><img class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/play.png"></a>
+				<!-- <button class="btn btn-sm btn-success"
+					id="iniciarSimBtn">
+					Iniciar Simulación
+				</button> -->
 				<a  id="detenerSimBtn" style="display: none;"><img class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/pause.png"></a>
+				<!-- <button class="btn btn-sm btn-danger"
+					style="display: none;" id="detenerSimBtn">
+					Detener Simulación
+				</button> -->
 				<a  id="continuarSimBtn" style="display: none;"><img  class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/play.png"></a>
-				<a  id="unavailableSimBtn" style="display: none;"><img  class="ctrlimg" src="${pageContext.request.contextPath}/images/dashboard/unavailable.png"></a>
+				<!-- <button class="btn btn-sm btn-success"
+					style="display: none;" id="continuarSimBtn">
+					Continuar Simulación
+				</button> -->
 			</div>
 		</div>
 	</div>

@@ -32,7 +32,6 @@ function initTracking(map,destino) {
 				  
 				  if(key in unidadLocationMarkers) {
 					  //Si ya estaba, solo actualizacion del marcador
-					  console.log("Se actualiza marcador");
 					  const marker = unidadLocationMarkers[key];
 					  marker.setPosition({
 						  lat: unidad.lat,
@@ -47,7 +46,6 @@ function initTracking(map,destino) {
 					  document.getElementById('timeLbl').innerHTML = formatTimeToMinutes(unidad.timeleft);
 				  } else {
 					  //Si no estaba, se crea nuevo marcador
-					  console.log("Se crea nuevo marcador");
 					  const url = _globalContextPath + colorToUnidadMarker('FCE444');
 					  const marker = new google.maps.Marker({
 						  position: {
@@ -90,8 +88,7 @@ function initTracking(map,destino) {
 						    }
 					  });
 					  
-					//Se establece panel:
-					document.getElementById('endLbl').innerHTML = destino;
+					
 				  }
 				  pintarRuta++;
 			  }
@@ -164,7 +161,8 @@ function obtenerPuntoDePartida(pedido) {
 							(results,status)=>{
 								let origen = {
 										lat: results[0].geometry.location.lat(),
-										lng: results[0].geometry.location.lng()
+										lng: results[0].geometry.location.lng(),
+										address_name: partida.direccion
 								};
 								resolve(origen);
 						});
