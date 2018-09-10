@@ -314,6 +314,11 @@ function detectarCambios() {
 			} else {
 				console.log("Fail");
 			}
+		},
+		error: function(xhr,ajaxOptions,thrownError) {
+			console.log(xhr.status);
+			console.log(thrownError);
+			stopAutoRefresh();
 		}
 	});
 }
