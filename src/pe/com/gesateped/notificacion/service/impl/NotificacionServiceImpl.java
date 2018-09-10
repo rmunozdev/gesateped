@@ -41,7 +41,7 @@ public class NotificacionServiceImpl  implements NotificacionService{
 				stringBuffer.append(line);
 			}
 			rd.close();
-			JsonElement jsonElement = new JsonParser().parse(new String(stringBuffer.toString().getBytes("UTF-8")));
+			JsonElement jsonElement = new JsonParser().parse(stringBuffer.toString());
 			
 			JsonArray jsonArray = jsonElement.getAsJsonArray();
 			for(int i = 0; i<jsonArray.size(); i++) {
