@@ -49,7 +49,12 @@ public class NotificacionServiceImpl  implements NotificacionService{
 				JsonObject jsonObject = element.getAsJsonObject();
 				System.out.println("Mensaje " + (i+1) + ":");
 				System.out.println("codigo: " + jsonObject.get("codigo").getAsString());
-				System.out.println("mensajes: " + jsonObject.get("mensajes").getAsString());
+				JsonArray mensajes = jsonObject.getAsJsonArray("mensajes");
+				if(mensajes.size()>0) {
+					System.out.println("mensajes: " + mensajes.getAsString());
+				} else {
+					System.out.println("mensajes: []");
+				}
 			}
 			
 			System.out.println(stringBuffer.toString());
