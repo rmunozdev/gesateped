@@ -9,6 +9,11 @@ import java.net.UnknownHostException;
 
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import pe.com.gesateped.common.Parametros;
 import pe.com.gesateped.notificacion.service.NotificacionService;
 
@@ -36,6 +41,17 @@ public class NotificacionServiceImpl  implements NotificacionService{
 				stringBuffer.append(line);
 			}
 			rd.close();
+			JsonElement jsonElement = new JsonParser().parse(new String(stringBuffer.toString().getBytes("UTF-8")));
+			
+			JsonArray jsonArray = jsonElement.getAsJsonArray();
+			for(int i = 0; i<jsonArray.size(); i++) {
+				JsonElement element = jsonArray.get(i);
+				JsonObject jsonObject = element.getAsJsonObject();
+				System.out.println("Mensaje " + (i+1) + ":");
+				System.out.println("codigo: " + jsonObject.get("codigo").getAsString());
+				System.out.println("mensajes: " + jsonObject.get("mensajes").getAsString());
+			}
+			
 			System.out.println(stringBuffer.toString());
 			return RESPONSE_CODIGO_EXITO;
 		} catch(UnknownHostException exception) {
