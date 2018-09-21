@@ -630,8 +630,8 @@ USGSOverlay.prototype.onAdd = function() {
 			  title: `${codigoPedido}\n${direccionPedido}`,
 			  optimized: false,
 			  label: {
-				  color: 'black',
-				  fontWeight: 'normal',
+				  color: 'red',
+				  fontWeight: 'bold',
 				  text: codigoPedido
 			  },
 			  icon: {
