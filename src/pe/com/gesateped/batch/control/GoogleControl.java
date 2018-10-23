@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -162,6 +163,16 @@ public class GoogleControl implements Controlador {
 					.waypoints(waypoints.toArray(new String[waypoints.size()]))
 					.mode(TravelMode.DRIVING)
 					.optimizeWaypoints(true).await();
+			
+			System.out.println(">origin: ");
+			System.out.println(this.origen + " Peru");
+			System.out.println(">destination: ");
+			System.out.println(pedidoDestino.getDomicilio() + " Peru");
+			System.out.println(">Waypoints: ");
+			waypoints.forEach(waypoint -> System.out.print(waypoint + "|"));
+			System.out.println(">Waypoint order:");
+			System.out.println(Arrays.toString(directionsResult.routes[0].waypointOrder));
+			
 			if(directionsResult.routes.length == 0) {
 				return false;
 			}

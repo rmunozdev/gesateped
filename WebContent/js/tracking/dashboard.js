@@ -403,14 +403,15 @@ function verRutaCompleta() {
 			
 			for(var i=0; i<despachos.length; i++) {
 				if(i != (despachos.length - 1)) {
-					waypoints.push({location: despachos[i].location});
+					waypoints.push({location: despachos[i].location + " Peru"});
 				} else {
 					destino = despachos[i].location;
 				}
 			}
 			
 			
-			console.log("Destino elegido: " + destino);
+			console.log(">Destino elegido: " + destino);
+			console.log(">Waypoints: ",waypoints);
 			let geocoder = new google.maps.Geocoder();
 			geocoder.geocode({address:paradas[0].direccion},(results,status)=>{
 				var marker = createPedidoMarker(
