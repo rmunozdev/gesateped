@@ -24,6 +24,12 @@
 	<definition name="monitoreo" extends="bootstrapDefinition">  
 		<put-attribute name="body" value="/jsp/monitoreo/bootstrap-dashboard.jsp" />  
 	</definition>
+	
+	<definition name="carga" extends="bootstrapDefinition">  
+		<put-attribute name="body" value="/jsp/carga/carga-dashboard.jsp" />  
+	</definition>
+	
+	
 	<definition name="config" template="/jsp/monitoreo/config.jsp">  
 	</definition>
     

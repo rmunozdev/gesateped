@@ -5,11 +5,18 @@
         	<c:choose>
 	        	<c:when test="${menu eq 'monitoreo'}">
 	        		<li><a href="${pageContext.request.contextPath}/">Inicio</a></li>
-			          <li class="active"><a href="${pageContext.request.contextPath}/monitoreo">Monitoreo</a></li>
+			        <li class="active"><a href="${pageContext.request.contextPath}/monitoreo">Monitoreo</a></li>
+	        		<li><a href="${pageContext.request.contextPath}/carga">Abastecimiento de Productos</a></li>
+	        	</c:when>
+	        	<c:when test="${menu eq 'carga'}">
+	        		<li><a href="${pageContext.request.contextPath}/">Inicio</a></li>
+			        <li><a href="${pageContext.request.contextPath}/monitoreo">Monitoreo</a></li>
+	        		<li class="active"><a href="${pageContext.request.contextPath}/carga">Abastecimiento de Productos</a></li>
 	        	</c:when>
 	        	<c:otherwise>
 	        		<li class="active"><a href="${pageContext.request.contextPath}/">Inicio</a></li>
-			          <li><a href="${pageContext.request.contextPath}/monitoreo">Monitoreo</a></li>
+			        <li><a href="${pageContext.request.contextPath}/monitoreo">Monitoreo</a></li>
+			        <li><a href="${pageContext.request.contextPath}/carga">Abastecimiento de Productos</a></li>
 	        	</c:otherwise>
         	</c:choose>
         </ul>

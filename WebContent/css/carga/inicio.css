@@ -1,0 +1,32 @@
+@charset "ISO-8859-1";
+
+.xlsx-localizado-button {
+	position: relative;
+    bottom: 60px;
+    float: right;
+}
+
+#tblErrorCarga {
+	
+}
+
+.tblErrorCargaContainer {
+	margin-left: 70px !important;
+}
+
+#panelResumen {
+	margin-top: 0px !important;
+}
+
+#formContainer {
+	margin-bottom: 4px !important;
+}
+
+#formPanel {
+	margin-bottom: 4px !important;
+}
+
+.titulo-abastecimiento {
+	margin-bottom: 5px;
+    text-align: center;
+}

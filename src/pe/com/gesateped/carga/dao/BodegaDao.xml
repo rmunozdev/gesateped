@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bodega">
+
+	<resultMap type="bodega" id="bodegaResultMap">
+		<result property="codigo" column="cod_bod" />
+		<result property="nombre" column="nom_bod" />
+		<result property="direccion" column="dir_bod" />
+		<result property="codigoDistrito" column="cod_dist" />
+		<result property="tipoBodega" column="tip_bod" />
+		<result property="emailBodega" column="email_bod" />
+	</resultMap>
+
+	<select id="listarSoloBodegas" resultMap="bodegaResultMap" statementType="CALLABLE">
+	{ call sp_c_listar_solo_bodegas()}
+	</select>
+	
+	<select id="listarSoloNodos" resultMap="bodegaResultMap" statementType="CALLABLE">
+	{ call sp_c_listar_solo_nodos()}
+	</select>
+    
+</mapper>

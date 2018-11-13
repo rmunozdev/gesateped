@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Proveedor">
+
+	<resultMap type="proveedor" id="proveedorResultMap">
+		<result property="codigo" column="cod_prv" />
+		<result property="razonSocial" column="raz_soc_prv" />
+		<result property="numeroRuc" column="num_ruc_prv" />
+		<result property="telefono" column="telf_prv" />
+		<result property="email" column="email_prv" />
+		<result property="tipo" column="tip_prv" />
+	</resultMap>
+
+	<select id="listar" resultMap="proveedorResultMap" statementType="CALLABLE">
+	{ call sp_c_listar_proveedores()}
+	</select>
+    
+</mapper>

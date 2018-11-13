@@ -227,3 +227,8 @@ textarea {
 	text-decoration: underline;
 	font-weight: bold
 }
+
+.validacion-alerta {
+	font-size: 12px;
+    color: red;
+}

@@ -6,7 +6,9 @@
     <typeAliases>
         <typeAlias alias="pedido" type="pe.com.gesateped.model.Pedido" />
         <typeAlias alias="bodega" type="pe.com.gesateped.model.Bodega" />
+        <typeAlias alias="proveedor" type="pe.com.gesateped.model.Proveedor" />
         <typeAlias alias="unidad" type="pe.com.gesateped.model.Unidad" />
+        <typeAlias alias="producto" type="pe.com.gesateped.carga.model.Producto" />
         <typeAlias alias="estadoPedido" type="pe.com.gesateped.model.EstadoPedido" />
         <typeAlias alias="detallePedidoRuta" type="pe.com.gesateped.model.extend.DetallePedidoRuta" />
         <typeAlias alias="pedidoNormalizado" type="pe.com.gesateped.model.extend.PedidoNormalizado" />
@@ -17,5 +19,9 @@
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />
         <mapper resource="pe/com/gesateped/dao/mapper/MonitoreoDao.xml" />
         <mapper resource="pe/com/gesateped/dao/mapper/AuditoriaDao.xml" />
+        <mapper resource="pe/com/gesateped/carga/dao/BodegaDao.xml" />
+        <mapper resource="pe/com/gesateped/carga/dao/ProveedorDao.xml" />
+        <mapper resource="pe/com/gesateped/carga/dao/ProductoDao.xml" />
+        <mapper resource="pe/com/gesateped/carga/dao/CargaDao.xml" />
     </mappers>
 </configuration>

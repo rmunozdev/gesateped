@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Carga">
+
+	<select id="registrarAbastecimiento" parameterType="java.util.Map" statementType="CALLABLE">
+	{ call sp_c_registrar_abastecimiento(
+		#{ abastecimiento.item.producto.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ abastecimiento.item.producto.nombre,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ abastecimiento.bodega.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ abastecimiento.cantidad,javaType=Integer,jdbcType=INTEGER,mode=IN },
+		#{ abastecimiento.fecha,javaType=java.util.Date,jdbcType=DATETIMEOFFSET,mode=IN },
+		#{ abastecimiento.proveedor.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ codigoRespuesta,javaType=Integer,jdbcType=INTEGER,mode=OUT },
+		#{ mensajeRespuesta,javaType=String,jdbcType=VARCHAR,mode=OUT }
+	)}
+	</select>
+	
+	<select id="registrarReposicion" parameterType="java.util.Map" statementType="CALLABLE">
+	{ call sp_c_registrar_reposicion(
+		#{ reposicion.item.producto.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ reposicion.item.producto.nombre,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ reposicion.nodo.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ reposicion.cantidad,javaType=Integer,jdbcType=INTEGER,mode=IN },
+		#{ reposicion.fecha,javaType=java.util.Date,jdbcType=DATETIMEOFFSET,mode=IN },
+		#{ reposicion.bodega.codigo,javaType=String,jdbcType=VARCHAR,mode=IN },
+		#{ codigoRespuesta,javaType=Integer,jdbcType=INTEGER,mode=OUT },
+		#{ mensajeRespuesta,javaType=String,jdbcType=VARCHAR,mode=OUT }
+	)}
+	</select>
+</mapper>

@@ -123,4 +123,8 @@ public class Parametros {
 		return parametrosMap.get("MESSAGING_SENDER_ID");
 	}
 	
+	public static Long getMaxUploadFileMBSize() {
+		return Long.parseLong(parametrosMap.get("MAX_SIZE_FILE_CSV")) * 1024 * 1024;
+	}
+	
 }
