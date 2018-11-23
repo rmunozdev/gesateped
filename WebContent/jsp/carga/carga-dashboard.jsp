@@ -9,11 +9,13 @@
 			https://getbootstrap.com/docs/3.3/css/#forms
 			https://stackoverflow.com/questions/12201835/form-inline-inside-a-form-horizontal-in-twitter-bootstrap
 		--%>
+	<div class="jumbotron cabecera-narrow">
+        <p class="lead titulo-abastecimiento">ABASTECIMIENTO DE PRODUCTOS</p>
+      </div>
 	<form:form id="frmCarga" commandName="carga" class="form-horizontal" role="form">
-		<div id="formContainer" class="row-fluid marketing">
+		<div id="formContainer" class="row-fluid marketing" style="display:block;">
 			<div id="formPanel" class="span12 panel panel-default">
 				<div class="panel-body">
-					<p class="lead titulo-abastecimiento">ABASTECIMIENTO DE PRODUCTOS</p>
 					<div>
 						<label class="control-label">Tipo de Abastecimiento:</label>
 					</div>
@@ -75,8 +77,8 @@
 						<input id="fileCSV" type="file" name="file" class="form-control"/>
 						<a href="carga/ver-plantilla">Descargar plantilla CSV</a>
 					</div>
-					<div>
-				        <a class="btn btn-large btn-success form-control" id="procesarBtn">Procesar</a><br>
+					<div class="text-center">
+				        <a class="btn btn-success " id="procesarBtn">Procesar</a><br>
 			      	</div>
 				</div>
 			</div>
@@ -85,7 +87,7 @@
 	
 	
 	<%-- Grilla Resumen --%>
-	<div id="panelResumen" class="row-fluid marketing" style="display:block;">
+	<div id="panelResumen" class="row-fluid marketing" style="display:none;">
 			<div class="span12 panel panel-default">
 				<div class="panel-body">
 					<h4 class="tbl-descripcion open">Resumen Carga de Datos</h4>
@@ -119,8 +121,9 @@
 			<div class="span12 panel panel-default">
 				<div class="panel-body">
 					<h4 class="tbl-descripcion open">
-					Lista de Errores en la carga de datos
+					Lista de Errores en la Carga de Datos
 					</h4>
+					<img id="xlsxBtn" src="${pageContext.request.contextPath}/images/carga/iconoExportar.png" width="48" alt="Ver xlsx" style="display:none"><br>
 					<div class="row">
 						<div class="tblErrorCargaContainer span10">
 							<table id="tblErrorCarga" class="table">
@@ -138,7 +141,7 @@
 							</table>
 						</div>
 					</div>
-					<a class="btn btn-large btn-success xlsx-localizado-button" id="xlsxBtn">Ver xlsx</a><br>
+					<!-- <a class="btn btn-large btn-success xlsx-localizado-button" id="xlsxBtn">Ver xlsx</a><br> -->
 				</div>
 			</div>
 	</div>

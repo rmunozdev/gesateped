@@ -11,8 +11,8 @@ function iniciar() {
 	observarModificacionTipo();
 	activarDatePicker();
 	desactivarProcesamiento();
-	activarExportacion();
 	crearTablas();
+	//presentarTabla(misErrores);
 }
 
 var archivo;
@@ -21,13 +21,22 @@ function observarModificacionTipo() {
 	    if (this.value == 'compra') {
 	        $('#fieldProveedor').show();
 	        $('#fieldNodo').hide();
-	        $('#lblFecha').html('Fecha de Abastecimiento');
+	        $('#lblFecha').html('Fecha de Abastecimiento:');
 	    }
 	    else if (this.value == 'reposicion') {
 	    	$('#fieldProveedor').hide();
 	    	$('#fieldNodo').show();
-	    	$('#lblFecha').html('Fecha de Reposición');
+	    	$('#lblFecha').html('Fecha de Reposición:');
 	    }
+	    //Cualquier cambio limpia y oculta info de resultados
+	    $('#proveedor\\.codigo').val(function(){ return '0';});
+	    $('#bodega\\.codigo').val(function(){ return '0';});
+	    $('#nodo\\.codigo').val(function(){ return '0';});
+	    $('#fecha').val(function(){ return '';});
+	    $('#fileCSV').val(function(){ return '';});
+	    
+	    $('#panelErrores').hide();
+	    $('#panelResumen').hide();
 	    validForm();
 	});
 	
@@ -150,16 +159,18 @@ function crearTablas() {
 	 * http://legacy.datatables.net/usage/options
 	 */
 	var config = {
+			"sDom": '<"toolbar"lp><"xlsx">rt<"info"i>',
 			'bPaginate':  true,
-			'bFilter'	: false,
+			'bFilter'	: true,
+			'bAutoWidth': false,
 			'aoColumns': [
-				{'sWidth':'20%','mData' : 'registro'},
+				{'sWidth':'16%','mData' : 'registro', "sClass": "columnaCentrada"},
 				{}
 			],
 			'aoColumnDefs': [
 				{
 					'aTargets':[1],
-					'sWidth': '80%',
+					'sWidth': '84%',
 					'mData': null,
 					'mRender': function(data, type, row, position) {
 						return data.mensaje;
@@ -173,32 +184,86 @@ function crearTablas() {
 				"oPaginate": {
 			        "sFirst":      "Primero",
 			        "sLast":       "Último",
-			        "sNext":       "Siguiente",
-			        "sPrevious":   "Anterior"
+			        "sNext":       ">>",
+			        "sPrevious":   "<<"
 			    },
 			}
 		};
 	tablaErrores = $('#tblErrorCarga').dataTable(config);
+	var btnExportar = $( "#xlsxBtn" ).clone();
+	btnExportar.appendTo( "div.xlsx" ).show();
+	btnExportar.click(exportar);
 }
 
+var misErrores = [
+	{
+		'registro' : 1,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 2,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 3,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 4,
+		'mensaje' : 'Este es un contenido extensamente largo, lo usual seria mas pequeño pero se necesita hacerlo asi para probar'
+	},
+	{
+		'registro' : 5,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 6,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 7,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 8,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 18,
+		'mensaje' : 'Falla general'
+	},
+	{
+		'registro' : 9,
+		'mensaje' : 'Falla general'
+	}
+];
+
 function presentarTabla(errores) {
+	if(errores.length < 11) {
+		$('.toolbar').hide();
+		$('.dataTables_length').hide();
+		$('.dataTables_paginate').hide();
+		$( ".xlsx img" ).css("float","right");
+	} else {
+		$( ".xlsx img" ).css("float","none");
+	}
+	
+	
 	tablaErrores.fnClearTable();
 	tablaErrores.fnAddData(errores);
 	tablaErrores.fnDraw();
 	tablaErrores.fnPageChange('first');
 }
 
-function activarExportacion() {
-	$('#xlsxBtn').click((event=>{
-		event.preventDefault();
-		$.fileDownload('carga/exportar-excel', {data: {}})
-	    .done(function () { 
-	    	alert('File download a success!'); 
-	    })
-	    .fail(function () { 
-	    	alert('File download failed!'); 
-	    });
-	}));
+function exportar(event) {
+	event.preventDefault();
+	$.fileDownload('carga/exportar-excel', {data: {}})
+    .done(function () { 
+    	alert('File download a success!'); 
+    })
+    .fail(function () { 
+    	alert('File download failed!'); 
+    });
 }
 
 function validForm() {

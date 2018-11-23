@@ -1,43 +1,58 @@
 package pe.com.gesateped.model;
 
+import java.util.Date;
+
 public class Kardex {
 
-	public String codigoBodega;
-	public String codigoProducto;
-	public int stockMinimo;
-	public int stockActual;
-	public int cantidadAbast;
+	private Bodega bodega;
+	private Producto producto;
+	private Integer stockMinimo;
+	private Integer stockActual;
+	private Date actualRegistro;
+	private Date notificacionAbastecimiento;
+	private Date maximoAbastecimiento;
 	
-	public String getCodigoBodega() {
-		return codigoBodega;
+	public Bodega getBodega() {
+		return bodega;
 	}
-	public void setCodigoBodega(String codigoBodega) {
-		this.codigoBodega = codigoBodega;
+	public void setBodega(Bodega bodega) {
+		this.bodega = bodega;
 	}
-	public String getCodigoProducto() {
-		return codigoProducto;
+	public Producto getProducto() {
+		return producto;
 	}
-	public void setCodigoProducto(String codigoProducto) {
-		this.codigoProducto = codigoProducto;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
-	public int getStockMinimo() {
+	public Integer getStockMinimo() {
 		return stockMinimo;
 	}
-	public void setStockMinimo(int stockMinimo) {
+	public void setStockMinimo(Integer stockMinimo) {
 		this.stockMinimo = stockMinimo;
 	}
-	public int getStockActual() {
+	public Integer getStockActual() {
 		return stockActual;
 	}
-	public void setStockActual(int stockActual) {
+	public void setStockActual(Integer stockActual) {
 		this.stockActual = stockActual;
 	}
-	public int getCantidadAbast() {
-		return cantidadAbast;
+	public Date getActualRegistro() {
+		return actualRegistro;
 	}
-	public void setCantidadAbast(int cantidadAbast) {
-		this.cantidadAbast = cantidadAbast;
+	public void setActualRegistro(Date actualRegistro) {
+		this.actualRegistro = actualRegistro;
 	}
-	
+	public Date getNotificacionAbastecimiento() {
+		return notificacionAbastecimiento;
+	}
+	public void setNotificacionAbastecimiento(Date notificacionAbastecimiento) {
+		this.notificacionAbastecimiento = notificacionAbastecimiento;
+	}
+	public Date getMaximoAbastecimiento() {
+		return maximoAbastecimiento;
+	}
+	public void setMaximoAbastecimiento(Date maximoAbastecimiento) {
+		this.maximoAbastecimiento = maximoAbastecimiento;
+	}
 	
 }

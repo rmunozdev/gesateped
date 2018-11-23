@@ -127,4 +127,20 @@ public class Parametros {
 		return Long.parseLong(parametrosMap.get("MAX_SIZE_FILE_CSV")) * 1024 * 1024;
 	}
 	
+	public static String getFromEmail() {
+		return parametrosMap.get("FROM_EMAIL");
+	}
+	
+	public static String getPasswordEmail() {
+		return parametrosMap.get("PASSWORD_EMAIL");
+	}
+	
+	public static String getSmtpPort() {
+		return parametrosMap.get("SMTP_PORT");
+	}
+	
+	public static String getSmtpServer() {
+		return parametrosMap.get("SMTP_SERVER");
+	}
+	
 }

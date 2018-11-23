@@ -6,6 +6,7 @@
     <resultMap id="bodegaResult" type="bodega">
 		<result property="codigo" column="cod_bod" />
 		<result property="nombre" column="nom_bod" />
+		<result property="emailBodega" column="email_bod" />
 	</resultMap>
 
 	<select id="getBodegas" resultMap="bodegaResult" statementType="CALLABLE">

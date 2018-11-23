@@ -4,11 +4,11 @@ public class Producto {
 
 	private String codigo;
 	private String nombre;
+	private String marca;
 	private double precioUnitario;
 	private double volumen;
 	private double peso;
 	private String codigoTipoProducto;
-	private String codigoFamiliaProducto;
 	
 	public String getCodigo() {
 		return codigo;
@@ -46,12 +46,11 @@ public class Producto {
 	public void setCodigoTipoProducto(String codigoTipoProducto) {
 		this.codigoTipoProducto = codigoTipoProducto;
 	}
-	public String getCodigoFamiliaProducto() {
-		return codigoFamiliaProducto;
+	public String getMarca() {
+		return marca;
 	}
-	public void setCodigoFamiliaProducto(String codigoFamiliaProducto) {
-		this.codigoFamiliaProducto = codigoFamiliaProducto;
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
-	
 	
 }

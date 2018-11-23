@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Template for velocity</title>
+<style>
+	.mail_table {
+	    border-collapse: collapse;
+	    border: solid 1px;
+	    
+	}
+	
+	.mail_table tr {
+		border: solid 1px;
+	}
+	
+	.mail_table th {
+		padding: 5px 10px;
+		background-color: #deeaf9;
+		border: solid 1px;
+	}
+	
+	.mail_table td {
+		padding: 5px 10px;
+		border: solid 1px;
+	}
+	
+	.top_header {
+		background-color: #c2d6ef !important;
+	}
+	
+	.normal {
+		
+	}
+	.alerta {
+		color: red;
+	}
+	
+</style>
+</head>
+<body>
+	<p>Estimado Coordinador DAD:</p>
+	<p>Se envía la lista de productos que debe abastecer en su bodega o nodo.</p>
+	
+	<table class="mail_table">
+		<tr>
+			<th class="top_header" >Código</th>
+			<th class="top_header" >Producto</th>
+			<th class="top_header" >Marca</th>
+			<th class="top_header" >Stock Mínimo</th>
+			<th class="top_header" >Stock Actual</th>
+			<th class="top_header" >Fecha Max. Abast.</th>
+			<th class="top_header" >Estado</th>
+		</tr>
+		
+		#foreach($notificable in $data.notificables)
+		#if($notificable.alerta)
+		<tr>
+			<td><span class="alerta">$notificable.kardex.producto.codigo</span></td>
+			<td><span class="alerta">$notificable.kardex.producto.nombre </span></td>
+			<td><span class="alerta">$notificable.kardex.producto.marca </span></td>
+			<td><span class="alerta">$notificable.kardex.stockMinimo </span></td>
+			<td><span class="alerta">$notificable.kardex.stockActual </span></td>
+			<td><span class="alerta">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
+			<td><span class="alerta">$notificable.estado</span></td>
+		</tr>
+		#else
+		<tr>
+			<td><span class="normal">$notificable.kardex.producto.codigo </span></td>
+			<td><span class="normal">$notificable.kardex.producto.nombre </span></td>
+			<td><span class="normal">$notificable.kardex.producto.marca </span></td>
+			<td><span class="normal">$notificable.kardex.stockMinimo </span></td>
+			<td><span class="normal">$notificable.kardex.stockActual </span></td>
+			<td><span class="normal">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
+			<td><span class="normal">$notificable.estado</span></td>
+		</tr>
+		#end
+		#end
+		
+	</table>
+	<br>
+	
+	<p>Atentamente,</p>
+	<p>Sistema de Gestión de Despacho de Pedidos.</p>
+</body>
+</html>

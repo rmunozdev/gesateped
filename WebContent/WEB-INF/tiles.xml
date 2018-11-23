@@ -29,6 +29,10 @@
 		<put-attribute name="body" value="/jsp/carga/carga-dashboard.jsp" />  
 	</definition>
 	
+	<definition name="notabast" extends="bootstrapDefinition">  
+		<put-attribute name="body" value="/jsp/carga/notabast.jsp" />  
+	</definition>
+	
 	
 	<definition name="config" template="/jsp/monitoreo/config.jsp">  
 	</definition>

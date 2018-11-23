@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,8 @@ import pe.com.gesateped.carga.registro.validation.RegistroCargaErrorCode;
 
 @Repository
 public class CargaDAOImpl implements CargaDAO {
+	
+	private final static Logger logger = Logger.getLogger(CargaDAOImpl.class);
 
 	@Autowired
 	private SqlSession gesatepedSession;
@@ -26,6 +29,13 @@ public class CargaDAOImpl implements CargaDAO {
 		params.put("codigoRespuesta", null);
 		params.put("mensajeRespuesta", null);
 		this.gesatepedSession.insert("Carga.registrarAbastecimiento",params);
+		
+		params.computeIfPresent("codigoRespuesta", (key,value)->{
+			logger.info("Codigo Respuesta " + value);
+			logger.info("Mensaje Respuesta " + params.get("mensajeRespuesta"));
+			return value;
+		});
+		
 		return procesarResponse(params.get("codigoRespuesta"),abastecimiento.getItem(), false);
 	}
 
@@ -36,6 +46,12 @@ public class CargaDAOImpl implements CargaDAO {
 		params.put("codigoRespuesta", null);
 		params.put("mensajeRespuesta", null);
 		this.gesatepedSession.insert("Carga.registrarReposicion",params);
+		
+		params.computeIfPresent("codigoRespuesta", (key,value)->{
+			logger.info("Codigo Respuesta " + value);
+			logger.info("Mensaje Respuesta " + params.get("mensajeRespuesta"));
+			return value;
+		});
 		
 		return procesarResponse(params.get("codigoRespuesta"),reposicion.getItem(), true);
 	}

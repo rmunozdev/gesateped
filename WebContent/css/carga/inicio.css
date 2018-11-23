@@ -1,9 +1,13 @@
 @charset "ISO-8859-1";
 
+.cabecera-narrow {
+	padding-top: 10px;
+	padding-bottom: 10px;	
+	margin-top: 0px;
+}
+
 .xlsx-localizado-button {
-	position: relative;
-    bottom: 60px;
-    float: right;
+	
 }
 
 #tblErrorCarga {
@@ -12,6 +16,8 @@
 
 .tblErrorCargaContainer {
 	margin-left: 70px !important;
+	width: 750px;
+	border-bottom: 1px solid;
 }
 
 #panelResumen {
@@ -30,3 +36,59 @@
 	margin-bottom: 5px;
     text-align: center;
 }
+
+.tbl-descripcion {
+		background-color: #dce6ef;
+	    padding: 5px 5px;
+	    left: 0px;
+	    position: relative;
+	}
+
+.xlsx {
+	display: inline;
+	cursor: pointer;
+}
+
+.xlsx img {
+	border-bottom: solid 1px;
+}
+
+.toolbar {
+    width: 625px;
+    display: inline-flex;
+    font-size: 13px;
+    border-bottom: solid 1px;
+}
+
+.toolbar div {
+	padding: 0px 100px 0px 0px;
+	
+}
+
+.toolbar .dataTables_length {
+	
+}
+
+.toolbar .pagination {
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+.info {
+	display: inline;
+	float: right;
+}
+
+#tblErrorCarga thead {
+	background-color: #e7ecf1;
+}
+
+.columnaCentrada {
+	text-align: center;
+}
+
+.tbl-contenedor {
+		left: 15px;
+	    position: relative;
+	    width: 750px;
+	}

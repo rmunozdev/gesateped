@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Template for velocity</title>
+<style>
+	.mail_table {
+	    border-collapse: collapse;
+	    border: solid 1px;
+	    
+	}
+	
+	.mail_table tr {
+		border: solid 1px;
+	}
+	
+	.mail_table th {
+		padding: 5px 10px;
+		background-color: #deeaf9;
+		border: solid 1px;
+	}
+	
+	.mail_table td {
+		padding: 5px 10px;
+		border: solid 1px;
+	}
+	
+	.top_header {
+		background-color: #c2d6ef !important;
+	}
+	
+	.normal {
+		
+	}
+	.alerta {
+		color: red;
+	}
+	
+</style>
+</head>
+<body>
+	<p>Estimado Coordinador DAD:</p>
+	<p>Se envía la lista de productos que debe abastecer en su bodega o nodo.</p>
+	
+	<table class="mail_table">
+		<tr>
+			<th class="top_header" >Código</th>
+			<th class="top_header" >Producto</th>
+			<th class="top_header" >Marca</th>
+			<th class="top_header" >Stock Mínimo</th>
+			<th class="top_header" >Stock Actual</th>
+			<th class="top_header" >Fecha Max. Abast.</th>
+			<th class="top_header" >Estado</th>
+		</tr>
+		
+		<tr>
+			<td><span class="alerta">SKU204759-4</span></td>
+			<td><span class="alerta">Grupo Electrógeno Gasolina 7.2 KVA </span></td>
+			<td><span class="alerta">Yamaha </span></td>
+			<td><span class="alerta">200 </span></td>
+			<td><span class="alerta">170 </span></td>
+			<td><span class="alerta">08/11/2018</span></td>
+			<td><span class="alerta">Sin abastecer hace 7 días</span></td>
+		</tr>
+		<tr>
+			<td><span class="alerta">SKU221909-3</span></td>
+			<td><span class="alerta">Cortador de Concreto 13 HP </span></td>
+			<td><span class="alerta">Bosch </span></td>
+			<td><span class="alerta">35 </span></td>
+			<td><span class="alerta">0 </span></td>
+			<td><span class="alerta">14/11/2018</span></td>
+			<td><span class="alerta">Sin abastecer hace 1 día</span></td>
+		</tr>
+		
+	</table>
+	<br>
+	
+	<p>Atentamente,</p>
+	<p>Sistema de Gestión de Despacho de Pedidos.</p>
+</body>
+</html>

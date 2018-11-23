@@ -9,6 +9,7 @@ BEGIN
         email_prv,
         tip_prv 
     from tb_proveedor
+    where tip_prv = 'MERC'
     order by raz_soc_prv
     ;
 END$$
@@ -102,6 +103,8 @@ proc_label:BEGIN
 	SET po_msg_desc :=  CONCAT(RETURNED_SQLSTATE,' ', MESSAGE_TEXT);
 	END;
     
+    
+    START TRANSACTION;
     -- KARDEX
     select true into v_existe_kardex 
     from tb_kardex 
@@ -131,7 +134,8 @@ proc_label:BEGIN
     update tb_producto 
     set nom_prod = pi_nombre_producto 
     where cod_prod = pi_codigo_producto;
-
+    
+	COMMIT;
         
 END$$
 DELIMITER ;
@@ -173,6 +177,8 @@ proc_label:BEGIN
 	SET po_msg_desc :=  CONCAT(RETURNED_SQLSTATE,' ', MESSAGE_TEXT);
 	END;
     
+    
+    START TRANSACTION;
     -- KARDEX (se espera que exista)
     select true into v_existe_kardex 
     from tb_kardex 
@@ -203,7 +209,47 @@ proc_label:BEGIN
     set nom_prod = pi_nombre_producto 
     where cod_prod = pi_codigo_producto;
     
-    
+    COMMIT;
         
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_n_obtener_notificables_abastecimiento`(
+	pi_codigo_bodega VARCHAR(10)
+)
+BEGIN
+	select 
+		producto.cod_prod,
+		producto.nom_prod,
+		producto.marc_prod,
+		kardex.stk_min,
+		kardex.stk_act,
+		kardex.fec_max_abast,
+		kardex.fec_notif_abast
+	from tb_kardex kardex inner join tb_producto producto 
+	on producto.cod_prod = kardex.cod_prod
+	where kardex.cod_bod = pi_codigo_bodega
+	and kardex.stk_act < kardex.stk_min;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_n_registrar_notificacion`(
+	pi_codigo_producto VARCHAR(15),
+    pi_codigo_bodega VARCHAR(10),
+    pi_notificacion DATE,
+    pi_maxima_abastecimiento DATE
+    
+)
+BEGIN
+	update tb_kardex
+    set 
+		fec_notif_abast = pi_notificacion,
+        fec_max_abast = pi_maxima_abastecimiento
+	where
+		cod_bod = pi_codigo_bodega and
+        cod_prod = pi_codigo_producto
+	;
 END$$
 DELIMITER ;

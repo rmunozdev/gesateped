@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Notificable">
+
+	<resultMap type="notificable" id="notificableResultMap">
+		<result property="kardex.producto.codigo" column="cod_prod" />
+		<result property="kardex.producto.nombre" column="nom_prod" />
+		<result property="kardex.producto.marca" column="marc_prod" />
+		<result property="kardex.stockMinimo" column="stk_min" />
+		<result property="kardex.stockActual" column="stk_act" />
+		<result property="kardex.notificacionAbastecimiento" column="fec_notif_abast" />
+		<result property="kardex.maximoAbastecimiento" column="fec_max_abast" />
+	</resultMap>
+
+	<select id="obtenerNotificables" resultMap="notificableResultMap" statementType="CALLABLE">
+	call sp_n_obtener_notificables_abastecimiento(
+	#{codigoBodega,javaType=String,jdbcType=VARCHAR,mode=IN}
+	)
+	</select>
+	
+    <update id="registrar" parameterType="notificable" statementType="CALLABLE" >
+    call sp_n_registrar_notificacion(
+    	#{kardex.producto.codigo,javaType=String,jdbcType=VARCHAR,mode=IN},
+    	#{kardex.bodega.codigo,javaType=String,jdbcType=VARCHAR,mode=IN},
+    	#{kardex.notificacionAbastecimiento,javaType=java.util.Date,jdbcType=DATE,mode=IN},
+    	#{kardex.maximoAbastecimiento,javaType=java.util.Date,jdbcType=DATE,mode=IN}
+    )
+    </update>
+</mapper>

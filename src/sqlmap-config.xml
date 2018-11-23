@@ -3,6 +3,10 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+
     <typeAliases>
         <typeAlias alias="pedido" type="pe.com.gesateped.model.Pedido" />
         <typeAlias alias="bodega" type="pe.com.gesateped.model.Bodega" />
@@ -14,6 +18,7 @@
         <typeAlias alias="pedidoNormalizado" type="pe.com.gesateped.model.extend.PedidoNormalizado" />
         <typeAlias alias="UnidadNormalizada" type="pe.com.gesateped.model.extend.UnidadNormalizada" />
         <typeAlias alias="actividad" type="pe.com.gesateped.model.Actividad" />
+        <typeAlias alias="notificable" type="pe.com.gesateped.notificacion.abastecimiento.model.Notificable" />
     </typeAliases>
     <mappers>
         <mapper resource="pe/com/gesateped/dao/mapper/PedidoDao.xml" />
@@ -23,5 +28,6 @@
         <mapper resource="pe/com/gesateped/carga/dao/ProveedorDao.xml" />
         <mapper resource="pe/com/gesateped/carga/dao/ProductoDao.xml" />
         <mapper resource="pe/com/gesateped/carga/dao/CargaDao.xml" />
+        <mapper resource="pe/com/gesateped/notificacion/abastecimiento/dao/NotificableDao.xml" />
     </mappers>
 </configuration>
