@@ -36,6 +36,10 @@
 		color: red;
 	}
 	
+	.centrado {
+		text-align: center;
+	}
+	
 </style>
 </head>
 <body>
@@ -49,7 +53,7 @@
 			<th class="top_header" >Marca</th>
 			<th class="top_header" >Stock Mínimo</th>
 			<th class="top_header" >Stock Actual</th>
-			<th class="top_header" >Fecha Max. Abast.</th>
+			<th class="top_header" >Fecha Máx. Abast.</th>
 			<th class="top_header" >Estado</th>
 		</tr>
 		
@@ -59,9 +63,9 @@
 			<td><span class="alerta">$notificable.kardex.producto.codigo</span></td>
 			<td><span class="alerta">$notificable.kardex.producto.nombre </span></td>
 			<td><span class="alerta">$notificable.kardex.producto.marca </span></td>
-			<td><span class="alerta">$notificable.kardex.stockMinimo </span></td>
-			<td><span class="alerta">$notificable.kardex.stockActual </span></td>
-			<td><span class="alerta">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
+			<td class="centrado"><span class="alerta">$notificable.kardex.stockMinimo </span></td>
+			<td class="centrado"><span class="alerta">$notificable.kardex.stockActual </span></td>
+			<td class="centrado"><span class="alerta">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
 			<td><span class="alerta">$notificable.estado</span></td>
 		</tr>
 		#else
@@ -69,9 +73,9 @@
 			<td><span class="normal">$notificable.kardex.producto.codigo </span></td>
 			<td><span class="normal">$notificable.kardex.producto.nombre </span></td>
 			<td><span class="normal">$notificable.kardex.producto.marca </span></td>
-			<td><span class="normal">$notificable.kardex.stockMinimo </span></td>
-			<td><span class="normal">$notificable.kardex.stockActual </span></td>
-			<td><span class="normal">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
+			<td class="centrado"><span class="normal">$notificable.kardex.stockMinimo </span></td>
+			<td class="centrado"><span class="normal">$notificable.kardex.stockActual </span></td>
+			<td class="centrado"><span class="normal">$date.format('dd/MM/yyyy', $notificable.kardex.maximoAbastecimiento)</span></td>
 			<td><span class="normal">$notificable.estado</span></td>
 		</tr>
 		#end

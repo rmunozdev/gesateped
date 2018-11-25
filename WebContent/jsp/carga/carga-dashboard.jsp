@@ -90,7 +90,7 @@
 	<div id="panelResumen" class="row-fluid marketing" style="display:none;">
 			<div class="span12 panel panel-default">
 				<div class="panel-body">
-					<h4 class="tbl-descripcion open">Resumen Carga de Datos</h4>
+					<h4 class="tbl-descripcion open">Resumen de la Carga de Datos</h4>
 					<div class="tbl-contenedor">
 						<table id="tblResumenCarga" class="table">
 							<tr>
@@ -123,7 +123,7 @@
 					<h4 class="tbl-descripcion open">
 					Lista de Errores en la Carga de Datos
 					</h4>
-					<img id="xlsxBtn" src="${pageContext.request.contextPath}/images/carga/iconoExportar.png" width="48" alt="Ver xlsx" style="display:none"><br>
+					<img id="xlsxBtn" src="${pageContext.request.contextPath}/images/carga/iconoExportar.png" width="48" alt="Ver xlsx" title="Exportar" style="display:none"><br>
 					<div class="row">
 						<div class="tblErrorCargaContainer span10">
 							<table id="tblErrorCarga" class="table">

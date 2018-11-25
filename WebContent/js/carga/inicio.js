@@ -62,6 +62,7 @@ function activarDatePicker() {
 
 
 function activarProcesamiento() {
+	$("#procesarBtn").unbind("click");
 	$("#procesarBtn").click((event)=>{
 		enviarFormulario();
 	});
@@ -92,6 +93,7 @@ function enviarFormulario() {
 function mostrarResumen(data) {
 	console.log(data);
 	presentarResumen(data);
+	
 	if(data.errores && data.errores.length > 0) {
 		$('#panelErrores').show();
 		presentarTabla(data.errores);
@@ -101,11 +103,13 @@ function mostrarResumen(data) {
 }
 
 function presentarResumen(resumen) {
-	$('#panelResumen').show();
-	$('#registrosCargados').html(resumen.cargados | 0);
-	$('#registrosOmitidos').html(resumen.omitidos | 0);
-	$('#registrosConError').html(resumen.errores.length);
-	$('#totalRegistros').html(resumen.total);
+	if(resumen.codigoRespuesta != -1) {
+		$('#panelResumen').show();
+		$('#registrosCargados').html(resumen.cargados | 0);
+		$('#registrosOmitidos').html(resumen.omitidos | 0);
+		$('#registrosConError').html(resumen.errores.length);
+		$('#totalRegistros').html(resumen.total);
+	}
 	
 	if(resumen.validacionProveedor || resumen.validacionProveedor != '') {
 		$('#lblErrorProveedor').show();
@@ -239,14 +243,16 @@ var misErrores = [
 ];
 
 function presentarTabla(errores) {
-	if(errores.length < 11) {
-		$('.toolbar').hide();
-		$('.dataTables_length').hide();
-		$('.dataTables_paginate').hide();
-		$( ".xlsx img" ).css("float","right");
-	} else {
-		$( ".xlsx img" ).css("float","none");
-	}
+	//Fix se suspende lógica de paginación.
+//	if(errores.length < 11) {
+//		$('.toolbar').hide();
+//		$('.dataTables_length').hide();
+//		$('.dataTables_paginate').hide();
+//		$( ".xlsx img" ).css("float","right");
+//	} else {
+//		$( ".xlsx img" ).css("float","none");
+//	}
+	$( ".xlsx img" ).css("float","none");
 	
 	
 	tablaErrores.fnClearTable();

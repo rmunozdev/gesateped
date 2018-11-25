@@ -48,7 +48,7 @@ public class ErrorCarga {
 			break;
 		default:
 			errorCarga.setCodigo(-1);
-			mensaje = "Error de validación no identificado";
+			mensaje = "Error de validación no identificado.";
 			break;
 		}
 		errorCarga.setMensaje(mensaje);
@@ -62,15 +62,15 @@ public class ErrorCarga {
 		switch(error.getCodigo()) {
 		case BASE_DE_DATOS:
 			errorCarga.setCodigo(10);
-			errorCarga.setMensaje("Error al grabar en base de datos");
+			errorCarga.setMensaje("Error al grabar en base de datos.");
 			break;
 		case ERROR_GENERAL:
 			errorCarga.setCodigo(11);
-			errorCarga.setMensaje("Error general");
+			errorCarga.setMensaje("Error general.");
 			break;
 		case ERROR_VALIDACION_ITEM_INCOMPLETO:
 			errorCarga.setCodigo(12);
-			errorCarga.setMensaje("El registro incompleto (Debe tener 3 columnas)");
+			errorCarga.setMensaje("El registro incompleto (Debe tener 3 columnas).");
 			break;
 		case ERROR_VALIDACION_PRODUCTO_NOMBRE_NO_VALIDO:
 			errorCarga.setCodigo(13);
@@ -78,20 +78,20 @@ public class ErrorCarga {
 			break;
 		case ERROR_VALIDACION_PRODUCTO_NO_EXISTE:
 			errorCarga.setCodigo(14);
-			errorCarga.setMensaje("El código de producto " + error.getItem().getProducto().getCodigo() + " no se encuentra registrado en el sistema");
+			errorCarga.setMensaje("El código de producto " + error.getItem().getProducto().getCodigo() + " no se encuentra registrado en el sistema.");
 			break;
 		case BD_NO_SE_ENCUENTRA_EN_KARDEX:
 			errorCarga.setCodigo(15);
 			String codigoBodegaKardex = error.isReposicion()?error.getCarga().getNodo().getCodigo():error.getCarga().getBodega().getCodigo();
-			errorCarga.setMensaje("No se encuentra kardex para el producto " + error.getItem().getProducto().getCodigo() + " para bodega " + codigoBodegaKardex);
+			errorCarga.setMensaje("No se encuentra kardex para el producto " + error.getItem().getProducto().getCodigo() + " para bodega " + codigoBodegaKardex + ".");
 			break;
 		case BD_YA_SE_REGISTRO:
 			errorCarga.setCodigo(16);
-			errorCarga.setMensaje("El producto ya fue registrado");
+			errorCarga.setMensaje("El producto ya fue registrado.");
 			break;
 		case VALIDACION_CANTIDAD_INADECUADA:
 			errorCarga.setCodigo(18);
-			errorCarga.setMensaje("La cantidad de producto debe ser mayor que cero");
+			errorCarga.setMensaje("La cantidad de producto debe ser mayor a cero.");
 			break;
 		case VALIDACION_CANTIDAD_OBLIGATORIA:
 			errorCarga.setCodigo(19);
@@ -99,15 +99,15 @@ public class ErrorCarga {
 			break;
 		case VALIDACION_PRODUCTO_CODIGO_VACIO:
 			errorCarga.setCodigo(20);
-			errorCarga.setMensaje("El codigo del producto debe contener por lo menos un caracter alfanumérico");
+			errorCarga.setMensaje("El codigo del producto debe contener por lo menos un caracter alfanumérico.");
 			break;
 		case VALIDACION_PRODUCTO_NOMBRE_VACIO:
 			errorCarga.setCodigo(21);
-			errorCarga.setMensaje("El nombre del producto debe contener por lo menos un caracter alfanumérico");
+			errorCarga.setMensaje("El nombre del producto debe contener por lo menos un caracter alfanumérico.");
 			break;
 		default:
 			errorCarga.setCodigo(17);
-			errorCarga.setMensaje("Error no identificado");
+			errorCarga.setMensaje("Error no identificado.");
 			break;
 		}
 		
