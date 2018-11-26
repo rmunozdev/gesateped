@@ -34,6 +34,7 @@ function observarModificacionTipo() {
 	    $('#nodo\\.codigo').val(function(){ return '0';});
 	    $('#fecha').val(function(){ return '';});
 	    $('#fileCSV').val(function(){ return '';});
+	    $('#lblErrorArchivo').hide(); //Se oculta validacion
 	    
 	    $('#panelErrores').hide();
 	    $('#panelResumen').hide();
@@ -93,7 +94,6 @@ function enviarFormulario() {
 function mostrarResumen(data) {
 	console.log(data);
 	presentarResumen(data);
-	
 	if(data.errores && data.errores.length > 0) {
 		$('#panelErrores').show();
 		presentarTabla(data.errores);
@@ -109,6 +109,8 @@ function presentarResumen(resumen) {
 		$('#registrosOmitidos').html(resumen.omitidos | 0);
 		$('#registrosConError').html(resumen.errores.length);
 		$('#totalRegistros').html(resumen.total);
+	} else {
+		$('#panelResumen').hide();
 	}
 	
 	if(resumen.validacionProveedor || resumen.validacionProveedor != '') {
