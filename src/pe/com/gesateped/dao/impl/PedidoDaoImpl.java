@@ -216,6 +216,7 @@ public class PedidoDaoImpl implements PedidoDao {
 		
 		Bodega bodega = new Bodega();
 		bodega.setCodigo(codigoBodega);
+		bodega.setNombre(String.valueOf(resultMap.get("nom_bod")));
 		bodega.setCodigoDistrito(String.valueOf(resultMap.get("cod_dist")));
 		bodega.setDireccion(String.valueOf(resultMap.get("dir_bod")) + " " + String.valueOf(resultMap.get("nom_dist")));
 		return bodega;

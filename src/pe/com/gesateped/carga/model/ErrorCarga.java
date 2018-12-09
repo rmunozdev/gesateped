@@ -83,7 +83,9 @@ public class ErrorCarga {
 		case BD_NO_SE_ENCUENTRA_EN_KARDEX:
 			errorCarga.setCodigo(15);
 			String codigoBodegaKardex = error.isReposicion()?error.getCarga().getNodo().getCodigo():error.getCarga().getBodega().getCodigo();
-			errorCarga.setMensaje("No se encuentra kardex para el producto " + error.getItem().getProducto().getCodigo() + " para bodega " + codigoBodegaKardex + ".");
+			String nodoOBodega = error.isReposicion()?" para nodo ":" para bodega ";
+			
+			errorCarga.setMensaje("No se encuentra kardex para el producto " + error.getItem().getProducto().getCodigo() + nodoOBodega + codigoBodegaKardex + ".");
 			break;
 		case BD_YA_SE_REGISTRO:
 			errorCarga.setCodigo(16);
@@ -104,6 +106,17 @@ public class ErrorCarga {
 		case VALIDACION_PRODUCTO_NOMBRE_VACIO:
 			errorCarga.setCodigo(21);
 			errorCarga.setMensaje("El nombre del producto debe contener por lo menos un caracter alfanumérico.");
+			break;
+		case BD_STOCK_EN_BODEGA_INSUFICIENTE:
+			errorCarga.setCodigo(22);
+			errorCarga.setMensaje("La " + error.getCarga().getBodega().getNombre() +  " no cuenta con stock suficiente para reponer el producto " 
+					+ error.getItem().getProducto().getCodigo() +" al "+ error.getCarga().getNodo().getNombre() + ".");
+			break;
+		case BD_NO_SE_ENCUENTRA_EN_KARDEX_PARA_BODEGA:
+			errorCarga.setCodigo(23);
+			errorCarga.setMensaje("No se encuentra kardex para el producto " + 
+			error.getItem().getProducto().getCodigo() + " para bodega " + 
+					error.getCarga().getBodega().getCodigo() + ".");
 			break;
 		default:
 			errorCarga.setCodigo(17);

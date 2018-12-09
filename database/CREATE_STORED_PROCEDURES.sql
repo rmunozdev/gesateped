@@ -157,6 +157,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_c_registrar_reposicion`(
 proc_label:BEGIN
 
 	DECLARE v_existe_kardex boolean;
+    DECLARE v_stock_restante INT default null;
     
     DECLARE exit handler for 1062
 	BEGIN
@@ -184,6 +185,33 @@ proc_label:BEGIN
     from tb_kardex 
     where cod_bod = pi_codigo_nodo and cod_prod = pi_codigo_producto;
     
+    select stk_act - pi_cantidad into v_stock_restante
+    from tb_kardex
+    where cod_bod = pi_codigo_bodega and cod_prod = pi_codigo_producto
+    ;
+    
+    if v_stock_restante >= 0 
+    then
+		-- update se reduce en bodega
+        update tb_kardex set 
+        stk_act = stk_act - pi_cantidad,
+        fec_act_reg = now()
+        where cod_bod = pi_codigo_bodega and cod_prod = pi_codigo_producto;
+	elseif v_stock_restante is not null
+    then
+		-- Se lanza error
+		SET po_msg_cod := -4;
+		SET po_msg_desc := 'Stock insuficiente para operacion';
+        ROLLBACK;
+		LEAVE proc_label;
+	else
+		-- Se lanza error
+		SET po_msg_cod := -5;
+		SET po_msg_desc := 'No existe registro kardex para producto en bodega';
+        ROLLBACK;
+		LEAVE proc_label;
+    end if;
+    
     if v_existe_kardex 
     then 
 		update tb_kardex set 
@@ -192,10 +220,12 @@ proc_label:BEGIN
         fec_notif_abast = null,
         fec_max_abast = null
         where cod_bod = pi_codigo_nodo and cod_prod = pi_codigo_producto;
+        
     else 
 		-- Se lanza error
 		SET po_msg_cod := -3;
 		SET po_msg_desc := 'No existe registro kardex para producto';
+        ROLLBACK;
 		LEAVE proc_label;
     end if;
     

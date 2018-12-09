@@ -69,6 +69,12 @@ public class CargaDAOImpl implements CargaDAO {
 			case -3:
 				error.setCodigo(RegistroCargaErrorCode.BD_NO_SE_ENCUENTRA_EN_KARDEX);
 				break;
+			case -4:
+				error.setCodigo(RegistroCargaErrorCode.BD_STOCK_EN_BODEGA_INSUFICIENTE);
+				break;
+			case -5:
+				error.setCodigo(RegistroCargaErrorCode.BD_NO_SE_ENCUENTRA_EN_KARDEX_PARA_BODEGA);
+				break;
 			default:
 				error.setCodigo(RegistroCargaErrorCode.BASE_DE_DATOS);
 			}

@@ -3,7 +3,6 @@ package pe.com.gesateped.carga.service;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +22,7 @@ import pe.com.gesateped.carga.model.Item;
 import pe.com.gesateped.carga.model.ResumenCarga;
 import pe.com.gesateped.carga.registro.service.RegistroCargaService;
 import pe.com.gesateped.carga.registro.validation.RegistroCargaError;
+import pe.com.gesateped.dao.PedidoDao;
 import pe.com.gesateped.model.Bodega;
 import pe.com.gesateped.model.Proveedor;
 
@@ -43,10 +43,12 @@ public class CargaServiceImpl implements CargaService {
 	@Autowired
 	private ProveedorDAO proveedorDAO;
 	
+	@Autowired
+	private PedidoDao pedidoDAO;
+	
 	@Override
 	public ResumenCarga procesar(Carga carga) {
 		ResumenCarga resumen = new ResumenCarga();
-		
 		if(!this.verificarFecha(carga.getFecha())) {
 			resumen.setValidacionFecha("Campo obligatorio (formato dd/mm/yyyy)");
 		}
@@ -81,6 +83,18 @@ public class CargaServiceImpl implements CargaService {
 				resumen.addAllErrors(Arrays.asList(ErrorCarga.fromCsvValidationError(validationError)));
 			}
 			//Zona de exito, se dan registros satisfactorios
+			//Se completa contenido (para mensajes de validacion)
+			if(carga.getBodega() != null && carga.getBodega().getCodigo() !=null) {
+				Bodega bodega = this.pedidoDAO.obtenerBodega(carga.getBodega().getCodigo());
+				carga.getBodega().setNombre(bodega.getNombre());
+			}
+			
+			if(carga.getNodo() != null && carga.getNodo().getCodigo() !=null) {
+				Bodega nodo = this.pedidoDAO.obtenerBodega(carga.getNodo().getCodigo());
+				carga.getNodo().setNombre(nodo.getNombre());
+			}
+			
+			
 			List<RegistroCargaError> erroresRegistro = this.iniciarRegistro(carga,items);
 			
 			int omitidos = 0;
